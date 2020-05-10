@@ -1,0 +1,25 @@
+Intervallo di confidenza,Distribuzione congiunta,0
+Distribuzione di probabilità a priori,Probabilità condizionata,0
+Boosting,Data mining,0
+Rete neurale feed-forward,Discesa del gradiente,0
+Intervallo di confidenza,Significatività,0
+Data mining,Clustering gerarchico,0
+Scarto interquartile,Mediana (statistica),1
+Clustering,Outlier,0
+Rete bayesiana,Funzione di densità di probabilità,1
+Data mining,Outlier,1
+K-medoids,Clustering,1
+Retropropagazione dell'errore,Rete neurale feed-forward,0
+Foresta casuale,Boosting,0
+K-means,Apprendimento automatico,1
+Clustering,Information retrieval,0
+Macchine a vettori di supporto,Funzione di densità di probabilità,1
+Discesa del gradiente,Massimo e minimo di una funzione,1
+Probabilità condizionata,Rete bayesiana,0
+Classificazione statistica,Rete neurale artificiale,0
+Scarto quadratico medio,F1 score,0
+Campionamento statistico,Precisione e recupero,0
+F1 score,Campionamento statistico,1
+Foresta casuale,Scarto quadratico medio,0
+Rete bayesiana,Distribuzione di probabilità a priori,1
+K-medoids,K-means,0

@@ -1,0 +1,25 @@
+Angolo,Triangolo isoscele,0
+Angolo,Teorema di Pitagora,0
+Sistema di riferimento cartesiano,Retta,1
+Poligono,Segmento,1
+Angolo,Bidimensionalità,0
+Punto (geometria),Bidimensionalità,0
+Pendenza topografica,Geometria,1
+Quadrilatero,Parallelismo (geometria),0
+Perpendicolarità,Cono,0
+Segmento,Asse di un segmento,0
+Angolo,Collinearità,0
+Punto medio,Arco (geometria),0
+Spigolo,Triangolo isoscele,0
+Rettangolo,Triangolo rettangolo,0
+Vertice (geometria),Teorema di Pitagora,0
+Circonferenza,Sezione (geometria descrittiva),0
+Teorema di Pitagora,Terna pitagorica,0
+Similitudine (geometria),Sfera,0
+Terna pitagorica,Teorema di Pitagora,1
+Circonferenza,Geometria,1
+Punto (geometria),Quadrilatero,0
+Terna pitagorica,Triangolo rettangolo,1
+Raggio (geometria),Seno (matematica),0
+Segmento,Terna pitagorica,0
+Retta,Diametro,0

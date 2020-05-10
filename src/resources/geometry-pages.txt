@@ -1,0 +1,770 @@
+
+<doc id="109852" url="https://it.wikipedia.org/wiki?curid=109852" title="Triangolo rettangolo">
+Triangolo rettangolo
+Il triangolo rettangolo è un triangolo in cui l'angolo formato da due lati, detti cateti, è retto, ovvero di 90° (o radianti). Il lato opposto all'angolo retto si chiama ipotenusa. L'ipotenusa è per il teorema di Pitagora uguale alla radice quadrata della somma dei quadrati dei cateti. 
+Il triangolo rettangolo rappresenta un caso particolare di triangolo generico, per cui molte relazioni fondamentali si semplificano. Il caso più particolare è quello del triangolo rettangolo isoscele, caso per il quale 
+Aggiungendo a un triangolo rettangolo il triangolo ottenuto con la sua riflessione rispetto all'ipotenusa si ottiene un aquilone. Aggiungendogli il triangolo ottenuto sottoponendolo alla rotazione di π intorno al punto medio dell'ipotenusa si ottiene il rettangolo per il quale l'ipotenusa è diagonale principale.
+Dal triangolo rettangolo isoscele con entrambe le costruzioni si ottiene il quadrato di lato formula_2.
+Ogni similitudine trasforma un triangolo rettangolo in un triangolo rettangolo. Le classi di similitudine dei triangoli rettangoli si possono quindi rappresentare fedelmente con i triangoli rettangoli aventi l'ipotenusa "c" di lunghezza 1 e il vertice opposto appartenente a una delle semicirconferenze aventi come diametro l'ipotenusa. La collezione delle classi di similitudine si può parametrizzare con il rapporto "a"/"b" delle lunghezze dei cateti ovvero con uno dei due angoli non retti, ad esempio con l'angolo formula_15 relativo al vertice "A". Dalla trigonometria segue che:
+È chiamato anche Triangolo 90-45 per le ampiezze degli angoli che lo formano, invero è composto da un angolo retto e due angoli da 45°. Per costruzione, il triangolo rettangolo isoscele è la meta di un quadrato ed ha come ipotenusa la diagonale del quadrato e come cateti i suoi lati. Viene frequentemente rappresentato come un triangolo isoscele che ha come base l'ipotenusa. Ingloba le proprietà dei triangoli rettangoli e dei triangoli isosceli infatti, rispettivamente:
+Per ciò, la caratteristica principale di questo triangolo è che l'altezza è congruente alla semi ipotenusa, cioè formula_19. Inoltre ha i due cateti uguali e misurano formula_20.
+L'ortocentro di un triangolo rettangolo coincide con il vertice dell'angolo retto.
+Il circocentro è il punto medio dell'ipotenusa.
+Per individuare il baricentro può essere comodo riferire il triangolo ad una coppia di assi cartesiani ortogonali con l'origine nel vertice "C" relativo all'angolo retto, l'asse delle "x" contenente il lato "a" dalla parte delle ascisse positive e l'asse delle "y" contenente il lato "b". Scrivendo in tale riferimento le equazioni di due rette comprendenti due delle mediane e mettendole a sistema per trovarne l'intersezione si calcola che le coordinate del baricentro sono "a"/3 e "b"/3.
+</doc>
+
+<doc id="1656374" url="https://it.wikipedia.org/wiki?curid=1656374" title="Seno (matematica)">
+Seno (matematica)
+In matematica, in particolare in trigonometria, dato un triangolo rettangolo il seno di uno dei due angoli interni adiacenti all'ipotenusa è definito come il rapporto tra le lunghezze del cateto opposto all'angolo e dell'ipotenusa. 
+Più in generale il seno di un angolo formula_1, espresso in gradi o radianti, è una quantità che dipende solo da formula_1, costruita usando la circonferenza unitaria.
+Definendo come formula_3 il seno nell'angolo formula_4 si ottiene la funzione seno, una funzione trigonometrica di fondamentale importanza nell'analisi matematica. In ambito italiano questa funzione viene spesso indicata con formula_5.
+Nel triangolo rosso in figura, il seno di formula_4 è dato da
+Più in generale si definisce il seno di un angolo formula_4 a partire dalla circonferenza goniometrica, ovvero dalla circonferenza di raggio unitario nel piano cartesiano. Presa la semiretta uscente dall'origine che forma un angolo formula_4 con l'asse delle ascisse come in figura, il seno dell'angolo è quindi definito come il valore della coordinata formula_10 del punto di intersezione tra la semiretta e la circonferenza (in figura, è la lunghezza del segmento formula_11). 
+Il dominio della funzione seno è l'insieme dei numeri reali, mentre il codominio è l'intervallo reale formula_12, ossia applicando tale funzione a qualunque numero reale si ottiene sempre un numero reale compreso tra formula_13 e formula_14, estremi inclusi.
+La tabella seguente elenca i principali valori notevoli assunti dalla funzione seno:
+D'altra parte il teorema di Pitagora applicato al triangolo formula_31 fornisce la relazione
+e quindi 
+Vale anche la relazione:
+Come per il coseno, la cosecante di un angolo è formula_35 diviso il seno dell'angolo.
+La derivata della funzione seno è la funzione coseno: 
+La derivata seconda è invece
+La funzione seno è una funzione analitica, la cui espansione in serie di Taylor è
+In analisi matematica questa uguaglianza è spesso usata per definire il seno. La stessa serie definisce il seno come funzione olomorfa su tutto il piano complesso.
+Seguono alcune equazioni fondamentali riguardanti la funzione seno:
+con l'aggiunta della condizione che:
+Esiste anche un'identità trigonometrica che mette in relazione la funzione seno alla funzione tangente:
+Questa identità si rivela di fondamentale importanza nella risoluzione di equazioni goniometriche in cui l'incognita figuri come argomento sia di un seno sia di un coseno o di funzioni derivate da queste. Esiste infatti un'analoga identità per quanto riguarda il coseno e l'uso congiunto di queste due identità permette la risoluzione dell'equazione nell'incognita formula_44.
+Il reciproco del seno, definito dove il seno è diverso da zero, è la cosecante:
+La funzione seno ristretta all'intervallo formula_46 come dominio e con codominio formula_47 è biettiva, e quindi ha un’inversa, chiamata arcoseno e indicata con formula_48 o con formula_49 che riprende la notazione della funzione inversa. Per definizione si ha quindi: 
+Dalla formula di Eulero si deduce che la funzione seno è in relazione con la funzione esponenziale e con la funzione seno iperbolico. Infatti per ogni numero reale formula_4 si ha 
+Alcune formule particolari riguardanti la funzione seno coinvolgono l'operazione di prodotto. 
+Per esempio risulta per ogni intero formula_53
+In analisi complessa, applicando teorema di fattorizzazione di Weierstrass alla funzione seno, la si può esprimere come prodotto infinito, mediante la seguente formula che vale per ogni numero complesso formula_55
+La funzione seno è anche in relazione con alcune funzioni speciali, come si evince, per esempio, dalla formula di riflessione della funzione Gamma 
+e dall'equazione funzionale soddisfatta dalla funzione zeta di Riemann
+Il concetto di seno fu introdotto dal matematico e astronomo indiano Aryabhata I (in devanāgarī: आर्यभट) nella sua opera "Aryabhatiya" (499).
+Il seno è per definizione la metà di una "corda", cioè un segmento che unisce due punti (detti "estremi") di una circonferenza. In sanscrito, "metà corda" è reso con "jya-ardha", a volte sostituito con "ardha-jya" e abbreviato in "jya" "corda". Questo termine fu importato nella lingua araba come "jiba", un termine senza significato prima di allora, ma che rifletteva la pronuncia del nome "jya". Secondo le regole della lingua araba, questo nome venne scritto con le due consonanti "jb", senza vocali. Successivamente, quando i traduttori occidentali attinsero alle fonti arabe, interpretarono la parola "jb" come "jaib", il cui significato era "baia". Infine l'italiano Gherardo da Cremona (1114 - 1187) tradusse la parola in latino come "sinus", il cui significato era appunto "baia".
+</doc>
+
+<doc id="404205" url="https://it.wikipedia.org/wiki?curid=404205" title="Collinearità">
+Collinearità
+In geometria vettoriale, due vettori formula_1 e formula_2 si dicono collineari se e solo se esiste uno scalare "k" tale che sia formula_3 o, equivalentemente, formula_4.
+Etimologicamente collineari significa "giacenti sulla stessa linea retta". In effetti, in geometria affine, due vettori si dicono collineari se esistono due rispettivi rappresentanti situati sopra una stessa retta, ossia se esistono tre punti A, B e C allineati tali che 
+La collinearità è una nozione importante in geometria affine, in quanto permette di definire 
+Si nota che il vettore nullo di uno spazio vettoriale è collineare con tutti gli altri vettori.
+Sull'insieme dei vettori non nulli la relazione di collinearità è 
+Queste tre proprietà consentono di affermare che la relazione di collinearità è una relazione d'equivalenza; le sue classi d'equivalenza costituiscono lo spazio proiettivo associato allo spazio vettoriale.
+Tre punti di coordinate ("x,y"), ("x,y") e ("x,y")
+si dicono collineari, vale a dire giacenti sulla stessa retta in un sistema di riferimento cartesiano a due assi, se e solo se per il determinante che segue, vale che:
+</doc>
+
+<doc id="369748" url="https://it.wikipedia.org/wiki?curid=369748" title="Sistema di riferimento cartesiano">
+Sistema di riferimento cartesiano
+In matematica, un sistema di riferimento cartesiano è un sistema di riferimento formato da "n" rette ortogonali, intersecantesi tutte in un punto chiamato "origine", su ciascuna delle quali si fissa un orientamento (sono quindi "rette orientate") e per le quali si fissa anche un'unità di misura (cioè si fissa una metrica di solito euclidea) che consente di identificare qualsiasi punto dell'insieme mediante "n" numeri reali. In questo caso si dice che i punti di questo insieme sono in uno spazio di dimensione "n".
+Un sistema di riferimento cartesiano in due dimensioni viene chiamato piano cartesiano.
+Per identificare la posizione di punti nello spazio fisico viene solitamente utilizzato un sistema di riferimento cartesiano a tre dimensioni. Tuttavia per descrivere la posizione di oggetti più complicati vengono utilizzati altri sistemi di riferimento non necessariamente cartesiani e un differente numero di dimensioni, dette in questo contesto gradi di libertà.
+Usando un sistema di riferimento cartesiano, è possibile descrivere tramite equazioni algebriche forme geometriche come curve o superfici: i punti dell'oggetto geometrico sono quelli che soddisfano l'equazione associata. Per esempio è possibile descrivere una circonferenza nel piano cartesiano, oppure una quadrica nello spazio tridimensionale.
+L'uso delle coordinate geometriche venne introdotto per la prima volta da Nicola d'Oresme, matematico del XIV secolo operante a Parigi. L'aggettivo "cartesiano" è riferito al matematico e filosofo francese René Descartes (italianizzato in " Renato Cartesio", latinizzato in " Renatus Cartesius") il quale, tra le altre cose, riprendendo gli studi di Nicola d'Oresme, lavorò sulla fusione dell'algebra con la geometria euclidea. Questi studi furono influenti nello sviluppo della geometria analitica, del calcolo infinitesimale e della cartografia.
+L'idea di questo sistema di riferimento fu sviluppato nel 1637 in due scritti da Cartesio e, indipendentemente, da Pierre de Fermat, anche se Fermat non pubblicò la sua scoperta. Nella seconda parte del suo Discorso sul metodo, Cartesio introduce la nuova idea di specificare la posizione di un punto o di un oggetto su una superficie usando due rette che si intersecano in un punto come strumenti di misura, idea ripresa in "La Geometria" .
+Un sistema di coordinate cartesiane ortogonale in due dimensioni è semplicemente chiamato piano cartesiano, ed è costituito da:
+Il piano cartesiano, che viene spesso chiamato "xy" dal nome degli assi, può essere immaginato, pensando che il piano sia immerso orizzontalmente nello spazio fisico (pavimento), e mettendosi in piedi in un punto con il braccio sinistro teso in avanti e il braccio destro teso di lato in modo da formare con le due braccia un angolo retto: il punto sul quale si rappresenta l'origine, la direzione del braccio destro rappresenta l'asse delle ascisse positive (dalla parte opposta le ascisse negative), la direzione del braccio sinistro rappresenta l'asse delle ordinate positive (alle spalle le ordinate negative).
+Il sistema costituito dalla coppia dei due assi orientati (e implicitamente dall'origine) consente di individuare ogni punto del piano con una coppia di numeri reali chiamati rispettivamente "ascissa" e "ordinata" del punto, i cui valori assoluti rappresentano le distanze del punto rispettivamente dall'asse y (ordinata) e dall'asse x (ascissa). Le coordinate di un punto generico del piano o di un punto che si pensa variabile spesso si denotano con formula_1 e formula_2. I punti sull'asse "x" hanno quindi ordinata "y"=0, mentre i punti sull'asse "y" hanno ascissa "x"=0; di conseguenza l'origine ha coordinate "x"=0 e "y"=0. Talora il sistema dei due assi si denota con formula_3.
+Un generico punto si può quindi esprimere scrivendo formula_4
+oppure formula_5. Ad esempio, i punti formula_6 e formula_7 hanno la stessa ascissa (quindi si trovano su una retta parallela all'asse "y"), mentre i punti formula_8 e formula_9 hanno la stessa ordinata (quindi si trovano su una retta parallela all'asse "x"). In particolare: se due punti hanno la stessa ascissa ma ordinate opposte sono simmetrici rispetto all'asse "x"; se due punti hanno la stessa ordinata ma ascisse opposte sono simmetrici rispetto all'asse "y"; se due punti hanno coordinate opposte sono simmetrici rispetto all'origine.
+Il piano cartesiano viene suddiviso in quattro regioni denominate quadranti, indicate mediante numeri romani progressivi in senso antiorario:
+Il piano cartesiano permette di rappresentare graficamente funzioni di due variabili del tipo formula_10 in cui x è la variabile indipendente e y la variabile dipendente. Ciò permette di visualizzare la "forma" di curve e risolvere graficamente sistemi di più equazioni come intersezioni tra le curve corrispondenti.
+Per definizione, esiste una corrispondenza biunivoca fra i punti del piano cartesiano e le coppie ordinate di numeri reali. L'insieme di tutte le coppie di numeri reali, formula_11 è un formula_12-spazio vettoriale. La base canonica di formula_11 è formula_14 ove formula_15 ed formula_16. Gli elementi di E hanno un importante significato geometrico: sono i versori fondamentali sul piano, rispettivamente formula_17 e formula_18. Ciò vuol dire, per la definizione stessa di base di uno spazio vettoriale, che il piano cartesiano è generato dai versori fondamentali e che ogni punto del piano è esprimibile, "in modo unico", come combinazione lineare dei versori fondamentali (ciò giustifica l'espressione dei punti del piano cartesiano).
+Si noti inoltre che ogni asse cartesiano è sottospazio vettoriale del piano cartesiano.
+Aggiungendo una terza dimensione al piano otteniamo lo spazio euclideo tridimensionale, che è la modellizzazione a noi più familiare dello spazio fisico, e quella usata in meccanica classica: un sistema di assi cartesiani può quindi essere usato come sistema di riferimento per localizzare degli oggetti nello spazio, attribuendogli delle coordinate.
+Essendo una diretta generalizzazione del piano cartesiano, un sistema di riferimento cartesiano tridimensionale è formato da tre rette orientate perpendicolari tra loro e incidenti in un punto, denominato origine degli assi. I tre assi (chiamati solitamente "x", "y" e "z") identificano tre piani nello spazio ("xy", "xz" e "yz"), che dividono lo spazio in otto "ottanti", simili ai quattro quadranti formati dagli assi cartesiani in due dimensioni. Ogni punto è identificato da 3 coordinate, che rappresentano ognuna la distanza del punto al piano formato dagli altri due.
+Come nel caso del piano, ogni punto dello spazio tridimensionale può essere individuato da un vettore nello spazio tridimensionale (indicato come formula_19 e viene espresso come combinazione lineare dei tre versori di base, indicati convenzionalmente con formula_20, formula_21 e formula_22:
+dove "x", "y" e "z" rappresentano proprio le coordinate nel punto nel sistema di riferimento formato dalla base formula_24.
+Il piano cartesiano (e più in generale il sistema di riferimento cartesiano a "n" dimensioni) ha permesso di conciliare la geometria e l'algebra in un'unica branca della matematica: la "geometria analitica" (chiamata così dall'analisi matematica). Per esempio nel piano cartesiano una retta può essere espressa mediante un'equazione di primo grado a due variabili che rappresenta una funzione lineare del tipo ax+by=c; l'intersezione di due (o più) rette rappresenta un sistema di equazioni lineari.
+Le equazioni di cui si è detto prima possono essere espresse in due forme: la forma esplicita e la forma implicita.
+Nel caso ad esempio di una retta, la prima consiste un'equazione del tipo "y = mx + q", mentre la seconda si presenta come "ax + by + c = 0". Per passare dalla forma implicita a quella esplicita basta portare tutti i termini escluso "by" nel secondo membro e poi dividere per "b" ("principio di equivalenza delle equazioni"). Si noti che, nella forma esplicita, il termine noto q, detto intercetta o ordinata all'origine, indica l'ordinata del punto di intersezione della retta con l'asse y, mentre il coefficiente dell'incognita x, m, è detto coefficiente angolare ed indica la "pendenza" della retta.
+Naturalmente il passaggio dalla forma implicita a quella esplicita è possibile solo se il coefficiente b è diverso da zero, cioè solo se la retta non è parallela all'asse delle ordinate.
+Dati due punti distinti formula_25 e formula_26, l'equazione della retta passante per quei punti è: formula_27 anche detta formula_28 dove formula_29 è il coefficiente angolare dato da formula_30
+</doc>
+
+<doc id="338671" url="https://it.wikipedia.org/wiki?curid=338671" title="Triangolo isoscele">
+Triangolo isoscele
+In geometria, si definisce triangolo isoscele un triangolo che possiede due lati congruenti.
+Vale il seguente "teorema": "Un triangolo è isoscele se e solo se ha due angoli congruenti". Questo teorema costituisce la quinta proposizione del Libro I degli Elementi di Euclide ed è noto come pons asinorum.
+In un triangolo isoscele la bisettrice relativa all'angolo al vertice coincide con la mediana, l'altezza e l'asse relativi alla base. 
+Particolari triangoli isosceli sono i triangoli equilateri e i triangoli rettangoli isosceli.
+Esistono anche triangoli isosceli acutangoli e ottusangoli. 
+I triangoli isosceli rettangoli sono tutti simili tra di loro, come i triangoli equilateri.
+Un triangolo isoscele che non sia equilatero è invariante solo per la riflessione rispetto alla bisettrice dell'angolo diverso dai due rimanenti. Il suo gruppo di simmetria, oltre alla trasformazione identità, comprende solo questa riflessione e quindi è isomorfo al gruppo di due elementi, ovvero al gruppo moltiplicativo sull'insieme formula_1.
+Teorema 1: Condizione necessaria e sufficiente affinché un triangolo con la base parallela agli assi sia isoscele è che abbia i due lati di coefficiente angolare opposto.
+Dimostrazione.
+Date le tre rette
+ne calcoliamo l'intersezione.
+Ora calcoliamo la distanza dei segmenti formula_14 e formula_15.
+Quindi il triangolo è isoscele sulla base formula_18. In modo analogo si dimostra il caso della base parallela all'asse formula_19.
+Viceversa costruiamo un triangolo isoscele con la base parallela all'asse delle ascisse.
+Dati i due punti:
+poiché il vertice di un triangolo isoscele giace sulla stessa retta del punto medio della base, prima troviamo formula_22 e poi formula_23.
+Quindi troviamo formula_23, che avrà la stessa ascissa di formula_22 e diversa ordinata.
+Verifichiamo che il triangolo è isoscele:
+Ora calcoliamo il coefficiente angolare dei due lati:
+Teorema 2: Condizione necessaria e sufficiente affinché un triangolo con la base parallela alla bisettrice di due quadranti sia isoscele è che abbia i due lati di coefficiente angolare inverso.
+Dimostrazione.
+Date le tre rette
+ne calcoliamo l'intersezione.
+Ora calcoliamo la distanza dei segmenti formula_14 e formula_15.
+Quindi il triangolo è isoscele sulla base formula_18. In modo analogo si dimostra il caso della base parallela all'asse formula_19.
+Viceversa costruiamo un triangolo isoscele con la base parallela alla bisettrice del primo e terzo quadrante (lo stesso vale per quella parallela alla bisettrice del secondo e quarto quadrante).
+Dati i due punti:
+poiché il vertice di un triangolo isoscele giace sulla stessa retta del punto medio della base, prima troviamo formula_22 e poi formula_23.
+Quindi troviamo formula_23, che si trova sulla retta di equazione formula_58 perpendicolare alla base e passante per formula_22.
+dove formula_61 è un numero reale arbitrario diverso da formula_62.
+Verifichiamo che il triangolo è isoscele:
+Ora calcoliamo il coefficiente angolare dei due lati:
+</doc>
+
+<doc id="391805" url="https://it.wikipedia.org/wiki?curid=391805" title="Cono">
+Cono
+In geometria, il cono è un solido di rotazione che si ottiene ruotando un triangolo rettangolo intorno a uno dei suoi cateti.
+L'asse del cono è il cateto intorno a cui il solido è costruito; la base del cono è altresì il cerchio ottenuto dalla rotazione dell'altro cateto.
+Il vertice del cono è, infine, il punto dell'asse opposto a quello dell'intersezione con la sua base.
+L'aggettivo che definisce gli oggetti di natura simile al cono è "conico"; da esso derivano anche le curve e le figure piane cosiddette "coniche", ovvero risultanti dall'intersezione di un piano con un cono.
+In matematica un cono può essere considerato come una piramide di base circolare, avente quindi numero infinito di facce oblique.
+Un cono il cui vertice è tagliato da un piano parallelo alla sua base è detto "tronco di cono". Il termine cono viene talvolta esteso a figure più generali:
+Il termine "cono" senza ulteriori specificazioni indica generalmente un cono circolare retto.
+Il volume formula_1 di un cono con altezza formula_2 e con base di raggio formula_3 è formula_4 del volume del cilindro che ha le stesse dimensioni. Quindi:
+Se la base è ellittica di semiassi formula_6 e formula_7:
+Si può calcolare il volume del cono per mezzo del calcolo integrale come il volume del solido ottenuto dalla rotazione di una retta formula_9 con coefficiente angolare positivo (per semplicità passante per l'origine degli assi) attorno all'asse delle ascisse. Si ha:
+Essendo formula_12 l'angolo acuto formato dalla retta formula_9 con l'asse delle ascisse, da considerazioni trigonometriche si ha che:
+e poiché il coefficiente angolare formula_15 è uguale alla tangente goniometrica di formula_12, elevando al quadrato ambo i membri della precedente equazione si ha:
+da cui si ottiene:
+L'area totale formula_19 di una superficie conica è data dalla somma dell'area della base formula_20 con l'area laterale formula_21:
+dove:
+avendo definito l'apotema formula_25 del cono come
+Sostituendo nella formula, si ottiene infine:
+</doc>
+
+<doc id="480117" url="https://it.wikipedia.org/wiki?curid=480117" title="Perpendicolarità">
+Perpendicolarità
+La perpendicolarità è un concetto geometrico che indica la presenza di un angolo retto tra due entità geometriche. Queste possono essere ad esempio due rette in un piano, oppure una retta ed un piano o due piani incidenti nello spazio.
+Il significato fondamentale del termine si riferisce alla posizione di due linee rette.
+Nel piano due rette si dicono perpendicolari, o equivalentemente ortogonali, se si incontrano formando angoli uguali (che si dicono retti). Due segmenti si dicono perpendicolari se tali sono le rette cui essi appartengono. Nel caso di rette nello spazio, si osservi che se esse sono incidenti esiste un piano (unico) che le contiene entrambe, e quindi si può applicare la definizione precedente considerando gli angoli da esse formati proprio su questo piano. 
+Molti teoremi geometrici e trigonometrici riguardano proprietà strettamente collegate alla perpendicolarità.
+In un sistema di coordinate cartesiane ortogonali gli assi di riferimento (in tre dimensioni gli assi x, y e z) sono mutuamente perpendicolari. Ogni triangolo rettangolo è definito da due segmenti perpendicolari, i suoi cateti: i cateti di triangoli rettangoli servono a definire le funzioni angolari che sono alla base della trigonometria.
+Una retta nel piano cartesiano può essere descritta in vari modi, e per ciascuno di questi esistono delle condizioni per determinare se due rette sono perpendicolari. Ad esempio, due rette descritte nella forma
+sono perpendicolari se e solo se
+Avendo definito la perpendicolarità fra rette, è facile estendere la definizione ai piani. In particolare, una retta ed un piano incidenti si dicono perpendicolari se la retta è perpendicolare a qualsiasi retta del piano passante per il punto in comune con la retta data.
+Affinché la suddetta condizione sia soddisfatta, è sufficiente che la retta data sia perpendicolare a due di queste.
+La perpendicolare a tutte le rette appartenenti ad un piano si dice normale al piano.
+Due piani nello spazio si dicono perpendicolari se esiste una retta in uno dei due piani perpendicolare all'altro piano.
+La nozione di perpendicolarità fra rette e piani può essere estesa a linee e superfici curve, purché per esse siano definiti rette e piani tangenti. In questo caso, ogni punto su una curva planare o superficie ha un vettore perpendicolare, detto normale alla curva o normale alla superficie, che è quello passante per il punto e perpendicolare alla retta o al piano tangenti. Due curve o due superfici si dicono perpendicolari se tali sono le normali in un determinato punto.
+La motivazione intuitiva di questa definizione è che, se consideriamo curve e superfici sufficientemente "regolari", esse ci appaiono tanto più simili a una retta o a un piano quanto più le "ingrandiamo", e quindi possiamo approssimarle localmente con questi due enti. La retta tangente in un punto a una curva, ad esempio, è proprio quella retta che approssima meglio, nelle vicinanze di quel punto, la curva stessa.
+</doc>
+
+<doc id="221987" url="https://it.wikipedia.org/wiki?curid=221987" title="Raggio (geometria)">
+Raggio (geometria)
+Secondo la definizione moderna della geometria, il raggio di un cerchio o di una sfera è un segmento di retta avente un estremo sulla circonferenza o superficie sferica e l'altro estremo nel centro della figura. Per estensione si definisce raggio di un cerchio o di una sfera anche la lunghezza di un tale segmento. Il raggio misura la metà del diametro.
+Più generalmente — in geometria, ingegneria, teoria dei grafi, e in molti altri settori — il raggio di qualcosa (per esempio di un cilindro, di un grafo, o di un componente meccanico) è la distanza dei suoi punti più esterni dal centro o asse.
+La definizione di raggio data per i cerchi e per le sfere si lascia estendere naturalmente al caso di iperspazi con più di tre dimensioni. Generalmente, un segmento che congiunge un punto di un'ipersfera al suo centro è un raggio dell'ipersfera.
+In una spirale il raggio è una funzione dell'angolo. Tutte le circonferenze sono assimilabili a spirali con raggio costante.
+Il raggio formula_1 di un cerchio avente diametro formula_2 è
+Il raggio formula_1 di un cerchio avente circonferenza formula_5 è
+Il raggio formula_1 di un cerchio avente area formula_8 è
+Il raggio formula_1 della circonferenza che attraversa tre punti non collineari formula_11 è dato da
+dove formula_13 è l'angolo formula_14 La formula è calcolata utilizzando il teorema dei seni.
+Con riferimento alla figura a destra, lo stesso raggio formula_1 può anche essere espresso nel modo seguente:
+dove formula_17 indica la lunghezza del segmento di estremi formula_18 e formula_19 mentre formula_20 è l'angolo formula_21
+Pertanto, se consideriamo tre punti di coordinate formula_22 e formula_23 il raggio della circonferenza che li attraversa è dato da:
+Il raggio medio formula_1 di un'ellisse è definito come il raggio di un cerchio di area (superficie) uguale a quella dell'ellisse.
+È uguale alla radice quadrata del prodotto dei due semiassi dell'ellisse:
+Si definisce "cerchio principale" di un'ellisse, il cerchio con centro nel centro dell'ellisse e di raggio formula_27 uguale al semiasse maggiore dell'ellisse.
+Si definisce "cerchio secondario" di un'ellisse, il cerchio con centro nel centro dell'ellisse e di raggio formula_28 uguale al semiasse minore dell'ellisse.
+Il raggio di un poligono regolare è il segmento che unisce il centro a uno dei suoi vertici. Pertanto, la lunghezza di tale segmento è uguale al raggio della circonferenza circoscritta al poligono.
+Il raggio formula_1 di un poligono di formula_30 lati di lunghezza formula_31 ciascuno, è dato da:
+Il raggio in funzione della lunghezza dell'apotema formula_33, è dato da:
+Raccogliendo tutte le costanti (nella prima delle due formule), si può scrivere che il raggio formula_1 del poligono è formula_36, ed è dato da formula_37 con formula_38
+Si arriva così alla tabella dei seguenti numeri fissi:
+che, noti la lunghezza e il numero di lati, permette di calcolare il raggio del poligono.
+Il raggio formula_1 di un ipercubo formula_2-dimensionale e lato formula_31, è:
+</doc>
+
+<doc id="265456" url="https://it.wikipedia.org/wiki?curid=265456" title="Arco (geometria)">
+Arco (geometria)
+In geometria si definisce arco la parte di una curva regolare compresa fra due suoi punti, detti estremi dell'arco. Curve regolari sono le curve continue e dotate di tangente unica in ogni punto, come ad esempio quelle delle coniche.
+Un arco può essere approssimato da una linea spezzata poligonale composta da un numero limitato di segmenti con i vertici disposti a intervalli regolari lungo l'arco stesso. Quando la lunghezza dei segmenti tende a zero, la lunghezza e l'andatura della poligonale tende a quella dell'arco.
+Il segmento di retta delimitato dagli estremi di un arco si dice corda sottesa dall'arco. L'asse di tale segmento passa per il centro dell'arco.
+Le misure degli archi di circonferenza sono espresse frequentemente in gradi o radianti, assumendo la circonferenza stessa, ovvero parte di essa, come unità di misura.
+Per trovare la lunghezza formula_1 di un arco di circonferenza sotteso da due raggi formula_2 che formano un angolo formula_3 (espresso in radianti) fra loro si mettono in relazione, tramite proporzione, la lunghezza dell'arco con quella di tutta la circonferenza e l'angolo sotteso dai raggi con l'angolo giro:
+e quindi la lunghezza dell'arco è
+</doc>
+
+<doc id="226642" url="https://it.wikipedia.org/wiki?curid=226642" title="Bidimensionalità">
+Bidimensionalità
+La bidimensionalità è la pertinenza di un oggetto o di un'immagine al campo delle due tradizionali dimensioni spaziali. Larghezza e lunghezza oppure X e Y, nel caso di notazione matematica. È spesso contrapposta e confrontata con la tridimensionalità (3D).
+Viene indicata anche con l'abbreviazione 2D o 2-D che letteralmente sta per "due dimensioni".
+Un oggetto bidimensionale manca della "terza dimensione", la profondità, e si sviluppa dunque solo su superficie piana. Sono esempi di rappresentazioni 2D, ossia bidimensionali, le fotografie o i disegni.
+</doc>
+
+<doc id="267681" url="https://it.wikipedia.org/wiki?curid=267681" title="Spigolo">
+Spigolo
+La parola spigolo (dal latino "spiculum", diminutivo di "spica", punta) è utilizzata nella geometria solida per indicare i segmenti comuni a due facce di un poliedro, ovvero i lati di tali facce.
+Secondo una relazione scoperta da Eulero, il numero di spigoli in un poliedro è pari alla somma fra il numero di facce e il numero di vertici del poliedro stesso, diminuita di due.
+Talora è detta spigolo anche la retta di intersezione fra due piani non paralleli.
+</doc>
+
+<doc id="268070" url="https://it.wikipedia.org/wiki?curid=268070" title="Parallelismo (geometria)">
+Parallelismo (geometria)
+Nella geometria euclidea due o più enti sono mutuamente paralleli se tutti i punti dell'uno hanno la stessa distanza minima dall'altro, o dal prolungamento di questo. Inoltre ogni ente geometrico si considera parallelo a sé stesso. La relazione così definita si dice parallelismo ed è una relazione di equivalenza.
+La relazione di parallelismo si nota generalmente con una doppia barra verticale o obliqua. Le espressioni formula_1 e formula_2 si leggono ""a" è parallelo a "b"".
+Due o più rette distinte nello stesso piano euclideo sono parallele se e solo se non hanno alcun punto in comune, cioè se non si incontrano mai. Due o più segmenti sono paralleli se lo sono le rette che li contengono.
+Nel piano cartesiano due rette (distinte o no) di equazioni implicite ax+by+c= 0 e a'x+b'y+c'=0 sono parallele se e solo se ab'=a'b.
+Quindi sono parallele se e solo se hanno lo stesso coefficiente angolare (m=m' relativamente alle loro equazioni esplicite y=mx+q e y=m'x+q') o sono verticali (e quindi hanno equazioni x=a e x=b).
+Date due rette tagliate da una trasversale, se gli angoli alterni interni sono congruenti, le due rette sono parallele.
+In uno spazio euclideo tridimensionale due o più piani distinti sono paralleli se e solo se non hanno alcun punto in comune. Altrettanto vale per una retta ed un piano, che non la contiene, paralleli. È anche vero che due rette distinte parallele non hanno alcun punto in comune, ma è possibile per due rette distinte nello spazio non incontrarsi mai pur senza essere parallele. Si parla in questo caso di rette "sghembe".
+Il "postulato delle parallele", meglio noto come quinto postulato di Euclide sostiene che per un punto P si può condurre una ed una sola retta parallela ad una data retta "r" non passante per P. È oggi dimostrato che tale assioma è indipendente dagli altri postulati di Euclide e la sua negazione conduce alle geometrie non euclidee, dove le proprietà del parallelismo classico non sono applicabili.
+Due rette parallele proiettate su un piano restano parallele, ma anche due rette sghembe possono avere proiezioni parallele su un piano. Nello spazio a tre dimensioni due rette sono parallele se e solo se questo è vero per due piani non paralleli.
+Un piano è parallelo a una retta se e solo se contiene una retta ad essa parallela. (Se e solo se il loro prodotto scalare è uguale a zero).
+Due rette, o due piani, sono paralleli se e solo se hanno la stessa fuga; una retta è parallela a un piano se e solo se la sua fuga è contenuta in quella del piano.
+</doc>
+
+<doc id="25259" url="https://it.wikipedia.org/wiki?curid=25259" title="Diametro">
+Diametro
+In geometria il diametro (indicato con D, d o ⌀) è il segmento che unisce due punti della circonferenza passando per il centro; tali punti sono detti opposti. Misura il doppio del raggio rappresentando la corda massima e la sua relazione con la circonferenza è π.
+Per analogia lo stesso concetto può essere esteso alla sfera, intesa come circonferenza in rotazione su sé stessa; per ciò molte considerazioni fatte sulla figura bidimensionale sono valide anche per quella tridimensionale. I punti della sfera uniti dal diametro sono detti antipodali. 
+In topologia il diametro di un insieme in uno spazio metrico è definito come la massima distanza tra due punti appartenenti al sottoinsieme stesso.
+Considerando il segmento corrispondente valgono le seguenti proprietà:
+</doc>
+
+<doc id="2035" url="https://it.wikipedia.org/wiki?curid=2035" title="Geometria">
+Geometria
+La geometria (dal greco antico ""γεωμετρία"", composto dal prefisso "geo" che rimanda alla parola "γή" = "terra" e "μετρία", "metria" = "misura", tradotto quindi letteralmente come "misurazione della terra") è quella parte della scienza matematica che si occupa delle forme nel piano e nello spazio e delle loro mutue relazioni.
+La geometria coincide fino all'inizio del XIX secolo con la geometria euclidea. Questa definisce come concetti primitivi il punto, la retta e il piano, e assume la veridicità di alcuni assiomi, gli assiomi di Euclide. Da questi assiomi vengono quindi dedotti dei teoremi anche complessi, come il teorema di Pitagora ed i teoremi della geometria proiettiva.
+La scelta dei concetti primitivi e degli assiomi è motivata dal desiderio di rappresentare la realtà, e in particolare gli oggetti nello spazio tridimensionale in cui viviamo. Concetti primitivi come la retta ed il piano vengono descritti informalmente come "fili e fogli di carta senza spessore", e d'altro canto molti oggetti della vita reale vengono idealizzati tramite enti geometrici come il triangolo o la piramide. In questo modo, i teoremi forniscono fin dall'antichità degli strumenti utili per le discipline che riguardano lo spazio in cui viviamo: meccanica, architettura, geografia, navigazione, astronomia.
+La geometria piana si occupa delle figure geometriche nel piano. A partire dal concetto primitivo di retta, vengono costruiti i segmenti, e quindi i poligoni come il triangolo, il quadrato, il pentagono, l'esagono, ecc.
+Le quantità numeriche importanti nella geometria piana sono la lunghezza, l'angolo e l'area. Ogni segmento ha una lunghezza, e due segmenti che si incontrano in un estremo formano un angolo. Ogni poligono ha un'area. Molti teoremi della geometria piana mettono in relazione le lunghezze, angoli e aree presenti in alcune figure geometriche. Ad esempio, la somma degli angoli interni di un triangolo risulta essere un angolo piatto, e l'area di un rettangolo si esprime come prodotto delle lunghezze dei segmenti di "base" e "altezza". La trigonometria studia le relazioni fra gli angoli e le lunghezze.
+La geometria solida (o stereometria) studia le costruzioni geometriche nello spazio. Con segmenti e poligoni si costruiscono i poliedri, come il tetraedro, il cubo e la piramide.
+I poliedri hanno vertici, spigoli e facce. Ogni spigolo ha una lunghezza, ed ogni faccia ha un'area. In più, il poliedro ha un volume. Si parla inoltre di angoli diedrali per esprimere l'angolo formato da due facce adiacenti in uno spigolo. Molti teoremi mettono in relazione queste quantità: ad esempio il volume della piramide può essere espresso tramite l'area della figura di base e la lunghezza dell'altezza.
+La geometria euclidea considera anche alcune figure curve. Le figure "base" sono la circonferenza nel piano e la sfera nello spazio, definite come luogo dei punti equidistanti da un punto fissato. Partendo da queste figure, ne vengono definite altre come il cono. A queste figure vengono associate grandezze analoghe ai poliedri: si parla quindi di lunghezza della circonferenza, di area del cerchio e di volume della sfera.
+L'intersezione nello spazio di un cono con un piano forma una nuova figura curvilinea: a seconda dell'inclinazione del piano, questa è una ellisse, una parabola, un'iperbole o una circonferenza. Queste sezioni coniche sono le curve più semplici realizzabili nel piano.
+Ruotando una figura intorno ad una retta, si ottengono altre figure curve. Ad esempio, ruotando un'ellisse o una parabola si ottengono l'ellissoide ed il paraboloide. Anche in questo caso, il volume dell'oggetto può essere messo in relazione con altre quantità.
+La geometria euclidea non fornisce però sufficienti strumenti per dare una corretta definizione di lunghezza e area per molte figure curve.
+La geometria cartesiana (o analitica) ingloba le figure ed i teoremi della geometria euclidea, introducendone di nuovi grazie a due altre importanti discipline della matematica: l'algebra e l'analisi. Lo spazio (ed il piano) sono rappresentati con delle coordinate cartesiane. In questo modo ogni figura geometrica è descrivibile tramite una o più equazioni (o disequazioni).
+Rette e piani sono oggetti risultanti da equazioni di primo grado, mentre le coniche sono definite tramite equazioni di secondo grado. Equazioni polinomiali di grado superiore definiscono nuovi oggetti curvi.
+Il calcolo infinitesimale permette di estendere con precisione i concetti di lunghezza e area a queste nuove figure. L'integrale è un utile strumento analitico per determinare queste quantità. Si parla in generale quindi di curve e superfici nel piano e nello spazio.
+Retta (passante per l'origine), piano (contenente l'origine) e spazio sono esempi di spazi vettoriali di dimensione rispettivamente 1, 2 e 3: infatti ogni punto è esprimile rispettivamente con 1, 2 o 3 coordinate. La geometria cartesiana è facilmente estendibile alle dimensioni superiori: in questo modo si definiscono spazi di dimensione 4 e oltre, come insiemi di punti aventi 4 o più coordinate.
+Grazie all'algebra lineare, lo studio delle rette e dei piani nello spazio può essere esteso allo studio dei sottospazi di uno spazio vettoriale, di dimensione arbitraria. Lo studio di questi oggetti è strettamente collegato a quello dei sistemi lineari e delle loro soluzioni.
+In dimensione più alta, alcuni risultati possono contrastare con l'intuizione geometrica tridimensionale a cui siamo abituati. Ad esempio, in uno spazio di dimensione 4, due piani possono intersecarsi in un punto solo.
+In uno spazio vettoriale l'origine (cioè il punto da cui partono gli assi, di coordinate tutte nulle) gioca un ruolo fondamentale: per poter usare in modo efficace l'algebra lineare, si considerano infatti solo sottospazi passanti per l'origine. In questo modo si ottengono delle relazioni eleganti fra i sottospazi, come la formula di Grassmann.
+Nella geometria affine il ruolo predominante dell'origine è abbandonato. I sottospazi non sono vincolati, e possono quindi essere paralleli: questo crea una quantità considerevole di casistiche in più. In particolare, la formula di Grassmann non è più valida. Lo spazio affine è considerato (fino alla scoperta della relatività ristretta) come lo strumento migliore per creare modelli dell'universo, con 3 dimensioni spaziali ed eventualmente 1 dimensione temporale, senza "origini" o punti privilegiati.
+Dal XIX secolo in poi l'algebra diventa uno strumento preponderante per lo studio della geometria. Nel tentativo di "abbellire" il quadro, e di ricondurre molte proprietà e teoremi ad un numero sempre minore di proprietà fondamentali, la geometria analitica viene progressivamente inglobata in un concetto più ampio di geometria: si aggiungono i "punti all'infinito" (creando così la geometria proiettiva), e si fanno variare le coordinate di un punto non solo nei numeri reali, ma anche in quelli complessi.
+La geometria proiettiva nasce come strumento legato al disegno in prospettiva, e viene formalizzata nel XIX secolo come un arricchimento della geometria cartesiana. La geometria proiettiva include i "punti all'infinito" ed elimina quindi alcune casistiche considerate fastidiose, come la presenza di rette parallele.
+In questa geometria molte situazioni si semplificano: due piani distinti si intersecano sempre in una retta, e oggetti differenti della geometria analitica (come le coniche ellisse, parabola e iperbole) risultano essere equivalenti in questo nuovo contesto.
+La geometria proiettiva è anche un esempio di compattificazione: similmente a quanto accade con la proiezione stereografica, aggiungendo i punti all'infinito lo spazio diventa compatto, cioè "limitato", "finito".
+La geometria algebrica verte essenzialmente sullo studio dei polinomi e delle loro radici: gli oggetti che tratta, chiamati varietà algebriche, sono gli insiemi dello spazio proiettivo, affine o euclideo definiti come luoghi di zeri di polinomi.
+Nel XX secolo il concetto di varietà algebrica assume un'importanza sempre maggiore. Rette, piani, coniche, ellissoidi, sono tutti esempi di varietà algebriche. Lo studio di questi oggetti raggiunge risultati impressionanti quando le coordinate dello spazio vengono fatte variare nel campo dei numeri complessi: in questo caso, grazie al teorema fondamentale dell'algebra, un polinomio ha sempre delle radici.
+Questo fatto algebrico di grande importanza (esprimibile dicendo che i numeri complessi formano un campo algebricamente chiuso) ha come conseguenza la validità di alcuni teoremi potenti di carattere molto generale. Ad esempio, il teorema di Bézout asserisce che due curve di grado formula_1 e formula_2 nel piano che non hanno componenti in comune si intersecano "sempre" in formula_3 punti, contanti con un'opportuna molteplicità. Questo risultato necessita che il "piano" sia proiettivo e complesso. In particolare, è certamente falso nell'ambito classico della geometria analitica: due circonferenze non devono intersecarsi necessariamente in 4 punti, possono anche essere disgiunte.
+Lo studio della geometria nello spazio proiettivo complesso aiuta anche a capire la geometria analitica classica. Le curve nel piano cartesiano reale possono ad esempio essere viste come "sezioni" di oggetti più grandi, contenuti nel piano proiettivo complesso, ed i teoremi generali validi in questo "mondo più vasto e perfetto" si riflettono nel piano cartesiano, pur in modo meno elegante.
+Come lo studio della geometria affine fa largo uso dell'algebra lineare, quello delle varietà algebriche attinge a piene mani dall'algebra commutativa.
+La geometria differenziale è lo studio di oggetti geometrici tramite l'analisi. Gli oggetti geometrici non sono necessariamente definiti da polinomi (come nella geometria algebrica), ma sono ad esempio curve e superfici, cioè oggetti che, visti localmente con una lente di ingrandimento, sembrano quasi rettilinei o piatti. Oggetti cioè "senza spessore", e magari un po' curvi. Come la superficie terrestre, che all'uomo sembra piatta, benché non lo sia.
+Questo concetto di "spazio curvo" è espresso tramite la nozione di varietà differenziabile. La sua definizione non necessita neppure di "vivere" in uno spazio ambiente, ed è quindi usata ad esempio nella relatività generale per descrivere intrinsecamente la forma dell'universo. Una varietà può essere dotata di una proprietà fondamentale, la curvatura, che viene misurata tramite oggetti matematici molto complessi, come il tensore di Riemann. Nel caso in cui lo spazio sia una curva o una superficie, questi oggetti matematici risultano più semplici: si parla ad esempio di curvatura gaussiana per le superfici.
+Su una varietà dotata di curvatura, detta varietà riemanniana, sono definite una distanza fra punti, e le geodetiche: queste sono curve che modellizzano i percorsi localmente più brevi, come le rette nel piano, o i meridiani sulla superficie terrestre.
+Con la geometria differenziale è possibile costruire un "piano" in cui valgono tutti i postulati di Euclide, tranne il quinto, quello "delle parallele". Questo postulato ha avuto un'importanza storica fondamentale, perché ci sono voluti 2000 anni per dimostrare la sua effettiva indipendenza dai precedenti. Asserisce che, fissati una retta formula_4 ed un punto formula_5 non contenuto in formula_4, esiste un'unica retta formula_7 parallela a formula_4 e passante per formula_5.
+Una geometria non euclidea è una geometria in cui valgono tutti gli assiomi di Euclide, tranne quello delle parallele. La sfera, con le geodetiche che giocano il ruolo delle rette, fornisce un esempio semplice di geometria non euclidea: due geodetiche si intersecano "sempre" in due punti antipodali, e quindi non ci sono rette parallele. Un tale esempio di geometria è detta ellittica. Esistono anche esempi opposti, in cui ci sono "così tante" rette parallele, che le rette formula_7 parallele a formula_4 e passanti per formula_5 sono infinite (e non una). Questo tipo di geometria è detta iperbolica, ed è più difficile da descrivere concretamente.
+La topologia è infine lo studio delle forme, e di tutte quelle proprietà degli enti geometrici che non cambiano quando questi vengono deformati in modo continuo, senza strappi. La topologia studia tutti gli oggetti geometrici (definiti in modo algebrico, differenziale, o quant'altro) guardando solo la loro forma. Distingue ad esempio la sfera dal toro, perché quest'ultimo ha "un buco in mezzo". Studia le proprietà di connessione (spazi "fatti di un pezzo solo") e di compattezza (spazi "limitati"), e le funzioni continue fra questi.
+Le forme degli oggetti vengono codificate tramite oggetti algebrici, come il gruppo fondamentale: un gruppo che codifica in modo raffinato la presenza di "buchi" in uno spazio topologico.
+Nel 1872 Felix Klein elaborò un programma di ricerca, l"'Erlanger Programm", in grado di produrre una grande sintesi delle conoscenze geometriche e integrarle con altri settori della matematica, quali la teoria dei gruppi.
+Nella prospettiva di Klein una "geometria" consiste nello studio di proprietà di uno spazio che sono invarianti rispetto ad un gruppo di trasformazioni (geometria delle trasformazioni):
+La geometria analitica e l'algebra lineare forniscono importanti collegamenti tra l'intuizione geometrica e il calcolo algebrico che sono diventati ormai una parte costitutiva di tutta la matematica moderna e delle sue applicazioni in tutte le scienze.
+La geometria differenziale ha trovato importanti applicazioni nella costruzione di modelli per la fisica e per la cosmologia.
+La geometria piana e dello spazio fornisce inoltre degli strumenti per modellizzare, progettare e costruire oggetti reali nello spazio tridimensionale: è quindi di fondamentale importanza in architettura e in ingegneria come anche nel disegno e nella computer grafica.
+La geometria descrittiva è una disciplina che permette, attraverso determinate costruzioni grafiche, di rappresentare oggetti tridimensionali già esistenti (rilievo) e/o da costruire (progettazione).
+L'applicazione informatizzata della geometria descrittiva permette oggi la creazione di superfici e solidi, anche ad alta complessità tridimensionale. Inoltre, e soprattutto, ne permette il controllo in modo inequivocabile di ogni loro forma e dimensione.
+I maggiori campi d'impiego della geometria descrittiva sono quelli dell'architettura, dell'ingegneria e quelli del design industriale.
+La nascita della Geometria si fa risalire all'epoca degli antichi egizi. Erodoto racconta che a causa dei fenomeni di erosione e di deposito dovuti alle piene del Nilo, l'estensione delle proprietà terriere egiziane variavano ogni anno e dovevano quindi essere ricalcolate a fini fiscali. Nacque così il bisogno di inventare tecniche di "misura della terra" ("geometria" nel significato originario del termine).
+Lo sviluppo della Geometria pratica è molto antico, per le numerose applicazioni che consente e per le quali è stata sviluppata, e in epoche remote fu a volte riservata a una categoria di sapienti con attribuzioni sacerdotali.
+Presso l'Antica Grecia, , si diffuse massicciamente l'uso della riga e del compasso (sebbene pare che questi strumenti fossero già stati inventati altrove) e, soprattutto, nacque l'idea nuova di usare tecniche dimostrative. La geometria greca servì da base per lo sviluppo della geografia, dell'astronomia, dell'ottica, della meccanica e di altre scienze, nonché di varie tecniche, come quelle per la navigazione. 
+Nella civiltà greca, oltre alla geometria euclidea che si studia ancora a scuola, e alla teoria delle coniche, nacquero anche la geometria sferica e la trigonometria (piana e sferica).
+</doc>
+
+<doc id="26274" url="https://it.wikipedia.org/wiki?curid=26274" title="Retta">
+Retta
+La retta o linea retta è uno dei tre enti geometrici fondamentali della geometria euclidea. Viene definita da Euclide nei suoi "Elementi" come un concetto primitivo. Un filo di cotone o di spago ben teso tra due punti è un modello materiale che ci può aiutare a capire cosa sia la retta, un ente geometrico immateriale senza spessore e con una sola dimensione.
+La retta è illimitata in entrambe le direzioni, e inoltre contiene infiniti punti, cioè è infinita. Viene generalmente contrassegnata con una lettera minuscola dell'alfabeto latino (solitamente con la "r").
+La retta è il secondo ente fondamentale della geometria; geometricamente priva di alcuno spessore ha una sola dimensione: la lunghezza.
+Una retta può "giacere" (cioè essere contenuta) nel piano o nello spazio tridimensionale.
+Due rette nel piano possono essere:
+Due rette nello spazio possono essere:
+Date due rette sghembe, per ognuna di esse passa un unico piano parallelo all'altra retta. La distanza tra questi due piani equivale alla distanza tra le due rette.
+Una retta nel piano cartesiano è descritta da un'equazione lineare
+dove i coefficienti formula_2, formula_3 e formula_4 sono dei numeri reali fissati, con formula_2 e formula_3 non contemporaneamente nulli.
+Se formula_7 oppure formula_8, è possibile descrivere la stessa retta in "forma esplicita" rispettivamente in una delle due forme seguenti:
+dove formula_11 si chiama "coefficiente angolare" e quantifica la pendenza della retta. Nella prima delle equazioni di cui sopra il termine noto formula_12 rappresenta l'ordinata del punto di intersezione della retta con l'asse delle formula_13 ("ordinata all'origine" o "intercetta"), nella seconda il termine noto formula_14 rappresenta l'ascissa del punto di intersezione della retta con l'asse delle formula_15.
+Nello spazio euclideo tridimensionale, una retta può essere descritta tramite "equazioni cartesiane" come luogo di intersezione di due piani non paralleli:
+In questo caso le soluzioni del sistema dipendono da un solo parametro formula_17 ed è sempre possibile ricavare un insieme di "equazioni parametriche" per la retta:
+dove il vettore formula_19 è un vettore parallelo alla retta e il punto formula_20 è un punto appartenente alla retta.
+Se formula_21 sono tutti diversi da zero è possibile ricavare le cosiddette "equazioni simmetriche" della retta:
+Sia le equazioni cartesiane che le equazioni parametriche della retta non sono univocamente determinate, e sono in effetti infinite.
+Nello spazio euclideo formula_23-dimensionale formula_24, una "retta" è un insieme dei punti del tipo
+dove formula_26 e formula_27 sono due vettori fissati in formula_24 con formula_27 diverso da zero. Il vettore formula_27 descrive la direzione della retta, mentre formula_26 è un qualsiasi punto della retta. Scelte differenti dei vettori formula_26 e formula_27 possono descrivere la stessa retta.
+Questa definizione di retta nello spazio di dimensione formula_23 è una estensione della rappresentazione in "forma esplicita" nel piano descritta sopra. Descrivere invece una retta in "forma implicita" come insieme di vettori che soddisfano delle equazioni lineari è più complicato, perché per il teorema di Rouché-Capelli sono necessarie formula_35 equazioni.
+Si definisce come distanza tra due rette formula_36 e formula_37 la distanza minima tra due punti formula_38 e formula_39.
+Tale distanza è ovviamente nulla nel caso di due rette che si intersecano. Per esaminare i restanti due casi (rette parallele e sghembe) verrà utilizzata la rappresentazione parametrica, che permette una trattazione unitaria per tutte le dimensioni. Siano dunque date due rette formula_40 e formula_41 di equazioni parametriche rispettivamente:
+dove formula_43 e formula_44 sono i loro vettori direzionali e formula_45 e formula_46 i vettori associati al punto formula_47 della retta formula_40 e al punto formula_49 della retta formula_41, relativamente alla terna cartesiana formula_51.
+Dato che le rette sono parallele possiamo misurare la distanza a partire da un punto qualsiasi della prima retta. Scegliamo il punto di formula_40 segnato dal vettore formula_45. Ogni punto della retta formula_41 può essere espresso nella forma formula_55. Se chiamo formula_56 il vettore ortogonale a formula_43 che segna la distanza dall'altra retta, allora per le proprietà del prodotto scalare
+Ottenuto formula_56 risolvendo la precedente equazione (incognita in formula_60) è sufficiente calcolare la norma di formula_56 quindi con riferimento all'equazione parametrica la distanza formula_62 fra due rette parallele formula_36 e formula_64 si può scrivere come:
+dove il vettore formula_27 è un vettore parallelo alle rette e il vettore formula_67 è il vettore che congiunge un punto formula_68 della retta formula_36 e un punto formula_70 della retta formula_64 ovvero la distanza fra due rette parallele è data dalla proiezione del vettore formula_67 nel verso ortogonale alle stesse.
+Dimostrazione: dalle formule del prodotto vettoriale, i moduli dei versori sono unitari, resta:
+formula_73
+Se definiamo formula_56 come il vettore ortogonale a formula_75, la cui norma è la distanza tra le due rette, il nostro problema si riduce a trovare la norma di formula_56. I tre vettori formula_56, formula_43 e formula_44 sono una base, e possiamo quindi facilmente scomporre il vettore formula_80 lungo le tre componenti. Quindi
+Molto semplicemente si ricava che
+con riferimento all'equazione parametrica la distanza formula_62 fra due rette sghembe formula_36 e formula_64 si può scrivere come:
+dove il vettore formula_67 è il vettore che congiunge un punto formula_68 della retta formula_36 che ha vettore parallelo formula_90 e un punto formula_70 della retta formula_64 che ha vettore parallelo formula_93, il vettore formula_94 è il vettore ortogonale formula_95 ovvero la distanza fra due rette sghembe è data dalla proiezione del vettore formula_67 nel verso del vettore formula_94.
+Dimostrazione: dalle formule del prodotto scalare il modulo del versore è unitario, resta : formula_98
+</doc>
+
+<doc id="19898" url="https://it.wikipedia.org/wiki?curid=19898" title="Circonferenza">
+Circonferenza
+In geometria una circonferenza è il luogo geometrico di punti del piano equidistanti da un punto fisso detto "centro". La distanza da qualsiasi punto della circonferenza dal centro si definisce raggio.
+Le circonferenze sono curve chiuse semplici che dividono il piano in una superficie interna ed una esterna (infinita).
+La superficie del piano contenuta in una circonferenza, insieme alla circonferenza stessa, prende il nome di cerchio, per cui: 
+Per le altre superfici del piano geometrico, la lingua italiana non distingue l'area e il perimetro con due parole differenti. In inglese, oltre alle corrispondenti "circumference" e "circle", la parola "disk" indica una regione del piano con alcune importanti proprietà, che può essere chiusa, oppure aperta, se "non" contiene il cerchio che essa delimita. Nota la circonferenza di un cerchio, per qualsiasi superficie (chiusa) del piano geometrico si può disegnare una circonferenza inscritta ed una circonferenza circoscritta.
+La circonferenza è il caso particolare di una ellisse, in cui i due fuochi coincidono in uno stesso punto, che è il centro della circonferenza: l'ellisse ha due centri (detti fuochi), la circonferenza ha invece un solo centro. Si dice quindi che la circonferenza ha eccentricità nulla. 
+Ugualmente, la formula di calcolo per l'area del cerchio è un caso particolare della formula per l'area di un'ellisse.
+Mediante il calcolo delle variazioni si dimostra che la circonferenza è la Figura piana che delimita la massima area per unità di perimetro quadrato.
+Una circonferenza è inoltre un particolare caso di simmetria centrale, dal momento che tutti i punti della circonferenza sono equidistanti dal centro della stessa.
+La formula per trovare la lunghezza della circonferenza è:
+oppure:
+Dove:
+In geometria analitica una circonferenza in un piano può essere descritta utilmente sia mediante le coordinate cartesiane, sia mediante le coordinate polari, sia in forma parametrica.
+In un sistema di riferimento cartesiano formula_8, la circonferenza di centro formula_9 e raggio formula_6 è il luogo dei punti caratterizzati dall'equazione:
+cioè è l'insieme di tutti e soli i punti che distano formula_6 da formula_9.
+All'equazione più generale si dà spesso la forma canonica:
+collegata alla precedente dalle seguenti eguaglianze:
+Da ciò segue che se formula_21 la circonferenza degenera in un solo punto, formula_22, se formula_23 il luogo geometrico (nel piano cartesiano reale) descritto dall'equazione non è una circonferenza, ma l'insieme vuoto.
+Se il centro della circonferenza è l'origine formula_24, l'equazione diventa:
+Se la circonferenza passa per l'origine formula_24, formula_27 e l'equazione diventa:
+Se la circonferenza ha centro sull'asse x, formula_29 e l'equazione diventa:
+Se la circonferenza ha centro sull'asse y, formula_31 e l'equazione diventa:
+Nelle coordinate polari formula_33 e formula_34 l'equazione della circonferenza con centro nell'origine e raggio formula_6 è evidentemente data dall'equazione:
+Una circonferenza formula_37 il cui centro ha coordinate formula_38 e raggio formula_39 viene descritta con la seguente forma parametrica:
+formula_40
+Basta usare l'equazione formula_41.
+A questo problema sono riconducibili anche i seguenti
+Basta ricordare che l'asse di una corda passa sempre per il centro della circonferenza. La procedura risolutiva è la seguente:
+Il problema ha tre incognite: i coefficienti formula_42 dell'equazione canonica della circonferenza formula_43.
+Si impone il passaggio per i tre punti dati dal problema e si ottiene un sistema lineare in tre equazioni e tre incognite formula_42.
+Basta ricordare che la distanza della retta tangente dal centro è pari al raggio della circonferenza stessa. La procedura risolutiva è la seguente:
+Basta ricordare che in un sistema di secondo grado (retta-circonferenza) la condizione di tangenza si ha quando il sistema ammette due soluzioni reali e coincidenti, cioè quando l"'equazione associata" di secondo grado al sistema ha formula_45.
+Questo problema è risolto ricordando che la retta tangente alla circonferenza è perpendicolare al raggio nel suo punto di tangenza. Quindi, salvo casi particolari in cui la tangente è parallela all'asse y, la procedura risolutiva è la seguente:
+Alternativamente è sufficiente usare la "formula di sdoppiamento" della circonferenza, così l'equazione della retta tangente alla circonferenza formula_43 nel punto formula_47 è semplicemente l'equazione
+dove formula_49 sono dati.
+Nel piano complesso una circonferenza di centro l'origine e raggio formula_39 può essere espressa dall'equazione parametrica
+per formula_52.
+Per rendersi conto che tale formula descrive una circonferenza è sufficiente considerare le equazioni parametriche descritte sopra e confrontarle con la formula di Eulero.
+È possibile descrivere una circonferenza nello spazio come intersezione di una sfera S con un piano formula_4. Per calcolare il raggio di una circonferenza descritta nel seguente modo si può utilizzare il teorema di Pitagora:
+formula_57.
+La circonferenza
+formula_58
+è l'intersezione del piano
+con la sfera "S" di centro origine e raggio 2.
+La distanza del centro della sfera dal piano vale formula_60.
+La distanza del centro della sfera dal piano è minore del raggio della sfera. Quindi il piano formula_4 interseca la sfera "S". A questo punto il raggio formula_56 della circonferenza si calcola utilizzando il teorema di Pitagora:
+Tutte le circonferenze sono simili; di conseguenza, la circonferenza è proporzionale al raggio:
+Una retta che incontra una circonferenza in due punti si chiama secante, mentre una che tocca la circonferenza in un solo punto, chiamato punto di tangenza, si chiama tangente. Il raggio che congiunge il centro della circonferenza con il punto di tangenza è sempre perpendicolare alla tangente. Presi due punti sulla circonferenza, questi dividono la circonferenza in due archi. Se i due archi sono della stessa lunghezza si chiamano semicirconferenze. Il segmento che congiunge due punti sulla circonferenza si chiama corda. La corda di lunghezza massima, che passa per il centro, si chiama diametro, ed equivale al doppio del raggio.
+Per due punti passano infinite circonferenze, ed il luogo dei loro centri è l'asse del segmento che congiunge i due punti. La perpendicolare condotta dal centro di una circonferenza a una sua corda la divide a metà. Due corde congruenti hanno la stessa distanza dal centro. Se da un punto formula_65, esterno a una circonferenza di centro formula_66 si tracciano le rette formula_6 e formula_68 a essa tangenti, i segmenti di tangente compresi tra formula_65 e i punti di contatto con la circonferenza sono congruenti e il segmento formula_70 è bisettrice dell'angolo formula_71 di vertice formula_65.
+Per tre punti non allineati passa una ed una sola circonferenza, il cui centro coincide con l'intersezione degli assi dei segmenti che congiungono i punti. L'equazione della circonferenza passante per i punti formula_73, formula_74, formula_75 si può esprimere nel seguente modo:
+dove l'espressione a sinistra è il determinante della matrice.
+Date due circonferenze che si intersecano, si definisce asse radicale la retta passante per i due punti in comune ("punti base"). Con semplici calcoli, partendo dall'equazione canonica e indicando con apici i coefficienti della seconda circonferenza, si ottiene che questa retta ha equazione formula_77 ed è perpendicolare alla retta che congiunge i centri delle circonferenze. La definizione si estende facilmente al caso di circonferenze tangenti, chiamando asse radicale la retta tangente alle due circonferenze nel punto comune. Questo concetto può essere ulteriormente generalizzato considerando i fasci di circonferenze. Approccio che, tra l'altro, permette di trattare unitariamente i suddetti casi.
+Una "circonferenza topologica" si ottiene considerando un intervallo chiuso sulla retta reale e dotandolo della topologia quoziente che si ha identificando gli estremi.
+La circonferenza è dotata di una naturale struttura di varietà differenziabile di dimensione 1, è uno spazio compatto e connesso ma non semplicemente connesso, infatti il suo gruppo fondamentale è il gruppo formula_78 dei numeri interi.
+La circonferenza è naturalmente dotata della struttura algebrica di gruppo: possiamo identificare ogni punto della circonferenza con l'angolo che esso forma rispetto ad una semiretta prefissata (in genere l'asse delle ascisse in un sistema di riferimento cartesiano) e definire la "somma" di due punti individuati dagli angoli formula_79 e formula_80 come il punto individuato dall'angolo formula_81. È immediato verificare che la circonferenza dotata di questa operazione verifica le proprietà di un gruppo e che come "gruppo" è isomorfo al gruppo quoziente formula_82.
+La circonferenza è un esempio di gruppo di Lie.
+</doc>
+
+<doc id="15910" url="https://it.wikipedia.org/wiki?curid=15910" title="Angolo">
+Angolo
+In matematica il termine angolo (dal latino "angulus", dal greco ἀγκύλος ("ankýlos"), derivazione dalla radice indoeuropea "ank", piegare, curvare) riguarda nozioni di larghissimo uso, innanzitutto nella geometria e nell'analisi infinitesimale.
+Si definisce angolo ciascuna delle due porzioni di piano comprese tra due semirette aventi la stessa origine. Si chiama "angolo concavo" l'angolo che contiene i prolungamenti (lati) di queste semirette.
+L"'angolo convesso" è la porzione di piano che non contiene i prolungamenti delle semirette che dividono il piano. La definizione di angolo convesso consente di sviluppare le basi della geometria piana euclidea e le prime nozioni di trigonometria.
+A ogni angolo si associa un"'ampiezza", la misura correlata alla posizione di una semiretta rispetto all'altra e pertanto alla conformazione della porzione di piano costituente l'angolo: essa si esprime in gradi "sessagesimali" o "sessadecimali" oppure in gradi centesimali o infine in radianti, sempre con valori reali. Gli angoli convessi hanno ampiezza compresa tra 0 e 180 gradi sessagesimali, da 0 a 200 gradi centesimali, da 0 a "π radianti;" mentre l'ampiezza degli angoli concavi misura tra 180 e 360 gradi, ovvero da 200 a 400 gradi centesimali, ovvero da "π" a 2"π" radianti, quindi le ampiezze sono sempre positive.
+Associando all'angolo un verso si introducono le ampiezze degli angoli con segno, entità meno intuitive che consentono di definire funzioni trigonometriche con argomenti reali qualsiasi fatte salve eventuali singolarità. Le ampiezze con segno sono da considerare insieme con il problema della rettificazione degli archi di circonferenza dotati di verso, alla natura del numero π e alle questioni relative alle aree con segno; tutti questi elementi forniscono contributi essenziali alle possibilità del calcolo infinitesimale e alle applicazioni alla fisica classica e alle conseguenti discipline quantitative.
+Il termine angolo convesso riguarda una parte di piano definita da due semirette aventi l'origine in comune; le semirette "S" e "T" vengono dette "lati dell'angolo" e la loro origine "V" "vertice dell'angolo".
+Se le semirette sono diverse, ma appartengono alla stessa retta "R", ciascuno dei due semipiani definiti da "R" muniti del vertice (che distingue le semirette) si dice angolo piatto.
+A parte il caso particolare dell'angolo piatto, il piano si tripartisce in tre insiemi: l'insieme dei punti appartenenti alle due semirette, "S" e "T" (tra i quali il vertice) chiamata frontiera dell'angolo, e due insiemi connessi "K" e "K" e separati dai punti della frontiera. Uno solo di questi due insiemi "K" è costituito da punti che appartengono a segmenti con un estremo su una semiretta e l'altro sull'altra; in altre parole solo "K" è un insieme convesso. Il terzo insieme "K" non è convesso. Si definisce angolo convesso determinato da "S" e "T" l'unione di questo insieme convesso e della frontiera, formula_1. Si definisce angolo concavo determinato da "S" e "T" l'unione del terzo insieme non convesso e della frontiera, formula_2. I due angoli definiti dalle due semirette si dicono angoli esplementari.
+Angoli convessi e concavi sono sottoinsiemi infiniti del piano, e quindi insiemi non misurabili attraverso la loro area che ha valore infinito. Spesso con angolo (convesso) si indica anche la parte di piano delimitata da due segmenti con un estremo in comune (vertice). Si può ricondurre questa definizione alla precedente prolungando i due segmenti dalla parte del loro estremo diverso dal vertice per ottenere le due semirette. Comunque questa estensione della definizione rende lecito assegnare a ogni triangolo tre angoli (convessi) associati biunivocamente ai suoi tre vertici.
+Tuttavia il triangolo, essendo una parte del piano chiusa e limitata, ha area finita, infatti esso è l'intersezione degli angoli corrispondenti ai suoi tre vertici.
+È naturale porsi il problema di "misurare un angolo": gli angoli possono servire per tante costruzioni e se a essi si associano misure numeriche ci si aspetta che per molte costruzioni possano essere utili calcoli numerici su queste misure.
+Il problema della misura di un angolo non può essere risolto attraverso una misura della sua superficie che non è finita e che comunque non sarebbe significativa nemmeno nel caso di angoli sottesi da segmenti come nel caso del triangolo: si considerino per esempio triangoli simili.
+Se si hanno due angoli convessi o concavi "A" e "B" con lo stesso vertice e "B" è sottoinsieme di "A" (situazione che si determina solo se i lati di "B" sono sottoinsiemi di "A") è ragionevole chiedere che la misura di "A" sia maggiore della misura di "B".
+Dato un angolo convesso "A," si dice semiretta bisettrice dell'angolo la semiretta avente il vertice di "A" come estremo e i cui punti sono equidistanti dai lati di "A". Si può costruire facilmente la bisettrice con un compasso. La semiretta bisettrice di un angolo concavo si definisce come la semiretta avente come estremo il vertice dell'angolo allineata con la bisettrice del suo angolo (convesso) esplementare.
+La semiretta bisettrice "B" di un angolo "A" convesso o concavo e ciascuno dei suoi due lati determinano due angoli convessi. La riflessione rispetto alla retta contenente la "B" scambia i due lati di "A" e trasforma uno dei due angoli nell'altro. È quindi ragionevole attribuire ai due angoli determinati dalla bisettrice una misura che sia la metà della misura di "A". È altrettanto ragionevole considerare che le misure dei due angoli determinati dalla semiretta bisettrice siano la metà della misura dell'angolo di partenza. Il processo di dimezzamento di un angolo può essere ripetuto N volte con N grande a piacere.
+Un angolo convesso si dice angolo retto se i suoi due lati sono ortogonali, ovvero un angolo retto è la metà di un angolo piatto.
+Un angolo convesso contenuto in un angolo retto avente il suo stesso vertice si dice angolo acuto. Un angolo convesso contenente un angolo retto avente lo stesso vertice si dice angolo ottuso.
+Due angoli "A" e "B" che hanno in comune solo una semiretta si dicono angoli consecutivi. Se due angoli consecutivi hanno le semirette non in comune opposte (cioè la loro unione è una retta) allora si dicono angoli adiacenti. Per quanto riguarda gli angoli consecutivi, se questi sono angoli convessi la loro unione è un angolo che potrebbe essere convesso o concavo: si tratta dell'angolo definito dalle due semirette che sono i lati di uno solo dei due angoli. A questo angolo unione è ragionevole assegnare come misura la somma delle misure degli angoli adiacenti. L'angolo unione si dice "somma" dei due angoli "A" e "B".
+In base alle considerazioni precedenti è lecito attribuire agli angoli misure costituite da numeri reali.
+Due angoli trasformabili l'uno nell'altro mediante isometrie si dicono congruenti. Evidentemente una misura degli angoli invariante per le isometrie costituisce uno strumento con molti vantaggi: in particolare consente di individuare le classi di congruenza degli angoli. Quindi si chiede una misura degli angoli a valori reali e invariante per congruenza.
+Se l'angolo è definito come la porzione del piano tra due semirette, la sua unità di misura dovrebbe essere una lunghezza al quadrato, ma questa misura non ha né significato né utilità pratica. Si è quindi pensato di considerare non la misura dell'angolo in sé, ma quella dell'ampiezza "del movimento" che porta una delle semirette a sovrapporsi all'altra.
+Come giungere a determinare l'ampiezza di un angolo ha certamente chiesto maggiori sforzi all'intelletto umano di quanti ne abbia richiesti la misurazione di lunghezze e superfici. Misurare significa esprimere una grandezza "A" in rapporto a un'altra grandezza data, a essa omogenea, che funge da unità di misura. Se questo processo sorge abbastanza spontaneo per le grandezze spaziali, per cui basta ripetere un segmento o affiancare un quadrato U per n volte fino all'esaurimento della lunghezza o della superficie (A=n*U), lo stesso diventa meno intuitivo per le grandezze angolari, dove pure la stessa elaborazione mentale di un'unità di misura adatta richiede un maggior grado di astrazione.
+Si prendano in considerazione i 4 angoli di ampiezza α della figura. Volendoli quantificare con l'area delimitata dai lati in verde, prolungando i lati a infinito nel caso A si ottiene un'area infinita e nei restanti casi B, C e D, considerando solo le superfici entro le linee tratteggiate, 3 aree determinate e quindi misurabili, ma visibilmente diverse fra loro, seppur originate dal medesimo angolo. Si presuma inoltre di dividere α esattamente in due angoli uguali, in modo che sia esprimibile in rapporto a questi ultimi, come formula_3= 2 formula_4; formula_4. Per quanto detto sopra, formula_4 può quindi essere considerato un"'unità di misura" e, se ora se ne considera l'area, l'uguaglianza sarà soddisfatta soltanto dai casi C e D, ma non da B, dove i due triangoli hanno aree diverse, pur trattandosi di due angoli formula_4 perfettamente sovrapponibili. Ne discende che "l'angolo non può essere misurato idoneamente in termini di area".
+Si immagini quindi una semiretta che partendo dalla posizione verticale giri attorno al proprio estremo fino a diventare orizzontale; la semiretta ha compiuto un angolo α e nel suo movimento ha coperto la superficie compresa tra le due semirette. Sovrapponendo idealmente le immagini C e D si nota che, come in un compasso, allontanandosi dal centro di rotazione ogni punto traccia sul piano un arco più lungo, pur mantenendo immutato il rapporto fra lunghezza di quest'ultimo e il raggio. Inoltre se la semiretta compisse soltanto l'angolo formula_4 la lunghezza degli archi prodotti sarebbe invariabilmente la metà della lunghezza degli archi loro omologhi in formula_3.
+Si consideri ora una rotazione completa che riporta la semiretta alla posizione di partenza, ovvero un angolo di massima ampiezza. In questo caso la semiretta copre l'intera superficie del piano tracciando infinite circonferenze; prendendo una qualunque di queste e segmentandola in "n" parti uguali, si possono individuare per ogni arco altrettante porzioni di piano equipollenti, in pratica una generica unità di misura per l'angolo. Dunque soltanto capendo che la misurazione dell'angolo non può essere avvenire quantificando un'area si comprende che bisogna astrarre il concetto di angolo come parte del piano e considerarlo invece cinematicamente come una porzione di superficie coperta da una semiretta in rotazione sul proprio estremo. Solo in questo modo è possibile misurarlo.
+Sebbene questa nozione non sia immediata, deve comunque trattarsi di una conquista concettuale antica, se il sistema per la misurazione degli angoli comunemente più utilizzato ancora oggi, il sistema sessagesimale, è giunto sino noi dall'antica civiltà babilonese invariato nei secoli.
+Nel sistema sessagesimale l'angolo completo o "angolo giro" è suddiviso in 360 spicchi, equivalenti all'unità di misura convenzionale denominata grado sessagesimale, indicata col simbolo °. La ragione della divisione in 360 parti dell'angolo giro è riconducibile all'uso astronomico che i babilonesi facevano di questa misura: dato che il Sole compie un giro completo sulla volta celeste nell'arco di un anno, a quel tempo stimato di circa 360 giorni, un grado corrisponde pressappoco allo spostamento del Sole sull'eclittica in un giorno.
+Il nome "grado sessagesimale" deriva dal fatto che le sottounità del grado, il "minuto" e il "secondo", sono divise in sessantesimi; perciò, come nell'orologio, ogni grado è diviso in 60 minuti primi indicati col simbolo "<nowiki>'</nowiki>" e chiamati semplicemente minuti, e ogni minuto è diviso in 60 minuti secondi indicati col simbolo "<nowiki>"</nowiki>" e chiamati semplicemente secondi. Ulteriori suddivisioni del secondo seguono invece il comune sistema decimale. Questa suddivisione deriva dal fatto che nell'antica Babilonia era in auge un sistema numerico su base sessagesimale, giunto sino a noi quale retaggio storico nell'orologio e sui goniometri.
+L'ampiezza di un angolo potrebbe quindi essere espresso in una forma tipo:
+Nel tempo sono poi stati adottati altri sistemi di misurazione nel tentativo di rendere più agevole la misura dell'ampiezza dell'angolo. Alla fine del Settecento non sfuggì ai tentativi di razionalizzazione neppure il sistema sessagesimale: venne proposto un sistema centesimale, basato appunto sul grado centesimale quale centesima parte nell'angolo retto, eletto ad angolo fondamentale per sostituire il 90 col più tondo e comodo 100, anche se trovò utilizzo pratico soltanto attorno al 1850 quando Ignazio Porro lo usò per costruire i suoi primi strumenti a divisione centesimale. Con questo sistema l'angolo giro viene diviso in 400 spicchi uguali con sottomultipli a frazioni decimali. Si tratta ancora di una unita di misura convenzionale non motivata da alcuna ragione matematica.
+Dallo sviluppo dell'analisi infinitesimale guadagnò sempre più importanza un'altra unita di misura, per certi aspetti più "motivata" o "naturale:" il radiante, inteso come rapporto tra la lunghezza di un arco di circonferenza e il raggio della circonferenza stessa in quanto questo rapporto non dipende dal raggio, ma solo dall'angolo compreso. In questo modo l'angolo giro misura 2π, cioè il rapporto tra la lunghezza della circonferenza e il suo raggio.
+Riepilogando, per misurare l'ampiezza dell'angolo i sistemi di misura più attestati sono:
+Il primo viene più che altro usato in ambito strettamente topografico, mentre gli ultimi sono quelli maggiormente usati, il secondo per consuetudine il terzo per una maggiore semplicità dei calcoli nelle formule matematiche. La relazione che lega il sistema radiante e il sistema sessagesimale e permette il passaggio da uno all'altro è
+dove formula_3 è la misura dell'ampiezza dell'angolo espresso in gradi, e formula_11 è la misura espressa in radianti.
+Indicando l'ampiezza di un angolo con:
+indicando con formula_17 la parte intera di un numero reale, e ricordando che vale la proporzione generale
+valgono le seguenti formule di conversione da un sistema di misura all'altro
+Nella nomenclatura degli angoli di ampiezza compresa tra 0 e formula_21 si è soliti usare aggettivi particolari per gli angoli associati a un angolo dato in quanto suoi "angoli di complemento" rispetto agli angoli fondamentali retto, piatto e giro.
+Si dice complementare di un angolo di ampiezza α ogni angolo avente come ampiezza la β "mancante" per ottenere un angolo retto, cioè tale che sia formula_22. Da questa definizione segue che due angoli complementari devono essere entrambi acuti e che ha senso attribuire un complementare solo a un angolo acuto.
+Si dice supplementare di un angolo di ampiezza α ogni angolo avente come ampiezza la β "mancante" per ottenere un angolo piatto, cioè tale che sia formula_23. Da questa definizione segue che ogni supplementare di un angolo acuto è un angolo ottuso e viceversa, mentre ogni supplementare di un angolo retto è anch'esso un angolo retto.
+Quando due angoli supplementari sono anche "consecutivi", cioè hanno in comune solo una semiretta, vengono detti anche angoli adiacenti.
+Si dice esplementare di un angolo di ampiezza α ogni angolo avente come ampiezza la β "mancante" per ottenere un angolo giro, cioè tale che sia formula_24. Ne segue che ogni esplementare di un angolo concavo è un angolo convesso e viceversa, mentre ogni esplementare di un angolo piatto è anch'esso piatto.
+Due rette che si intersecano dividono il piano in 4 angoli; considerato uno qualsiasi di questi angoli: due degli altri gli sono adiacenti mentre il terzo, con il quale condivide solo il vertice, è detto angolo opposto al vertice. Due angoli sono tra loro opposti al vertice se i prolungamenti dei lati di uno risultano essere i lati dell'altro.
+Sono adiacenti gli angoli delle coppie , , e .
+Sono invece opposti al vertice gli angoli delle coppie e .
+Quando sul piano due rette qualsiasi "r" e "s" vengono tagliate da un trasversale "t", si originano 8 angoli ognuno dei quali è posto in relazione con quelli a esso "non contigui".
+Con riferimento ai due semipiani separati dalla trasversale t, sono definiti coniugati due angoli non contigui disposti sullo stesso semipiano, mentre sono considerati alterni due angoli non contigui situati sui due semipiani diversi. Rispetto alle rette r e s, invece sono definiti esterni due angoli non contigui avente in comune ai vertici solo uno dei semipiani originati dalla trasversale, mentre sono considerati interni due Sono inoltre definiti corrispondenti due angoli coniugati in comune ai vertici i semipiani originati dalle rette ma non reciprocamente; il che significa che solo uno degli angoli sarà contemporaneamente intersezione dei tre semi piani.
+formula_25
+formula_26
+formula_27
+formula_28
+formula_29
+Nel caso in cui le due rette "r" e "s" siano parallele gli angoli corrispondenti e gli angoli alterni, dello stesso tipo, sono congruenti. Invece gli angoli coniugati, anch'essi dello stesso tipo, sono supplementari.
+Nella geometria euclidea la somma degli angoli interni di un triangolo è sempre di 180 gradi. Più in generale, data una qualunque figura geometrica convessa di formula_30 lati, la somma di tutti i suoi angoli interni è uguale a formula_31 gradi. Quindi, per esempio, la somma totale di tutti gli angoli interni di un quadrilatero è uguale a formula_32 gradi. Un caso particolare è dato dal quadrato, che ha quattro angoli retti, la cui somma è infatti 360 gradi. Analogamente, la somma di tutti gli angoli interni di un pentagono, regolare o meno, è uguale a 540 gradi.
+In altre geometrie, dette non euclidee, la somma degli angoli interni di un triangolo può assumere sia valori maggiori sia valori minori di 180 gradi.
+Molti problemi portano ad ampliare la nozione di angolo in modo da disporre di un'entità a cui si possa attribuire un'ampiezza data da un numero reale e quindi anche superiore a 360 gradi e negativa. Per questo occorre abbandonare l'associazione angolo - sottoinsieme del piano. Si dice che un angolo α è maggiore di un angolo β quando una parte di angolo α è congruente all'angolo β. Un angolo convesso o concavo può essere descritto cinematicamente come la parte di piano "spazzata" da una semiretta mobile che ruota mantenendo fisso il suo estremo; questo è il vertice dell'angolo e le posizioni iniziale e finale della semiretta sono i lati dell'angolo. Questa descrizione porta a distinguere due versi del movimento rotatorio. Si definisce verso negativo o verso orario il verso della rotazione che, osservata dal di sopra del piano, corrisponde al movimento delle lancette di un orologio tradizionale; si definisce verso positivo o verso antiorario il verso opposto (es. formula_33).
+Per sviluppare considerazioni quantitative si considera una circonferenza Γ il cui centro ha il ruolo del vertice "V" per gli angoli che si prendono in considerazione. Il raggio "r" di questa circonferenza può essere scelto ad arbitrio e talora risulta comodo avere "r" = 1; quando si riferisce il piano a una coppia di assi cartesiani risulta comodo porre il vertice degli angoli nell'origine, in modo che la circonferenza corrisponda all'equazione formula_34.
+Ogni angolo di vertice "V" determina un arco sulla circonferenza. Si consideri ora un movimento di una semiretta con estremo in "V" in un verso o nell'altro da una posizione iniziale "S" fino a una posizione finale "T": esso determina sulla Γ un arco orientato che ha come estremo iniziale il punto in cui Γ viene intersecata dalla "S" e come estremo finale il punto in cui viene intersecato dalla "T". Si può pensare l'arco orientato come se fosse "tracciato" dalla penna di un compasso avente l'altro braccio nel punto "V". Gli archi orientati con verso positivo si possono chiamare semplicemente archi (di circonferenza) positivi, quelli con verso negativo archi negativi.
+Si può estendere la nozione di arco orientato pensando che il compasso possa compiere più di un giro, in verso positivo o negativo.
+Si possono identificare gli angoli convessi con gli angoli relativi agli archi positivi interamente contenuti in una semicirconferenza; gli angoli concavi con gli archi positivi che contengono una semicirconferenza e sono contenuti in una circonferenza.
+A questo punto si possono definire come angoli con segno di vertice "V" le entità che generalizzano gli angoli convessi e concavi con vertice in "V" e sono associate biunivocamente agli archi orientati sulla circonferenza Γ.
+Gli angoli con segno possono essere sommati senza le restrizioni degli angoli associati a parti di piano e gli archi relativi risultano essere giustapposti; angolo opposto a un angolo dato corrisponde all'arco considerato con il verso opposto. Di conseguenza agli angoli con segno si attribuisce un'ampiezza rappresentata da un numero reale tale che alla somma di due angoli con segno corrisponda la somma algebrica delle ampiezze.
+A questo punto si è indotti naturalmente ad associare all'ampiezza di un angolo con segno la lunghezza con segno del corrispondente arco. Questo richiede di precisare cosa si intenda per lunghezza di un arco e più in particolare richiede di definire la lunghezza di una circonferenza
+Le considerazioni sulla rettificazione di una circonferenza portano alla definizione del numero π e, sul piano computazionale, alle valutazioni del suo valore.
+</doc>
+
+<doc id="1244945" url="https://it.wikipedia.org/wiki?curid=1244945" title="Poligono">
+Poligono
+In geometria un poligono è una figura geometrica piana delimitata da una linea spezzata chiusa. I segmenti che compongono la spezzata chiusa si chiamano lati del poligono e i punti in comune a due lati consecutivi si dicono vertici del poligono.
+La parola "poligono" deriva dal greco πολύς (polys, "molti") e γωνία (gōnia, "angolo").
+Una definizione di poligono è la seguente.
+Ricordiamo che una linea spezzata è l'insieme finito e totalmente ordinato di segmenti, detti lati, che sono ordinatamente consecutivi e ordinatamente non adiacenti. Una linea spezzata è "chiusa" quando il secondo estremo dell'ultimo segmento coincide con il primo estremo del primo. Una linea spezzata è "semplice" (o "non intrecciata") se due lati non successivi, secondo l'ordinamento assegnato, non si intersecano (a parte il primo e l'ultimo lato che possono avere in comune rispettivamente il primo e il secondo estremo).
+Il punto in comune a due lati consecutivi è detto "vertice".
+Il fatto che una linea spezzata chiusa non intrecciata delimiti effettivamente una porzione di piano è, per quanto intuitivo, un risultato non banale della geometria piana: si tratta di una conseguenza del teorema della curva di Jordan. 
+Una definizione costruttiva è la seguente: un punto formula_1 del piano appartiene al poligono se (con al più un numero finito di eccezioni) tutte le semirette uscenti da formula_1 intersecano la spezzata in un numero finito e dispari di punti distinti.
+Una prima classificazione di un poligono riguarda il suo numero di lati (vedi i nomi di poligono).
+Un poligono è:
+Un poligono semplice è:
+In base alla simmetria, un poligono è:
+La somma degli angoli interni di un poligono è pari a tanti angoli piatti quanti sono i suoi lati (formula_4), meno due
+Ad esempio, il poligono in figura ha cinque lati, e quindi:
+La dimostrazione può essere svolta per induzione: in un triangolo la somma degli angoli è formula_3, e preso un qualunque poligono una sua diagonale lo divide in due altri poligoni con un numero minore di lati, per cui si può far valere l'ipotesi induttiva.
+La somma degli angoli esterni di un poligono convesso con formula_4 lati è uguale a 
+In quanto la somma di tutti gli angoli esterni ed interni è, evidentemente, uguale a formula_4 volte un angolo giro: sottraendo al totale la somma di quelli interni, avremo la somma di quelli esterni.
+Con la formula dell'area di Gauss è possibile calcolare l'area di un poligono con formula_4 vertici aventi coordinate cartesiane formula_12 nel modo seguente: 
+con la convenzione che formula_14.
+Con questa formula possiamo ricavare una superficie di una qualsiasi figura piana attraverso le coordinate dei suoi vertici. È una formula molto utilizzata nella topografia e nella trigonometria.
+Distinzione in base al numero di lati e, quindi, di angoli:
+</doc>
+
+<doc id="48513" url="https://it.wikipedia.org/wiki?curid=48513" title="Punto (geometria)">
+Punto (geometria)
+In geometria il punto è un concetto primitivo. Intuitivamente equivale ad un'entità adimensionale spaziale, per cui può essere considerato semplicemente come una posizione, cioè come una coordinata.
+In topologia ed analisi matematica, viene spesso chiamato punto un elemento qualunque di uno spazio topologico e, in particolare, di uno spazio funzionale.
+Negli "Elementi" di Euclide, al punto è riservata la prima delle definizioni del I libro, dove si indica che punto è ciò che non ha parti. Il punto è l'ente fondamentale della geometria ed è privo di una qualsiasi dimensione. Tale definizione è di tipo "ostensivo" cioè non ha una valenza logica ma che serve ad indicare ciò di cui ci si vuole occupare.
+Con l'assiomatizzazione rigorosa della geometria effettuata da David Hilbert nei Grundlagen der Geometrie il punto, assieme alla retta ed al piano, diventa una delle nozioni primitive della geometria e quindi non è definito. Da notare che sarebbe possibile anche fondare la geometria assumendo come primitiva la nozione di regione e definendo i punti tramite opportune classi di "regioni sempre più piccole". Ricerche in tale direzione, che iniziano con alcune analisi di Alfred North Whitehead, vanno sotto il nome di "Geometria senza punti".
+Molti preferiscono dare una definizione di questi tre enti fondamentali della geometria e definiscono il punto l'ente che, pur essendo reale, non ha dimensioni.
+Un punto nella geometria euclidea non ha grandezze di alcun tipo (volume, area, lunghezza), e nessuna caratteristica in generale tranne la sua posizione. I postulati di Euclide asseriscono in alcuni casi l'esistenza di punti; un esempio: se due linee in un piano non sono parallele, c'è esattamente un punto che appartiene ad entrambe.
+Tre o più punti nello spazio si dicono allineati se sono contenuti in una retta. Quattro o più punti nello spazio si dicono complanari se sono contenuti in un piano.
+Nella geometria euclidea il punto è in relazione con gli altri enti geometrici fondamentali, quali la retta e il piano. Ad esempio:
+Nella geometria cartesiana del piano e dello spazio euclideo un punto è identificato da un insieme ordinato di coordinate. Quindi un punto nello spazio tridimensionale è rappresentato da una terna ordinata di numeri, ad esempio: formula_1
+In generale, un punto in uno spazio euclideo di dimensione formula_2 è una successione di formula_2 numeri. In questo contesto i punti possono essere identificati con i vettori (applicati nell'origine).
+Le proprietà elencate sopra possono essere estese ad uno spazio euclideo di dimensione arbitraria nel modo seguente:
+Oppure possono essere estese a oggetti "curvi", quali curve e superfici, ad esempio nel modo seguente:
+</doc>
+
+<doc id="62127" url="https://it.wikipedia.org/wiki?curid=62127" title="Segmento">
+Segmento
+In geometria un segmento è una parte di retta compresa tra due punti, detti estremi del segmento. 
+Quando i due estremi si trovano su una curva, il segmento è detto corda. Quando i due estremi sono vertici di un poligono, il segmento è detto lato se i due vertici sono adiacenti, altrimenti è detto diagonale.
+Il segmento, generalmente, si indica con due lettere maiuscole dell'alfabeto italiano, poste agli estremi (indicati da 2 punti). Essendo una linea, si può indicare anche con una lettera minuscola posta fra i due estremi, anche se questa notazione non è propriamente corretta.
+In algebra lineare si può introdurre un concetto primitivo di segmento, costruito in un ambiente generico e astratto quale uno spazio vettoriale: si definisce "segmento" un sottoinsieme "L" di uno spazio vettoriale reale "V" che può essere descritto come 
+Gli estremi di "L" sono poi definiti come i vettori formula_2 e formula_3. 
+Un segmento (chiuso) di estremi formula_4 e formula_5 può essere indicato con la scrittura formula_6, analoga alla notazione utilizzata nel caso 1-dimensionale per gli intervalli di formula_7.
+</doc>
+
+<doc id="86605" url="https://it.wikipedia.org/wiki?curid=86605" title="Quadrilatero">
+Quadrilatero
+In geometria il quadrilatero è un poligono con quattro lati e quattro vertici.
+Tutti i quadrilateri hanno quattro vertici e quattro angoli interni (cioè sono quadrangoli).
+La somma delle ampiezze degli angoli interni di un quadrilatero semplice ABCD è uguale a 360°:
+formula_1
+Le due "diagonali" di un quadrilatero convesso sono segmenti che uniscono vertici opposti.
+Si distinguono vari tipi di quadrilateri; in altre parole nell'insieme dei quadrilateri vengono individuati vari sottoinsiemi. I diversi tipi di quadrilateri hanno diverse applicazioni, spesso importanti; presentano interesse, anche operativo, le relazioni di inclusione che sussistono tra i sottoinsiemi notevoli dell'insieme dei quadrilateri.
+"Quadrilatero convesso", come dice il termine, è un quadrilatero e una "figura piana convessa", cioè una figura piana che per ogni coppia di punti interni contiene tutti i punti del segmento di cui essi sono le estremità. Tutti gli angoli interni di un quadrilatero convesso hanno ampiezza inferiore a 180°.
+"Quadrilatero non convesso", anche questo termine è autoesplicativo, è un quadrilatero e una "figura piana non convessa", cioè una figura piana che contiene due punti tali che il segmento che li congiunge possiede punti che non appartengono alla figura stessa. Almeno un angolo interno di un quadrilatero non convesso ha ampiezza maggiore di π (in realtà un solo angolo possiede questa proprietà).
+Dunque l'insieme dei quadrilateri si ripartisce nel sottoinsieme dei quadrilateri convessi e nel sottoinsieme dei quadrilateri non convessi (complementare del precedente). I quadrilateri non convessi sono caratterizzati anche dal fatto che prolungando due loro lati si ottengono punti interni della figura.
+Il trapezio è un quadrilatero convesso che ha due lati opposti paralleli. Il parallelogramma è un caso particolare del trapezio. Le diagonali dividono in due parti congruenti ogni singolo angolo. Il trapezio può essere di tre tipi diversi:
+Il parallelogramma è un quadrilatero che presenta i lati a due a due paralleli. Si tratta di un caso particolare di trapezio. Ha i lati opposti e uguali a due a due, gli angoli adiacenti sono supplementari, sommati formano un angolo di 180°.
+Il rombo o losanga è un quadrilatero con i lati congruenti e gli angoli due a due uguali. Esso risulta essere un particolare parallelogramma e presenta le due diagonali ortogonali e intersecantesi nel loro punto di mezzo, dette diagonale maggiore e diagonale minore.
+Il rettangolo è un parallelogramma i cui angoli interni uguali e tutti retti (90°). Ogni angolo è composto da due rette perpendicolari. Il rettangolo è un quadrilatero ciclico.
+Il quadrato è un rettangolo con tutti i lati e gli angoli congruenti, cioè uguali. È anche un rombo con tutti gli angoli retti. Dall'unione di quadrati e rettangoli si possono ottenere figure interessanti come il rettangolo armonico, il rettangolo aureo (utilizzato soprattutto per le sculture antiche) e il tatami, che è un altro tipo di rettangolo di origine giapponese usato per costruire dei tappeti che compongono il "pavimento" delle loro case.
+</doc>
+
+<doc id="87117" url="https://it.wikipedia.org/wiki?curid=87117" title="Rettangolo">
+Rettangolo
+In geometria, il rettangolo è un quadrilatero che ha tutti gli angoli interni congruenti tra loro (e, di conseguenza, retti).
+Da questa definizione si evince che in un rettangolo ciascuna delle due coppie di lati opposti è costituita da lati congruenti; in altre parole i rettangoli sono particolari parallelogrammi. I rettangoli sono anche particolari quadrilateri ciclici: si possono definire come i quadrilateri ciclici aventi come diagonali due diametri del cerchio circoscritto. 
+Il quadrato è un tipo particolare di rettangolo, caratterizzato dall'avere tutti i quattro lati congruenti. Equivalentemente si dice che l'insieme dei quadrati è l'intersezione dell'insieme dei rettangoli con l'insieme dei rombi.
+Nel parlare colloquiale per sottolineare che un rettangolo non ha tutti i lati congruenti come un quadrato, si dice che un rettangolo è una "figura oblunga". Quando si presenta un rettangolo nel piano cartesiano e questo ha due lati sensibilmente più lunghi degli altri due e disposti orizzontalmente, si parla di "rettangolo largo"; se invece i lati più lunghi sono disposti verticalmente si parla di "rettangolo alto" o addirittura di "rettangolo sottile". La lunghezza dei due lati opposti più lunghi viene chiamata "lunghezza" o "base" del rettangolo, mentre la lunghezza dei due lati più corti viene chiamata "larghezza" o "altezza". 
+Un quadrilatero convesso è un rettangolo se e solo se possiede una di queste caratteristiche equivalenti:
+Il poligono duale del rettangolo è un rombo, come illustrato nella tabella sottostante.
+L'area del rettangolo è il prodotto della sua lunghezza per la sua larghezza, ovvero della sua base per la sua altezza. Per esempio, il rettangolo nella prima figura ha una base di 5 e un'altezza di 4: la sua area è quindi 20, risultato della moltiplicazione 5 × 4. 
+Se invece la base e l'altezza di un rettangolo si indicano rispettivamente con formula_1 ed formula_2 per la sua area formula_3 e per il suo perimetro formula_4 si ha:
+Nel calcolo infinitesimale l'integrale di Riemann viene definito come limite delle somme delle aree di rettangoli via via più sottili.
+Il termine, inteso come aggettivo, può specificare altre figure geometriche. 
+</doc>
+
+<doc id="50465" url="https://it.wikipedia.org/wiki?curid=50465" title="Terna pitagorica">
+Terna pitagorica
+Una terna pitagorica è una terna di numeri naturali formula_1, formula_2, formula_3 tali che formula_4. 
+Il nome viene dal teorema di Pitagora, da cui discende che ad ogni triangolo rettangolo con lati interi corrisponde una terna pitagorica e viceversa.
+Se formula_5 è una terna pitagorica, lo è anche formula_6, dove formula_7 è un numero naturale qualsiasi. Il numero formula_7 è quindi un divisore comune dei tre numeri formula_9, formula_10, formula_11. Una terna pitagorica si dice "primitiva" se formula_1, formula_2 e formula_3 non hanno divisori comuni. I triangoli descritti da terne pitagoriche non primitive sono sempre simili a quelli descritti dalla corrispondente terna primitiva.
+Esiste una formula capace di generare tutte le terne pitagoriche primitive; tali formule sono citate da Euclide (Ευκλείδης) nei suoi Elementi (τα Στοιχεία):
+Le formule di Euclide generano una terna pitagorica primitiva se e solo se formula_16 e formula_17 sono coprimi ed uno di loro è pari e l'altro dispari (se sia formula_17 che formula_16 sono dispari formula_1, formula_2 e formula_3 sono pari, e quindi quella terna pitagorica non può essere primitiva). Tutte le terne primitive si possono ottenere in questo modo da un'unica coppia di numeri coprimi formula_23, mentre le restanti (non primitive) si possono ottenere moltiplicando i termini di una terna primitiva per un opportuno fattore. Le formule così modificate sono quindi in grado di generare tutte le terne possibili, anche se in modo non univoco:
+Una conseguenza immediata di queste formule è che le terne pitagoriche sono infinite, in quanto sono infinite le possibili scelte di formula_16 e formula_17.
+Inoltre è facile dimostrare che il prodotto di formula_1 per formula_2 (dei due cateti) è sempre divisibile per formula_29, mentre il prodotto formula_30 (di tutti e tre i lati del triangolo pitagorico) è sempre divisibile per formula_31 (formula_32).
+Esistono solo 16 terne pitagoriche primitive con formula_33:
+Eccone altre:
+È interessante notare che ci possono essere più terne pitagoriche primitive con lo stesso intero minore. Il primo esempio è con il 20, che è il più piccolo intero di due terne primitive: 20, 21, 29 e 20, 99, 101.
+Al contrario, il numero 1 229 779 565 176 982 820 è l'intero minore in esattamente 15 386 terne primitive; la più piccola e la più grande fra queste sono:
+1 229 779 565 176 982 820
+1 230 126 649 417 435 981
+1 739 416 382 736 996 181
+e
+1 229 779 565 176 982 820
+378 089 444 731 722 233 953 867 379 643 788 099
+378 089 444 731 722 233 953 867 379 643 788 101.
+Per i curiosi, si consideri la fattorizzazione:
+L'ultimo teorema di Fermat afferma che non esistono terne non banali analoghe a quelle pitagoriche ma con esponenti maggiori di formula_35 (cioè che l'equazione formula_36 non ammette soluzioni se formula_37; a parte, come detto, i casi banali in cui almeno uno dei numeri è uguale a zero).
+Un legame tra terne pitagoriche e primi gemelli può essere stabilito tramite la derivata aritmetica. Infatti un semiprimo i cui fattori primi siano due primi gemelli può essere espresso come formula_38, la sua derivata aritmetica come formula_39 e formula_40. Questi numeri sono fra loro coprimi e perciò costituiscono una terna pitagorica primitiva.
+Ciascun numero naturale maggiore di 2 appartiene almeno a una terna pitagorica e ogni numero primo può appartenere al più a 2 terne (in quest'ultima situazione una volta come cateto e una volta come ipotenusa del triangolo rettangolo cui si riferisce).
+</doc>
+
+<doc id="2214272" url="https://it.wikipedia.org/wiki?curid=2214272" title="Teorema di Pitagora">
+Teorema di Pitagora
+Il teorema di Pitagora è un teorema della geometria euclidea che stabilisce una relazione fondamentale tra i lati di un triangolo rettangolo.
+Si può considerare un caso speciale, per i triangoli rettangoli, del teorema del coseno.
+Quello che modernamente conosciamo come "teorema di Pitagora" viene solitamente attribuito al filosofo e matematico Pitagora. In realtà il suo enunciato (ma non la sua dimostrazione) era già noto ai Babilonesi. Viene a volte affermato che il teorema di Pitagora fosse noto agli antichi Egizi: Carl Boyer esclude questa ipotesi, basandosi sull'assenza del teorema dai papiri matematici rinvenuti. Era conosciuto anche in Cina e sicuramente in India, come dimostrano molte scritture fra cui lo "Yuktibhāṣā" e gli "Śulbasūtra". La dimostrazione del teorema è invece con ogni probabilità successiva a Pitagora.
+oppure:
+L'uso dell'aggettivo "uguale" invece di "equivalente" richiede di riferirsi o alle aree dei quadrati "costruiti" sui cateti e sull'ipotenusa (area intesa come misura dell'estensione di una superficie), oppure ai quadrati delle lunghezze dei cateti/quadrato della lunghezza dell'ipotenusa. La possibile ambivalenza della lingua italiana deriva dal fatto che, in assenza del termine "costruito", la parola "quadrato" può definire sia la "superficie" della figura geometrica in quanto tale, sia la generica operazione di elevamento alla seconda potenza.
+In altre lingue, segnatamente in inglese, francese e spagnolo, nell'enunciato del teorema di Pitagora si preferisce parlare di quadrati (delle lunghezze) dei cateti e dell'ipotenusa, il che consente il semplice utilizzo dei termini "equal" (in inglese), "égal" (in francese), "igual" (in spagnolo). 
+Per esempio, in spagnolo, "el cuadrado de la hipotenusa" significa, senza ambiguità, il "quadrato (della misura) dell'ipotenusa".
+Dato un triangolo rettangolo di lati formula_1, formula_2 e formula_3, ed indicando con formula_3 la sua ipotenusa e con formula_1 e formula_2 i suoi cateti, il teorema è espresso dall'equazione:
+o, esplicitando formula_3:
+Le misure dei cateti sono perciò:
+e
+Una terna di numeri interi positivi formula_12 che soddisfi il teorema di Pitagora si dice terna pitagorica.
+Viceversa, ogni triangolo in cui i tre lati verifichino questa proprietà è rettangolo: questo teorema, con la sua dimostrazione, appare nell'ultimo enunciato del primo libro di "Elementi".
+La dimostrazione classica del teorema di Pitagora completa il primo libro degli "Elementi" di Euclide, e ne costituisce il filo conduttore. Dato che richiede il postulato delle parallele, esso non vale nelle geometrie non-euclidee e nella geometria neutrale. Nel testo di Euclide la dimostrazione del teorema è immediatamente preceduta dalla dimostrazione della costruibilità dei quadrati. L'esistenza stessa dei quadrati dipende infatti dal postulato delle parallele e viene meno nelle geometrie non euclidee. Questo aspetto del problema è in genere trascurato nella didattica contemporanea, che tende spesso ad assumere come ovvia l'esistenza dei quadrati.
+La dimostrazione del teorema di Pitagora consiste nel riempire uno stesso quadrato di lato uguale alla somma dei cateti prima con quattro copie del triangolo rettangolo più il quadrato costruito sull'ipotenusa e poi con quattro copie del triangolo rettangolo più i quadrati costruiti sui cateti, come in figura.
+Essendo il teorema uno dei più noti della storia della matematica, ne esistono moltissime dimostrazioni, in totale alcune centinaia, opera di matematici, astronomi, agenti di cambio, per esempio un presidente statunitense James A. Garfield e Leonardo da Vinci. Per questo teorema sono state classificate dallo scienziato statunitense Elisha Scott Loomis 371 differenti dimostrazioni, che sono state pubblicate nel 1927 nel suo libro The Pythagorean Proposition.
+La dimostrazione attribuita al matematico e astronomo persiano Abu'l-Wafa verso la fine del X secolo d.C. e riscoperta dall'agente di cambio Henry Perigal (trovata nel 1835-1840, pubblicata nel 1872 e successivamente nel 1891) si basa sulla scomposizione del quadrato costruito sul cateto maggiore, in giallo nell'immagine: tagliandolo infatti con due rette passanti per il suo centro, una perpendicolare ed una parallela all'ipotenusa, si può ricomporre in maniera da incorporare l'altro quadrato, e formando il quadrato sull'ipotenusa, come nella figura. Questo procedimento è legato al problema della trisezione del quadrato.
+Esiste anche una dimostrazione poetica, dell'astronomo Sir George Airy, in inglese:
+di cui una traduzione letterale è
+I versi si riferiscono alla parte bianca: i primi due triangoli sono quelli rossi, i secondi quelli blu.
+Sia quella di Perigal sia quest'ultima sono puramente geometriche, ossia non richiedono alcuna definizione di operazioni aritmetiche, ma solo congruenze di aree e di segmenti.
+Dimostrazione geometrica basata su due quadrati concentrici, di lati rispettivamente pari all'ipotenusa (formula_3) e alla somma dei due cateti (formula_14).
+Come si vede dalla figura, tolti i quattro triangoli rettangoli (in giallo di area formula_15) al quadrato più grande, che corrisponde all'area formula_16, si ottiene il quadrato più piccolo, rappresentato in bianco, che equivale invece all'area formula_17.
+Quindi
+da cui risolvendo si ottiene
+Questa dimostrazione, utilizzando il passaggio algebrico del quadrato della somma di due numeri, ha una rappresentazione visiva semplice e diretta, che non richiede lo spostamento e sovrapposizione di forme come le altre dimostrazioni geometriche formulate.
+Un'altra dimostrazione geometrica, nella cui costruzione non compare alcun quadrato, fu trovata nel 1876 da Garfield, che in seguito divenne il ventesimo Presidente degli Stati Uniti d'America. Allora nell'esercito, Garfield commentò il suo risultato: ""Questo è qualcosa su cui i due rami del parlamento potranno essere d'accordo"".
+La dimostrazione segue sostanzialmente il metodo usato nella dimostrazione di Pomi, applicato però a metà figura, considerando cioè il trapezio anziché il quadrato:
+In formule, detto formula_1 il cateto rosso, formula_2 il blu e formula_3 l'ipotenusa, e ricordando la potenza del binomio
+Un'altra dimostrazione utilizza il primo teorema di Euclide. Si traccia l'altezza sull'ipotenusa. Questa spezza l'ipotenusa in due segmenti, di lunghezza formula_24 e formula_25. Il teorema di Euclide fornisce le relazioni
+da cui
+e quindi 
+Vale anche l'inverso del Teorema di Pitagora (proposizione 48 del primo libro degli "Elementi" di Euclide):
+"Se in un triangolo di lati formula_1, formula_2 e formula_3 vale la relazione formula_32, allora il triangolo è rettangolo".
+"Dimostrazione". Sia formula_33 un triangolo di lati formula_1, formula_2 e formula_3 tale che formula_32. Consideriamo un secondo triangolo rettangolo formula_38 che abbia i cateti pari ad formula_1 e formula_2 (è sempre possibile costruire un triangolo rettangolo dati i due cateti). Per il Teorema di Pitagora (diretto) l'ipotenusa del triangolo formula_38 sarà pari a formula_42, ossia sarà uguale al lato formula_3 del triangolo formula_33. I due triangoli formula_33 e formula_38 risulteranno dunque congruenti per il terzo criterio di congruenza, avendo tutti e tre i lati ordinatamente uguali. Ma allora anche il triangolo formula_33 sarà rettangolo "(CVD)".
+Un corollario del teorema di Pitagora consente di determinare se un triangolo sia o meno rettangolo, acutangolo o ottusangolo. Là dove c è scelto come ipotenusa, il lato più lungo dei tre, e formula_48 (altrimenti non avremo un triangolo), valgono le seguenti relazioni:
+L'enunciato inverso fornisce anche un sistema per costruire un angolo retto (o per controllare la quadratura di un angolo già esistente) in situazioni pratiche, come la topografia o l'agrimensura.
+A titolo di esempio, con una fune di lunghezza pari alla somma di una terna pitagorica (diciamo 12, somma di 5, 4 e 3, in una qualche unità di misura) sarebbe sufficiente disporre le due porzioni minori della corda (quelle di misura 4 e 3) ad un certo angolo fra loro; se gli estremi della fune, disposta infine in forma triangolare, si chiudono, si saprà che l'angolo compreso fra le due porzioni minori della corda (a questo punto i due cateti) è certamente retto.
+Il teorema di Pitagora può essere generalizzato in vari modi. Solitamente, una generalizzazione è una relazione che si applica a tutti i triangoli, e che applicata ai triangoli rettangoli risulta essere equivalente al teorema di Pitagora.
+Una generalizzazione del teorema di Pitagora è il teorema del coseno, che si applica ad un triangolo qualsiasi (non necessariamente retto). In un triangolo con vertici e angoli indicati come in figura, vale l'uguaglianza:
+Nel caso in cui formula_53 sia retto, vale formula_54 e quindi l'enunciato è equivalente al teorema di Pitagora. Il termine aggiuntivo può essere interpretato come il prodotto scalare dei vettori formula_55 e formula_56.
+Il teorema dei seni mette in relazione le lunghezze dei lati di un triangolo e i seni degli angoli opposti. Anche questa relazione si applica a qualsiasi triangolo e, nel caso in cui questo sia rettangolo, può essere ritenuta equivalente al teorema di Pitagora (benché in modo meno immediato rispetto al teorema del coseno).
+Il teorema dei seni asserisce che in un triangolo qualsiasi, con le notazioni come in figura, valgono le relazioni seguenti:
+Elevando al quadrato:
+Sommando i termini si ottiene:
+Quando formula_60 è un angolo retto, si ottiene formula_61 e quindi 
+Si ottiene quindi in questo caso il teorema di Pitagora
+È possibile estendere il teorema di Pitagora ad un triangolo qualsiasi senza fare uso di funzioni trigonometriche quali il seno ed il coseno.
+Dato un triangolo formula_64 come in figura, si tracciano due segmenti che collegano il vertice formula_65 con due punti formula_66 e formula_67 contenuti nel segmento opposto formula_68 (oppure in un suo prolungamento), in modo tale che gli angoli formula_69 e formula_70 siano entrambi uguali all'angolo formula_60 del vertice formula_65. La figura mostra un caso in cui l'angolo formula_60 è ottuso: se è acuto, i due punti formula_74 e formula_67 sono in ordine inverso (il primo a destra e il secondo a sinistra) e possono uscire dal segmento formula_68.
+Vale la relazione seguente:
+Quando formula_60 è un angolo retto, i punti formula_74 e formula_67 coincidono e si ottiene il teorema di Pitagora
+La relazione generale può essere dimostrata sfruttando la similitudine fra i triangoli formula_82, formula_83 e formula_84, che porta alle relazioni
+Si ottiene quindi
+Sommando le due eguaglianze si ottiene la relazione iniziale.
+Il Teorema di Pitagora continua a valere quando su ogni lato di un triangolo rettangolo si costruiscono figure simili tra loro anche non regolari.
+Il suo enunciato diventa:
+In ogni triangolo rettangolo, l'area di un qualunque poligono, anche curvilineo, costruito sull'ipotenusa è uguale alla somma delle aree dei poligoni, simili a quello costruito sull'ipotenusa, costruiti sui cateti.
+"Dimostrazione"
+Siano:
+e
+Per il teorema di Pitagora in forma classica risulta:
+e quindi
+Ricordando che se due poligoni simili hanno 2 lati corrispondenti in rapporto formula_101 allora le loro superfici sono in rapporto formula_102, avendo definito formula_103 , risulta 
+Avendo inoltre definito uguale a
+formula_105
+il rapporto tra i due cateti, per il motivo precedente risulta uguale a
+formula_106 il rapporto tra le aree dei poligoni simili costruiti su di essi, ovvero:
+Quindi:
+E quindi
+Come volevasi dimostrare.
+Il teorema di Pitagora può essere "generalizzato" a spazi vettoriali di qualsiasi dimensione, come lo spazio euclideo di dimensione 3 o superiore, o uno spazio vettoriale su corpo complesso, continuando a valere anche su funzioni viste come somme infinite di vettori come nell'analisi funzionale, finché sia possibile definire un prodotto scalare, rendendo lo spazio vettoriale uno spazio prehilbertiano.
+La dimostrazione è semplice, e l'enunciato del teorema è: "La somma dei quadrati delle norme di due vettori ortogonali è uguale al quadrato della norma del loro vettore somma", ovvero formula_110 .
+Per definizione di ortogonalità, il prodotto scalare fra formula_111 e formula_112 è nullo e commuta. L'enunciato del teorema è equivalente, per la definizione di norma euclidea, a formula_113. Svolgendo il prodotto scalare al secondo membro sfruttando la sua bilinearità e ricordando che il prodotto scalare fra formula_112 e formula_111 è nullo, il teorema risulta provato.
+Una leggenda racconta che Pitagora abbia formulato il suo teorema mentre stava aspettando un'udienza da Policrate. Seduto in un grande salone del palazzo di Samo, Pitagora si mise ad osservare le piastrelle quadrate del pavimento, si pensa che ne abbia vista una rotta perfettamente su una diagonale, così da formare due triangoli rettangoli uguali, ma oltre ad essere 2 triangoli rettangoli erano anche isosceli, avendo i due lati uguali. Pitagora immaginò un quadrato costruito sulla diagonale di rottura della piastrella, un quadrato avente come lati le diagonali delle piastrelle circostanti.
+La dimostrazione è la seguente: 
+Il teorema di Pitagora, in realtà, non era considerato solo una legge matematica del pensiero, ma anche una legge ontologica, cioè dell'essere, riguardante la realtà dell'uomo e del mondo. Il significato filosofico ed esoterico che esso pertanto assumeva costituiva parte integrante delle conoscenze iniziatiche riservate agli adepti della scuola pitagorica. 
+Una delle possibili interpretazioni del teorema che si è tramandata fino ad oggi all'interno della massoneria, dove l'emblema dei quadrati costruiti sui lati di un triangolo rettangolo compare nel gioiello indossato dagli anziani Maestri ex-Venerabili (detti in inglese "Past Masters"), mette in relazione la volontà del Cielo, ossia la Provvidenza, rappresentata dal cateto verticale, con la volontà della singola individualità umana, simboleggiata dal cateto orizzontale. Quanto più l'individuo, anziché estendere arbitrariamente la propria volontà, cerca di adeguarla a quella del Cielo, tanto meno subirà il peso del Destino, cioè dell'ipotenusa, e quindi tanto più riuscirà a dominare le forze della necessità che gravano sulla sua vita.
+</doc>
+
+<doc id="2258032" url="https://it.wikipedia.org/wiki?curid=2258032" title="Sfera">
+Sfera
+La sfera (dal greco σφαῖρα, "sphaîra") è il solido geometrico costituito da tutti i punti che sono a distanza minore o uguale a una distanza fissata formula_1, detta "raggio della sfera", da un punto formula_2 detto "centro della sfera".
+L'insieme dei punti la cui distanza è eguale a formula_1 è detto "superficie sferica" di centro formula_2 e raggio formula_1.
+È detta "semisfera" ciascuna delle metà di un solido sferico diviso in due da un piano passante per il centro o anche ciascuna delle due superfici di una sfera divisa da una sua circonferenza massima.
+In geometria cartesiana, una superficie sferica con centro formula_6 e di raggio formula_1 è rappresentata dall'insieme di punti formula_8 tali che
+I punti della superficie sferica possono essere parametrizzati in coordinate sferiche nel modo seguente
+dove formula_11 e formula_12 rappresentano la latitudine e la longitudine del punto, variando negli intervalli
+Ogni punto della superficie sferica è descritto da una sola coppia formula_14 di questo tipo, tranne i poli: la coppia formula_15 descrive sempre il polo nord, e formula_16 sempre il polo sud (per qualsiasi valore di formula_12).
+Alternativamente si può utilizzare l'equazione cartesiana della superficie sferica:
+con formula_19, formula_20, formula_21, formula_22, numeri reali tali che formula_23. Dall'equazione cartesiana si possono ricavare le coordinate del centro:
+L'area della superficie di una sfera di raggio formula_25 è data dall'equazione:
+La sfera può essere pensata come un solido di rotazione ottenuto ruotando attorno all'asse formula_27 il grafico della funzione
+che rappresenta una semicirconferenza di raggio formula_25. Pertanto, per il primo teorema di Guldino, la superficie laterale è data da:
+La superficie totale della sfera si può ottenere, per il primo teorema di Guldino, tramite il seguente integrale:
+Il volume della sfera di raggio formula_25 è dato dall'equazione (integrale in formula_33 della superficie):
+La dimostrazione di questa formula può essere ottenuta in modo immediato usando il metodo degli indivisibili oppure con gli strumenti nell'analisi matematica.
+Si pensi di sommare tutte le aree dei cerchi che si ottengono sezionando la sfera con dei piani orizzontali. Il raggio di questi cerchi varierà con una funzione formula_35 della distanza del piano orizzontale dal centro della sfera e dato che l'area di un cerchio equivale a formula_36 per il raggio al quadrato:
+dove formula_38 appunto è la distanza del piano dal centro della sfera.
+Raggio alla distanza formula_27
+Dunque, dal teorema di Pitagora, formula_35 vale:
+che, sostituita nell'equazione del volume, si trova:
+Allo stesso modo si può calcolare il volume formula_44 di un segmento di sfera di altezza formula_45
+La sfera può anche essere intesa come l'insieme di numerose piramidi infinitesime, tutte con il vertice nel centro della sfera e con i poligoni di base delle piramidi che poggiano sulla superficie della sfera: queste infinite piramidi elementari riempiranno tutto e solo il volume della sfera. Il volume di ogni piramide è:
+dal quale si desume il significato della formula per il volume della sfera.
+La sfera è la figura tridimensionale con il minimo rapporto superficie/volume: ciò spiega perché a tale forma tendono molti oggetti fisici, dalle gocce di liquido ai corpi celesti. Ad esempio, le bolle sono sferiche perché la tensione superficiale tende a minimizzare l'area a parità di volume.
+Il cilindro circoscritto ha un volume che è formula_50 quello della sfera, ed una superficie laterale che è la stessa di quella della sfera. Questo fatto, e le formule scritte sopra, erano già noti ad Archimede.
+Con l'aumentare del raggio, il volume della sfera cresce più della superficie. Infatti il rapporto fra queste due quantità è formula_51.
+Una sfera può anche essere definita come formata da un semicerchio che ruota intorno al suo diametro. Se si usa una ellisse, si ottiene un ellissoide di rotazione.
+Due punti della superficie sferica che stanno sulla stessa retta passante per l'origine sono detti antipodali, e una tale retta è detta "asse", poiché è un asse di simmetria della sfera.
+Un cerchio massimo è una circonferenza avente lo stesso centro della sfera, ottenuta quindi intersecando la superficie sferica con un piano passante per l'origine.
+Se un punto della superficie sferica è identificato come polo nord, il suo antipodale è il polo sud e l'equatore è il cerchio massimo equidistante dai due poli. I cerchi massimi passanti per i poli sono i meridiani, mentre la linea retta passante per l'origine ed i due poli è l"'asse". Questa terminologia è usata anche per i corpi celesti come la terra, anche se non perfettamente sferici.
+La sfera può essere generalizzata in altre dimensioni. Per ogni numero naturale formula_52, una sfera formula_52-dimensionale è l'insieme dei punti nello spazio euclideo formula_54-dimensionale formula_55 che hanno una distanza fissata formula_56 da un certo punto dello spazio.
+Ad esempio:
+Le sfere di dimensione > 2 sono chiamate anche ipersfere. La sfera formula_52-dimensionale di raggio unitario, centrata nell'origine, viene indicata con formula_61.
+Più in generale, in uno spazio metrico formula_62, la sfera di centro formula_27 e raggio formula_56 è l'insieme 
+Una sfera in uno spazio metrico può essere un oggetto molto diverso dalla sfera usuale. Ad esempio, può essere vuota: se consideriamo formula_66 con la metrica euclidea, una sfera di raggio formula_1 è vuota se e solo se formula_68 non può essere scritto come somma di formula_52 quadrati.
+Dove con formula_1 si intende il raggio della sfera, con formula_45 l'altezza del segmento di sfera o della calotta sferica, con formula_72 l'ampiezza in steradianti della calotta.
+Per quanto si sia avvicinato, l'uomo non è ancora riuscito a produrre alcun oggetto dalla sfericità matematicamente perfetta. Finora il miglior risultato è stato raggiunto dall"'Australian Centre for Precision Optics", di Lindfield (Australia). La sfera è stata ottenuta attraverso una levigazione ad altissima precisione di una barra di silicio 28 (un isotopo del silicio) ed è frutto del Progetto Avogadro, che si propone di arrivare alla definizione del chilogrammo perfetto, basata sulla conoscenza dell'esatto numero di atomi che compongono tale sfera. Il suo diametro è di 9,36 centimetri e come uniche imperfezioni presenta una rugosità di 0,3 nanometri e piccole deviazioni di sfericità di circa 60-70 nanometri. In precedenza, il miglior risultato era stato ottenuto dalla NASA, che per la sonda Gravity Probe B, costruita per degli studi gravitazionali in orbita, ha creato dei giroscopi con deviazioni inferiori ai 100 nanometri.
+Parmenide paragona l'Essere a una sfera perfetta, sempre uguale a se stessa nello spazio e nel tempo, chiusa e finita (per gli antichi greci il finito era sinonimo di perfezione). La sfera è infatti l'unico solido geometrico che non ha differenze al suo interno, ed è uguale dovunque la si guardi; l'ipotesi collima suggestivamente con la teoria della relatività di Albert Einstein che nel 1900 dirà: «Se prendessimo un binocolo e lo puntassimo nello spazio, vedremmo una linea curva chiusa all'infinito» in tutte le direzioni dello spazio, ovvero, complessivamente, una sfera (per lo scienziato infatti l'universo è finito sebbene illimitato, fatto di uno spazio tondo ripiegato su se stesso).
+</doc>
+
+<doc id="909410" url="https://it.wikipedia.org/wiki?curid=909410" title="Punto medio">
+Punto medio
+In geometria, il punto medio è il punto equidistante da due altri punti presi a riferimento e allineato con essi; solitamente lo si associa a un segmento, i cui punti di riferimento sono gli "estremi", che divide in due parti congruenti (o isometriche). 
+Relativamente alla sua geometria euclidea, la sua "unicità" è assunta per assioma - o come conseguenza dell'assioma della divisibilità dei segmenti. 
+Il concetto di punto medio è spesso frequente nella geometria elementare.
+Nei poligoni regolari il punto medio di un lato è il punto in cui l'apotema tocca il lato; sempre nei poligoni e specialmente nei triangoli, la mediana è il segmento che congiunge un vertice al punto medio del lato opposto. In un cerchio, il punto medio del diametro è il centro del cerchio.
+Nella geometria euclidea
+Sulla retta formula_1, il punto medio del segmento [AB] di estremi A("x") 
+e B("x") corrisponde all'ascissa 
+Nel piano cartesiano formula_3, il punto medio del segmento [AB] di estremi formula_4 e formula_5 è il punto M di coordinate: 
+Il procedimento si estende immediatamente agli spazi di dimensione formula_8, come 
+formula_9.
+</doc>
+
+<doc id="585772" url="https://it.wikipedia.org/wiki?curid=585772" title="Asse di un segmento">
+Asse di un segmento
+In geometria euclidea l'asse di un segmento o asse di un lato è la retta perpendicolare al segmento che passa per il suo punto medio.
+L'asse di un segmento si può caratterizzare come il luogo dei punti che hanno uguale distanza dai due estremi del segmento.
+In un triangolo, tutti gli assi dei lati sono concorrenti nel circocentro "O", e oltre a questi sono sempre su di essi anche i punti medi "M" e i centri "J" dei cerchi di Johnson
+Il circocentro è interno al triangolo acutangolo, sul punto medio dell'ipotenusa del triangolo rettangolo e esterno all'ottusangolo.
+</doc>
+
+<doc id="596510" url="https://it.wikipedia.org/wiki?curid=596510" title="Vertice (geometria)">
+Vertice (geometria)
+Il vertice, nella geometria piana è:
+Il vertice, nella geometria solida è:
+</doc>
+
+<doc id="608290" url="https://it.wikipedia.org/wiki?curid=608290" title="Pendenza topografica">
+Pendenza topografica
+Il termine pendenza è usato per indicare il grado di ripidità o di inclinazione di una strada o di un tratto di percorso. La pendenza di una strada è indicata dalla segnaletica verticale con cartelli di pericolo che indicano la pendenza con una percentuale. Il termine pendenza è un termine usato anche in geometria analitica.
+La pendenza m in un particolare punto della strada è definita matematicamente come la tangente dell'angolo θ di inclinazione:
+La pendenza in percentuale ("m%") si ottiene moltiplicando m per 100:
+Se invece si vuole risalire al valore dell'angolo θ a partire dal valore della pendenza "m" o dalla pendenza percentuale "m%", basta applicare le seguenti formule di conversione:
+Un valore maggiore della pendenza corrisponde a una maggiore ripidità del tratto di strada. Un tratto orizzontale ha una pendenza che vale 0% (tangente = 0), un tratto di strada in salita che forma un angolo di 45° con l'orizzontale ha una pendenza di 100% (tangente = 1). A un tratto verticale non corrisponde una vera pendenza, visto che il suo valore sarebbe infinito (la funzione tangente ha un asintoto verticale in corrispondenza all'angolo retto).
+La stessa definizione di pendenza come tangente trigonometrica di un angolo dovrebbe far comprendere che la pendenza, in quanto funzione trigonometrica, non è una funzione di tipo lineare. In altre parole una strada che ha una pendenza del 10% non è 10 volte meno pendente di una strada con pendenza del 100%: l'angolo di inclinazione di un tratto al 10% è di 5.7°, quello di un tratto al 100% è di 45°.
+La pendenza media formula_5 di una strada è definita dal rapporto tra il dislivello Δy tra il punto di partenza e quello di arrivo e la distanza orizzontale Δx:
+La distanza orizzontale Δx è la proiezione sull'orizzontale del percorso, non la distanza effettivamente percorsa Δs. Il suddetto rapporto è dunque matematicamente coincidente alla tangente trigonometrica media dell'angolo di incidenza sull'intero percorso, considerando cioè esclusivamente punto di partenza e punto di arrivo.
+La pendenza media espressa in percentuale formula_7 si ottiene poi moltiplicando la pendenza media formula_5 per 100:
+Un valore maggiore della pendenza corrisponde a una maggiore ripidità del tratto di strada. Una strada che abbia il punto di partenza e di arrivo alla stessa altitudine ha una pendenza dello 0%; aver percorso una strada con una pendenza media del 100% significa essersi spostati in orizzontale della stessa distanza che si è percorso in verticale.
+Per pendenze non molto elevate si può anche usare, invece di Δy/Δx, il rapporto Δy/Δs (matematicamente il seno dell'angolo in questione), metodo molto più intuitivo e di facile misurazione rispetto al tradizionale approccio matematico, in quanto più facile da misurare sul terreno: infatti Δs si può ottenere direttamente con un contachilometri; su una mappa invece si misura più facilmente Δx. Per piccoli angoli seno e tangente sono approssimabili tra loro con un errore trascurabile: nella seguente tabella sono mostrati i valori della pendenza calcolati nei due modi e l'errore commesso nell'approssimare Δy/Δx a Δy/Δs:
+Poiché le strade molto raramente presentano pendenze superiori al 20%, l'errore commesso nell'approssimare Δy/Δx a Δy/Δs è minore del 2% (e minore dello 0,5% per pendenze inferiori al 10%), quindi agli effetti pratici si può approssimare Δy/Δx a Δy/Δs.
+La pendenza massima ammissibile per una strada, così come gli altri elementi geometrici (raggi delle curve, distanze di visibilità, ecc.), è commisurata alla velocità di progetto, che costituisce un valore ideale corrispondente alla velocità più alta che può essere mantenuta con sicurezza, su un determinato tratto stradale, quando le condizioni meteorologiche, di traffico e di ambiente sono così favorevoli che la stessa velocità dei veicoli è limitata solo dalle caratteristiche geometriche della strada.
+Per le strade di nuova costruzione le pendenze massime sono stabilite dal d.m. 5 novembre 2001 (Norme funzionali e geometriche per la costruzione delle strade), emanato dal Ministero delle Infrastrutture e dei Trasporti in attuazione dell'art. 13, comma 1, del decreto legislativo 30 aprile 1992, n. 285 (Nuovo codice della strada).
+La tabella seguente mostra alcuni valori:
+Prima dell'emanazione del d.m. 5 novembre 2001 non esistevano regole cogenti per la costruzione delle strade: ciò spiega perché è frequentissimo che le strade già esistenti alla data del 4 gennaio 2002 (pubblicazione del decreto in Gazzetta Ufficiale) riportino valori di pendenza anche di molto superiori rispetto a quelli stabiliti con il d.m. del 2001.
+Sono note ad esempio le pendenze, spesso superiori al 20%, delle strade alpine sulle quali transita il Giro d'Italia, abitualmente aperte anche al traffico automobilistico. 
+Le ferrovie hanno le pendenze espresse in "per mille" (‰); una pendenza dell'1‰ corrisponde ad 1 metro di dislivello che viene superato con inclinazione costante su una distanza – anche eventualmente con parti curve – di mille metri (i mille metri sono riferiti alla lunghezza della proiezione del tracciato sul piano orizzontale, non alla lunghezza del tracciato – dei binari – che sarà quindi di estensione superiore).
+I limiti massimi – per le ferrovie ad aderenza naturale – variano in base alla loro tipologia; le linee principali e ad alto traffico arrivano a massimo 10-12‰, per le secondarie raramente si arriva al 35‰ ed oltre.
+In Italia vi sono casi estremi che arrivano fino al 60‰, ma sono per lo più relativi a ferrovie dismesse (raro esempio in funzione: ramo Perugia Ponte San Giovanni-Perugia Sant'Anna della Ferrovia Centrale Umbra) o a scartamento ridotto (esempio: Ferrovia Domodossola-Locarno).
+Riguardo al resto d'Europa, la linea ferroviaria ad aderenza naturale e scartamento normale più ripida è la ferrovia dell'Uetliberg, che arriva al 79‰.
+Le ferrovie con aderenza a cremagliera raggiungono anche pendenze fino al 480‰.
+La pendenza massima di percorsi per carrozzine è dell'8%, pari a 4,57°.
+Per i tetti a falda è consigliata una pendenza tra il 30% e il 40%, corrispondente a circa 16°-22°.
+Si ammette come pendenza minima per il deflusso dell'acqua una pendenza del 2%, pari a 1,15°. Per valori inferiori l'acqua non defluisce abbastanza velocemente o non defluisce affatto.
+</doc>
+
+<doc id="548967" url="https://it.wikipedia.org/wiki?curid=548967" title="Sezione (geometria descrittiva)">
+Sezione (geometria descrittiva)
+In geometria descrittiva, il termine sezione indica una condizione d'incidenza tra due elementi geometrici. Per inciso indica un elemento geometrico che può essere ottenuto, rispettivamente:
+Secondo la giacitura del piano α che seziona un solido K, la sezione che viene ottenuta può essere chiamata, rispettivamente:
+Inoltre, la figura piana che si ottiene come sezione di un piano α con un solido K, può essere chiamata, rispettivamente: longitudinale, quando α passa per l'asse di K, e trasversale quando α è ortogonale all'asse di K.
+La sezione in grafica rappresenta un oggetto (o un edificio, o un essere vivente, ecc.) come se uno o più piani regolari avessero tagliato una parte, che viene esclusa dalla rappresentazione. Le sezioni più comuni sono quelle orizzontali (tipica è la pianta) e verticali (spaccato). A volte più sezioni vengono combinate con un'assonometria: in quel caso si parla di spaccato assonometrico.
+</doc>
+
+<doc id="549329" url="https://it.wikipedia.org/wiki?curid=549329" title="Similitudine (geometria)">
+Similitudine (geometria)
+La similitudine è una trasformazione geometrica, del piano o dello spazio, che conserva i rapporti tra le distanze. In altre parole, una trasformazione formula_1 del piano (o dello spazio) in sé è una similitudine se e solo se esiste un numero reale positivo formula_2 tale che:
+per ogni coppia di punti formula_4
+Ogni similitudine si può ottenere dalla composizione di una "omotetia" e una "isometria", o viceversa.
+Queste trasformazioni mantengono la "forma" (non vengono modificati gli angoli) dell'oggetto, pur cambiandone la posizione, l'orientazione o la grandezza; quindi due oggetti simili hanno la stessa "forma".
+Due circonferenze nel piano sono sempre simili. Tutti i quadrati sono simili: più in generale, tutti i poligoni regolari con un numero fissato di lati sono simili.
+Tutte le parabole sono simili fra loro, mentre ellissi ed iperboli non lo sono necessariamente.
+Quando due oggetti formula_5 e formula_6 sono simili, si scrive generalmente
+In geometria affine, una similitudine del piano cartesiano è una particolare affinità
+In questa notazione formula_9 indica un generico punto del piano formula_10, mentre formula_11 è una matrice 2x2
+e formula_13 è un vettore colonna fissato formula_14. Nella notazione si fa uso della moltiplicazione fra matrici. 
+Una affinità descritta in questo modo è una similitudine se e solo se:
+Questo è equivalente a chiedere che i coefficienti formula_16 siano non tutti nulli e che una delle due seguenti condizioni sia verificata:
+Nel primo caso, il determinante di formula_11 è positivo, la similitudine preserva l'orientazione e si dice "diretta". Nel secondo caso il determinante è negativo, l'orientazione è ribaltata e si dice "inversa".
+Esistono alcuni criteri che permettono di determinare se due triangoli sono simili, il primo è il più noto:
+Esistono criteri analoghi per due poligoni arbitrari nel piano. Il più importante è il seguente:
+In verità, non è necessario effettuare la verifica su tutti gli angoli e tutti i lati: è possibile escludere 
+Se il poligono non è un triangolo, "non" è vero che due poligoni aventi gli angoli interni uguali sono simili: ad esempio, due rettangoli hanno sempre gli stessi angoli interni, ma sono simili soltanto se hanno lo stesso rapporto fra i lati.
+Ogni similitudine fra due oggetti nel piano può essere elegantemente espressa tramite l'uso dei numeri complessi. È sufficiente descrivere il piano come piano complesso: in questo modo, ogni similitudine è esprimibile tramite una trasformazione lineare del tipo
+oppure
+dove formula_22 e formula_23 sono due numeri complessi, e formula_24 è il complesso coniugato di formula_25.
+Un frattale è un oggetto geometrico "autosimilare": ogni sua piccola parte contiene un oggetto simile all'oggetto grande. 
+</doc>

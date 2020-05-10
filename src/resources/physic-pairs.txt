@@ -1,0 +1,25 @@
+Campo magnetico,Sistema di riferimento inerziale,0
+Accelerazione di gravità,Posizione,1
+Energia,Pianeta,0
+Energia meccanica,Campo gravitazionale,0
+Fisica,Energia potenziale elettrica,0
+Principi della dinamica,Moto (fisica),0
+Legge di Snell,Indice di rifrazione,1
+Legge di Hooke,Lavoro (fisica),0
+Accelerazione,Spostamento (cinematica),1
+Fisica,Urto,0
+Elettrone,Energia meccanica,0
+Massa (fisica),Onda,0
+Energia potenziale,Interazione gravitazionale,0
+Indice di rifrazione,Campo elettrico,0
+Durezza,Elasticità (meccanica),1
+Effetto fotoelettrico,Urto,0
+Indice di rifrazione,Riflessione (fisica),0
+Onda d'urto (fluidodinamica),Onda,1
+Moto parabolico,Interazione gravitazionale,1
+Sistema di riferimento non inerziale,Sistema di riferimento,1
+Diffrazione,Campo (fisica),0
+Conduttore elettrico,Spettro elettromagnetico,0
+Campo magnetico,Velocità,0
+Onda,Riflessione (fisica),0
+Energia,Urto,0

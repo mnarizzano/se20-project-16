@@ -1,0 +1,25 @@
+Equazione differenziale,Numero,1
+Asintoto,Retta,1
+Sistema di riferimento cartesiano,Retta,1
+Decomposizione in fratti semplici,Aritmetica,1
+Logaritmo,Logaritmo naturale,0
+Radice quadrata,Potenza (matematica),0
+Poligono,Segmento,1
+Equazione,Equazione di secondo grado,0
+Teorema binomiale,Addizione,1
+Associatività,Numero complesso,0
+Principio d'induzione,Dimostrazione matematica,1
+Funzione continua,Matematica,1
+Asintoto,Matematica,1
+Settore circolare,Geometria,1
+Numero intero,Decomposizione in fratti semplici,0
+Fattorizzazione,Decomposizione in fratti semplici,0
+Numero reale,Disuguaglianza,0
+Aritmetica,Matematica,1
+Addizione,Circonferenza,0
+Variabili dipendenti e indipendenti,Funzione (matematica),1
+Equazione,Teorema di Pitagora,0
+Retta,Secante (geometria),0
+Algebra,Numero,1
+Onda sinusoidale,Matematica,1
+
