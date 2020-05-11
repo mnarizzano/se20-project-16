@@ -4,13 +4,16 @@ import xml.etree.ElementTree as ET
 import urllib.parse
 import re
 from Concept import Concept
+from GraphMatrix import GraphMatrix
 
 class Parser(object):
     resourcePath = '../resources/'
-    dataPath = resourcePath + 'dataset.pickle'
+    conceptsPickle = resourcePath + 'cached/concepts.pickle'
+    pairsPickle = resourcePath + 'cached/pairs.pickle'
     logger = None
     force = False
     concepts = []
+    pairs = None
 
     def __init__(self, logger):
         self.logger = logger
@@ -22,21 +25,33 @@ class Parser(object):
 
 
     def parse(self, force = False):
-        if os.path.exists(self.dataPath):
-            if force:
-                os.remove(self.dataPath)
-            else:
-                with open(self.dataPath, 'rb') as file:
-                    self.concepts = pickle.load(file)
-                return self.concepts
-        for entry in self.listDirectory(self.resourcePath):
-            if entry.is_file() and entry.name.split('-')[-1] == 'pages.txt':
-                self.parseFile(entry)
-        for concept in self.concepts:
-            self.parseMeta(concept)     # TODO NOT SURE I CAN EDIT class concepts if using this iterator, maybe duplicate concepts for lacal editingand overwrite class concepts
-        return self.concepts
+        if force:
+            if os.path.exists(self.conceptsPickle):
+                os.remove(self.conceptsPickle)
+            if os.path.exists(self.pairsPickle):
+                os.remove(self.pairsPickle)
 
-    def parseFile(self, file):
+        # Load Concepts or parse them from "*-pages.txt" files
+        if os.path.exists(self.conceptsPickle):
+            with open(self.conceptsPickle, 'rb') as file:
+                self.concepts = pickle.load(file)
+        else:
+            for entry in self.listDirectory(self.resourcePath):
+                if entry.is_file() and entry.name.split('-')[-1] == 'pages.txt':
+                    self.parsePages(entry)
+
+        # Load Pairs from pickle or parse them from "*-pairs.txt" files
+        if os.path.exists(self.pairsPickle):
+            with open(self.pairsPickle, 'rb') as file:
+                self.pairs = pickle.load(file)
+        else:
+            self.pairs = GraphMatrix(self.concepts, self.logger)
+            for entry in self.listDirectory(self.resourcePath):
+                if entry.is_file() and entry.name.split('-')[-1] == 'pairs.txt':
+                    self.parsePairs(entry)
+        self.pairs.plotGraph()
+
+    def parsePages(self, file):
         domain = file.name.split('-')[0]
         fileString = open(file, 'r').read()
 
@@ -65,5 +80,11 @@ class Parser(object):
             c = Concept(id=id, url=url, title=title, content=content, domain=domain)
             self.concepts.append(c)
 
-    def parseMeta(self, concept):
-        pass
+    def parsePairs(self, entry):
+        file = open(entry, 'r')
+        for line in file.readlines():
+            self.logger.debug("pairs line fetched: " + line)
+            prereq = line.strip('\n')
+            if len(prereq) > 1:
+                prereq = prereq.split(',')
+                self.pairs.addPrereq(prereq[0], prereq[1], prereq[2])
