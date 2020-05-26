@@ -10,31 +10,28 @@
 import sys
 
 from ufal.udpipe import Model, Pipeline, ProcessingError # pylint: disable=no-name-in-module
-
-# In Python2, wrap sys.stdin and sys.stdout to work with unicode.
-if sys.version_info[0] < 3:
-    import codecs
-    import locale
-    encoding = locale.getpreferredencoding()
-    sys.stdin = codecs.getreader(encoding)(sys.stdin)
-    sys.stdout = codecs.getwriter(encoding)(sys.stdout)
+'''
 
 if len(sys.argv) < 4:
     sys.stderr.write('Usage: %s input_format(tokenize|conllu|horizontal|vertical) output_format(conllu) model_file\n' % sys.argv[0])
     sys.exit(1)
-
+'''
+modelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'  # was sys.argv[3]
 sys.stderr.write('Loading model: ')
-model = Model.load(sys.argv[3])
+model = Model.load(modelPath)
+
 if not model:
-    sys.stderr.write("Cannot load model from file '%s'\n" % sys.argv[3])
+    sys.stderr.write("Cannot load model from file '%s'\n" % modelPath)
     sys.exit(1)
 sys.stderr.write('done\n')
 
-pipeline = Pipeline(model, sys.argv[1], Pipeline.DEFAULT, Pipeline.DEFAULT, sys.argv[2])
+
+# sys.argv[1] = input file, sys.argv[2] = output file
+pipeline = Pipeline(model, 'tokenize', Pipeline.DEFAULT, Pipeline.DEFAULT, 'conllu')
 error = ProcessingError()
 
 # Read whole input
-text = ''.join(sys.stdin.readlines())
+text = 'Questo è un testo di prova per testare UDPipe'
 
 # Process data
 processed = pipeline.process(text, error)
