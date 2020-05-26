@@ -1,10 +1,11 @@
+from Settings import Settings
+
 class GraphMatrix:
     concepts = []
     matrix = [] # -1 if prereq not present (in dataset), 0 if prereq explicitly 0 (in dataset), 1 if prereq
-    logger = None
 
-    def __init__(self, concepts, logger):
-        self.logger = logger
+
+    def __init__(self, concepts):
         for concept in concepts:
             self.concepts.append(concept.title)
         self.matrix = [[-1 for i in range(len(concepts))] for j in range(len(concepts))]

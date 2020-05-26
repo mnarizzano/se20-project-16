@@ -3,20 +3,18 @@ import pickle
 import xml.etree.ElementTree as ET
 import urllib.parse
 import re
+
+from Settings import Settings
 from Concept import Concept
 from GraphMatrix import GraphMatrix
 
 class Parser(object):
-    resourcePath = '../resources/'
-    conceptsPickle = resourcePath + 'cached/concepts.pickle'
-    pairsPickle = resourcePath + 'cached/pairs.pickle'
-    logger = None
+    resourcePath = Settings.resourcePath
+    conceptsPickle = Settings.conceptsPickle
+    pairsPickle = Settings.pairsPickle
     force = False
     concepts = []
     pairs = None
-
-    def __init__(self, logger):
-        self.logger = logger
 
 
     def listDirectory(self, path):
@@ -45,7 +43,7 @@ class Parser(object):
             with open(self.pairsPickle, 'rb') as file:
                 self.pairs = pickle.load(file)
         else:
-            self.pairs = GraphMatrix(self.concepts, self.logger)
+            self.pairs = GraphMatrix(self.concepts)
             for entry in self.listDirectory(self.resourcePath):
                 if entry.is_file() and entry.name.split('-')[-1] == 'pairs.txt':
                     self.parsePairs(entry)
@@ -83,7 +81,7 @@ class Parser(object):
     def parsePairs(self, entry):
         file = open(entry, 'r')
         for line in file.readlines():
-            self.logger.debug("pairs line fetched: " + line)
+            Settings.logger.debug("pairs line fetched: " + line)
             prereq = line.strip('\n')
             if len(prereq) > 1:
                 prereq = prereq.split(',')
