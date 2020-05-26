@@ -13,3 +13,6 @@ Per usare nltoolkit serve lanciare una command line python (python3 in terminale
 >
 Si può considerare di importare tutti i tools di nltk con
 >nltk.download('all')
+
+###UDPipe installation:
+>pip3 install ufal.udpipe  

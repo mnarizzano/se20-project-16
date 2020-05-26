@@ -18,5 +18,6 @@ class FeatureExtractor:
             if concept.id == '1745121':
                 print(fd['NN'] / len(concept.features.words))   # mostra percentuale nomi nel concetto
                 print('concept words: ' + str(concept.features.words))
+                print('concept pos tags: ' + str(concept.features.posTags))
                 print('concept entities: ' + str(concept.features.entities))
                 print('concept sentences: ' + str(concept.features.sentences))
