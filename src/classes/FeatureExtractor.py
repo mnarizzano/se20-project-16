@@ -1,9 +1,22 @@
 import nltk
+from ufal.udpipe import Model, Pipeline, ProcessingError
 from Parser import Parser
 
 class FeatureExtractor:
 
+    udpipeModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'
+
     def extractNouns(self):
+        udpipeModel = Model.load(self.udpipeModelPath)
+        pipeline = Pipeline(udpipeModel, 'tokenize',
+                            Pipeline.DEFAULT, Pipeline.DEFAULT, 'conllu')
+        error = ProcessingError()
+
+        for concept in Parser.concepts:
+            processedConcept = pipeline.process(concept.content, error)
+            if concept.id == '1745121':		# pagina wiki per esempio uso udpipe
+                print(processedConcept)
+
         i = 0
         for concept in Parser.concepts: #TODO concepts should be in a dedicated class and not in Parser
             if concept.id == '1745121':

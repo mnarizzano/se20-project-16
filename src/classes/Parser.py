@@ -33,7 +33,7 @@ class Parser(object):
 
         # Load Concepts or parse them from "*-pages.txt" files
         if os.path.exists(self.conceptsPickle):
-            with open(self.conceptsPickle, 'rb') as file:
+            with open(self.conceptsPickle, 'rb', encoding='utf8') as file:
                 self.concepts = pickle.load(file)
         else:
             for entry in self.listDirectory(self.resourcePath):
@@ -42,7 +42,7 @@ class Parser(object):
 
         # Load Pairs from pickle or parse them from "*-pairs.txt" files
         if os.path.exists(self.pairsPickle):
-            with open(self.pairsPickle, 'rb') as file:
+            with open(self.pairsPickle, 'rb', encoding='utf8') as file:
                 self.pairs = pickle.load(file)
         else:
             self.pairs = GraphMatrix(self.concepts, self.logger)
@@ -53,7 +53,7 @@ class Parser(object):
 
     def parsePages(self, file):
         domain = file.name.split('-')[0]
-        fileString = open(file, 'r').read()
+        fileString = open(file, 'r', encoding='utf8').read()
 
         # True if < and > are part of text (i.e. not-XML-related '<' and '>')
         isNotInitTag = re.compile("(?<!([\\n]))[<](?!(doc |/doc>))")  # returns true if < is not XML
@@ -81,7 +81,7 @@ class Parser(object):
             self.concepts.append(c)
 
     def parsePairs(self, entry):
-        file = open(entry, 'r')
+        file = open(entry, 'r', encoding='utf8')
         for line in file.readlines():
             self.logger.debug("pairs line fetched: " + line)
             prereq = line.strip('\n')
