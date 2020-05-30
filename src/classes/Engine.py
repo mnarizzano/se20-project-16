@@ -1,13 +1,18 @@
 from FeatureExtractor import FeatureExtractor
+from MetaExtractor import MetaExtractor
 from Model import Model
 
 
 class Engine(Model):
     def process(self):
-        # for the moment just featureExtraction
+
+        meta = MetaExtractor()
+        meta.annotateConcepts()
+        '''
+        # FeatureExtraction
         feature = FeatureExtractor()
         feature.extractNouns()
-
+        '''
 
     def plot(self):
         self.plotConcept('1745121')

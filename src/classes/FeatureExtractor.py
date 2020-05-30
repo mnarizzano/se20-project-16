@@ -1,4 +1,3 @@
-import nltk
 from Model import Model
 
 class FeatureExtractor:
