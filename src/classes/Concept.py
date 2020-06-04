@@ -1,6 +1,6 @@
 from Features import Features
 class Concept:
-    title, url, content, id, domain = [None, None, None, None, None]
+    title, url, content, id, domain, meta = [None, None, None, None, None, None]
 
     def __init__(self, id, url, title, content, domain):
         self.id = id
