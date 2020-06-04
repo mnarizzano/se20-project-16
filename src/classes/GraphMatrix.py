@@ -1,20 +1,17 @@
 from Settings import Settings
+from Model import Model
 
 class GraphMatrix:
-    concepts = []
     matrix = [] # -1 if prereq not present (in dataset), 0 if prereq explicitly 0 (in dataset), 1 if prereq
 
-
-    def __init__(self, concepts):
-        for concept in concepts:
-            self.concepts.append(concept.title)
-        self.matrix = [[-1 for i in range(len(concepts))] for j in range(len(concepts))]
+    def __init__(self):
+        self.matrix = [[-1 for i in range(len(Model.dataset))] for j in range(len(Model.dataset))]
 
 
     def addPrereq(self, conceptA, conceptB, value):
         # adds A->B, NOTE that rows are prerequisites while columns are "postrequisites"
-        row = self.concepts.index(conceptA)
-        col = self.concepts.index(conceptB)
+        row = Model.dataset.index(conceptA)
+        col = Model.dataset.index(conceptB)
         self.matrix[row][col] = value
 
     def plotGraph(self):

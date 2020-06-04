@@ -1,5 +1,5 @@
 class Model:
-    dataset = None
+    dataset = []
     pairFeatures = None
     desiredGraph = None
     outputMatrix = None

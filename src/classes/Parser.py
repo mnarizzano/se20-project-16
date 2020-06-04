@@ -7,13 +7,13 @@ import re
 from Settings import Settings
 from Concept import Concept
 from GraphMatrix import GraphMatrix
+from Model import Model
 
 class Parser(object):
     resourcePath = Settings.resourcePath
     conceptsPickle = Settings.conceptsPickle
     pairsPickle = Settings.pairsPickle
     force = False
-    concepts = []
     pairs = None
 
 
@@ -32,7 +32,7 @@ class Parser(object):
         # Load Concepts or parse them from "*-pages.txt" files
         if os.path.exists(self.conceptsPickle):
             with open(self.conceptsPickle, 'rb') as file:
-                self.concepts = pickle.load(file)
+                Model.dataset = pickle.load(file)
         else:
             for entry in self.listDirectory(self.resourcePath):
                 if entry.is_file() and entry.name.split('-')[-1] == 'pages.txt':
@@ -41,13 +41,13 @@ class Parser(object):
         # Load Pairs from pickle or parse them from "*-pairs.txt" files
         if os.path.exists(self.pairsPickle):
             with open(self.pairsPickle, 'rb') as file:
-                self.pairs = pickle.load(file)
+                Model.desiredGraph = pickle.load(file)
         else:
-            self.pairs = GraphMatrix(self.concepts)
+            Model.desiredGraph = GraphMatrix()
             for entry in self.listDirectory(self.resourcePath):
                 if entry.is_file() and entry.name.split('-')[-1] == 'pairs.txt':
                     self.parsePairs(entry)
-        self.pairs.plotGraph()
+        Model.desiredGraph.plotGraph()
 
     def parsePages(self, file):
         domain = file.name.split('-')[0]
@@ -76,7 +76,7 @@ class Parser(object):
             title = info['title']
             content = child.text.replace(urllib.parse.quote('<'), '<').replace(urllib.parse.quote('>'), '>')
             c = Concept(id=id, url=url, title=title, content=content, domain=domain)
-            self.concepts.append(c)
+            Model.dataset.append(c)
 
     def parsePairs(self, entry):
         file = open(entry, 'r')
@@ -85,4 +85,4 @@ class Parser(object):
             prereq = line.strip('\n')
             if len(prereq) > 1:
                 prereq = prereq.split(',')
-                self.pairs.addPrereq(prereq[0], prereq[1], prereq[2])
+                Model.desiredGraph.addPrereq(prereq[0], prereq[1], prereq[2])

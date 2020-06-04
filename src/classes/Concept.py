@@ -9,3 +9,6 @@ class Concept:
         self.content = content
         self.domain = domain
         self.features = Features()
+
+    def __eq__(self, other):
+        return self.title == other

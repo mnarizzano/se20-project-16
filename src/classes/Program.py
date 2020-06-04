@@ -8,9 +8,6 @@ if __name__ == '__main__':
     p = Parser()
     p.parse()
     Settings.logger.info('Finished Parsing')
-    # Set parsed concepts and prerequisites matrix
-    Model.desiredGraph = p.pairs
-    Model.dataset = p.concepts
 
     # Calculate Baseline Performance
     '''
