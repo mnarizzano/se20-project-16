@@ -11,4 +11,4 @@ class Concept:
         self.features = Features()
 
     def __eq__(self, other):
-        return self.title == other
+        return self.title == other  # Needed for 'IndexOf' when paring the desired Graph Matrix

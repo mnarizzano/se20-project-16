@@ -1,24 +1,31 @@
-import nltk
 from ufal.udpipe import Model, Pipeline, ProcessingError
 from Parser import Parser
+from Model import Model as MyModel
+from conllu import parse
+from Settings import Settings
 
 class FeatureExtractor:
 
-    udpipeModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'
+    udpipeModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'    # TODO move to Settings
 
-    def extractNouns(self):
+    def extractSentences(self):
         udpipeModel = Model.load(self.udpipeModelPath)
         pipeline = Pipeline(udpipeModel, 'tokenize',
                             Pipeline.DEFAULT, Pipeline.DEFAULT, 'conllu')
         error = ProcessingError()
 
-        for concept in Parser.concepts:
-            processedConcept = pipeline.process(concept.content, error)
-            if concept.id == '1745121':		# pagina wiki per esempio uso udpipe
-                print(processedConcept)
+        for concept in MyModel.dataset:
+            concept.features.conllu = pipeline.process(concept.content, error)
+            concept.features.annotatedSentences = parse(concept.features.conllu)  # This are annotated sentences
+            for sentence in concept.features.annotatedSentences:
+                concept.features.sentences.append(sentence.metadata['text'])
+            if concept.id == '1745121':		# wiki page for test
+                Settings.logger.debug("Concept CONLLU: '" + concept.features.conllu + "'")
+                Settings.logger.debug("Parsed CONLLU: '" + str(concept.features.numberOfSentences) + "'")
 
+        '''
         i = 0
-        for concept in Parser.concepts: #TODO concepts should be in a dedicated class and not in Parser
+        for concept in MyModel.dataset:
             if concept.id == '1745121':
                 print( "concept content is: " + concept.content)
             concept.features.sentences = nltk.tokenize.sent_tokenize(concept.content)
@@ -34,3 +41,5 @@ class FeatureExtractor:
                 print('concept pos tags: ' + str(concept.features.posTags))
                 print('concept entities: ' + str(concept.features.entities))
                 print('concept sentences: ' + str(concept.features.sentences))
+        '''
+
