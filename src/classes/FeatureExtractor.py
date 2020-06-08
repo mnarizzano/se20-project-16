@@ -19,9 +19,11 @@ class FeatureExtractor:
             concept.features.annotatedSentences = parse(concept.features.conllu)  # This are annotated sentences
             for sentence in concept.features.annotatedSentences:
                 concept.features.sentences.append(sentence.metadata['text'])
-            if concept.id == '1745121':		# wiki page for test
+            if concept.title == 'Distribuzione di probabilità a priori':		# wiki page for test
                 Settings.logger.debug("Concept CONLLU: '" + concept.features.conllu + "'")
-                Settings.logger.debug("Parsed CONLLU: '" + str(concept.features.numberOfSentences) + "'")
+                Settings.logger.debug("Parsed CONLLU: '" + str(concept.features.get_numberOfSentences()) + "'")
+                for sentence in concept.features.annotatedSentences:
+                    self.sentenceOfFocus(MyModel.dataset[MyModel.dataset.index('Probabilità condizionata')], sentence)
 
         '''
         i = 0
@@ -43,3 +45,18 @@ class FeatureExtractor:
                 print('concept sentences: ' + str(concept.features.sentences))
         '''
 
+
+    def sentenceOfFocus(self, concept, annotatedSentence):
+        # check if in sentence appears title of concept
+        contains = concept.title.lower() in annotatedSentence.metadata['text'].lower()
+
+        # check if in lemmatized sentence appears title of concept
+        lemmatized = False
+        for token in annotatedSentence:
+            lemmatized = (token['lemma'].lower() == concept.title.lower) or lemmatized
+
+        if (contains or lemmatized):
+            Settings.logger.debug("Found concept '" + concept.title + "' in sentence '" + annotatedSentence.metadata['text'] + "'")
+
+        # TODO: full match may be too strict, maybe use partial match and return double instead of boolean
+        return (contains or lemmatized)
