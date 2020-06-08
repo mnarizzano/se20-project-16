@@ -1,2 +1,2 @@
 conllu
-ufal-udpipe
+ufal.udpipe
