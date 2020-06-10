@@ -48,10 +48,24 @@ class FeatureExtractor:
 
 
     def extractNounsVerbs(self):
+        loaded = (MyModel.dataset[len(MyModel.dataset) - 1].features.nouns is not None) and \
+                 MyModel.dataset[len(MyModel.dataset) - 1].features.nouns != []
+        if not loaded:
+            for concept in MyModel.dataset:
+                concept.features.nounsList = []
+                concept.features.verbsList = []
+                concept.features.nounsSet = set()
+                concept.features.verbsSet = set()
+                for annotatedSentence in concept.features.annotatedSentences:
+                    for token in annotatedSentence:
+                        if token['upos'] == 'NOUN':
+                            concept.features.nounsList.append(token)
+                            concept.features.nounsSet.add(token['lemma'])
+                        if token['upos'] == 'VERB':
+                            concept.features.verbsList.append(token)
+                            concept.features.verbsSet.add(token['lemma'])
+
+
+    def NounsVerbs2Set(self):   # This is batch List2Set
         for concept in MyModel.dataset:
-            for annotatedSentence in concept.features.annotatedSentences:
-                for token in annotatedSentence:
-                    if token['upos'] == 'NOUN':
-                        concept.features.nouns.append(token)    # TODO: maybe use a set instead of a list?
-                    if token['upos'] == 'VERB':
-                        concept.features.verbs.append(token)    # NOTE: list is superset of set, can always convert later
+            concept.features.nounsSet = set(f['lemma'] for f in concept.features.nouns)

@@ -21,7 +21,7 @@ class Parser(object):
 
 
     def cache(self):
-        # qualcosa = open('../resources/cached/pickle.txt', "wb")
+        Settings.logger.debug('Caching dataset...')
         pickle.dump(Model.dataset, open(self.conceptsPickle, "wb+"))
 
     def parse(self, cache = Settings.useCache):
@@ -49,7 +49,7 @@ class Parser(object):
             for entry in self.listDirectory(self.resourcePath):
                 if entry.is_file() and entry.name.split('-')[-1] == 'pairs.txt':
                     self.parsePairs(entry)
-        Model.desiredGraph.plotGraph()
+        Model.desiredGraph.plotPrereqs()
 
     def parsePages(self, file):
         domain = file.name.split('-')[0]
