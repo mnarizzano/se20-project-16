@@ -13,8 +13,6 @@ class Parser(object):
     resourcePath = Settings.resourcePath
     conceptsPickle = Settings.conceptsPickle
     pairsPickle = Settings.pairsPickle
-    force = False
-    pairs = None
 
 
     def listDirectory(self, path):
@@ -22,8 +20,12 @@ class Parser(object):
             return os.scandir(path)
 
 
-    def parse(self, force = False):
-        if force:
+    def cache(self):
+        Settings.logger.debug('Caching dataset...')
+        pickle.dump(Model.dataset, open(self.conceptsPickle, "wb+"))
+
+    def parse(self, cache = Settings.useCache):
+        if not cache:
             if os.path.exists(self.conceptsPickle):
                 os.remove(self.conceptsPickle)
             if os.path.exists(self.pairsPickle):
@@ -31,8 +33,8 @@ class Parser(object):
 
         # Load Concepts or parse them from "*-pages.txt" files
         if os.path.exists(self.conceptsPickle):
-            with open(self.conceptsPickle, 'rb', encoding='utf8') as file:
-                self.concepts = pickle.load(file)
+            with open(self.conceptsPickle, 'rb') as file:
+                Model.dataset = pickle.load(file)
         else:
             for entry in self.listDirectory(self.resourcePath):
                 if entry.is_file() and entry.name.split('-')[-1] == 'pages.txt':
@@ -41,13 +43,13 @@ class Parser(object):
         # Load Pairs from pickle or parse them from "*-pairs.txt" files
         if os.path.exists(self.pairsPickle):
             with open(self.pairsPickle, 'rb', encoding='utf8') as file:
-                self.pairs = pickle.load(file)
+                Model.desiredGraph = pickle.load(file)
         else:
             Model.desiredGraph = GraphMatrix()
             for entry in self.listDirectory(self.resourcePath):
                 if entry.is_file() and entry.name.split('-')[-1] == 'pairs.txt':
                     self.parsePairs(entry)
-        Model.desiredGraph.plotGraph()
+        Model.desiredGraph.plotPrereqs()
 
     def parsePages(self, file):
         domain = file.name.split('-')[0]

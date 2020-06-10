@@ -4,7 +4,7 @@ from Model import Model
 from Settings import Settings
 
 if __name__ == '__main__':
-    # Parse files in Specified folser, optionally add input to modify Settings.resourcePath
+    # Parse files in Specified folder, optionally we can add input to modify Settings.resourcePath
     p = Parser()
     p.parse()
     Settings.logger.info('Finished Parsing')
@@ -20,3 +20,6 @@ if __name__ == '__main__':
     engine.process()
     # plot statistics
     engine.plot()
+
+    if Settings.useCache:
+        p.cache()

@@ -5,6 +5,10 @@ class Features:
 
     def __init__(self):
         self.sentences = []
+        self.nounsList = []
+        self.verbsList = []
+        self.nounsSet = set()
+        self.verbsSet = set()
 
     def get_numberOfSentences(self):
         return len(self.sentences)

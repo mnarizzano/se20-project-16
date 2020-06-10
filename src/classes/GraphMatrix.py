@@ -19,4 +19,12 @@ class GraphMatrix:
             row2string = ''
             for col in range(len(self.matrix[0][:])):
                 row2string = row2string + str(self.matrix[row][col]) + " "
-            print(row2string + "\n")
+            Settings.logger.debug(row2string + "\n")
+
+    def plotPrereqs(self):
+        for row in range(len(self.matrix[:][0])):
+            for col in range(len(self.matrix[0][:])):
+                if self.matrix[row][col] != -1:
+                    Settings.logger.debug("[" + Model.dataset[row].domain + "]" + Model.dataset[row].title + ", " +
+                                          "[" + Model.dataset[col].domain + "]" + Model.dataset[col].title + ", " +
+                                          str(self.matrix[row][col]))
