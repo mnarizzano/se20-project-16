@@ -6,7 +6,7 @@ class Engine(Model):
     def process(self):
         # for the moment just featureExtraction
         feature = FeatureExtractor()
-        feature.extractNouns()
+        feature.extractSentences()
 
 
     def plot(self):
