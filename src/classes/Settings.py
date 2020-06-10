@@ -6,6 +6,12 @@ class Settings:
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
     pairsPickle = resourcePath + 'cached/pairs.pickle'
 
+    # Caching
+    useCache = True
+
+    # Udpipe
+    udpipeModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'
+
     # Logging
     logger = None
     logLevel = logging.DEBUG

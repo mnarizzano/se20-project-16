@@ -20,3 +20,6 @@ if __name__ == '__main__':
     engine.process()
     # plot statistics
     engine.plot()
+
+    if Settings.useCache:
+        p.cache()
