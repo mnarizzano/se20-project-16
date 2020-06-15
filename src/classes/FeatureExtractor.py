@@ -4,7 +4,14 @@ from Model import Model as MyModel
 from conllu import parse
 from Settings import Settings
 
+
 class FeatureExtractor:
+
+    pairFeatures = None
+
+    def __init__(self, pairFeatures):
+        self.pairFeatures = pairFeatures
+
 
     def extractSentences(self):
         loaded = (MyModel.dataset[len(MyModel.dataset)-1].features.annotatedSentences is not None) and \
@@ -60,12 +67,23 @@ class FeatureExtractor:
                     for token in annotatedSentence:
                         if token['upos'] == 'NOUN':
                             concept.features.nounsList.append(token)
-                            concept.features.nounsSet.add(token['lemma'])
+                            concept.features.nounsSet.add(token['lemma'])   # sets only works on hashable items (could JSONify object)
                         if token['upos'] == 'VERB':
                             concept.features.verbsList.append(token)
                             concept.features.verbsSet.add(token['lemma'])
 
 
-    def NounsVerbs2Set(self):   # This is batch List2Set
+    def nounsVerbs2Set(self):   # This is batch List2Set
         for concept in MyModel.dataset:
             concept.features.nounsSet = set(f['lemma'] for f in concept.features.nouns)
+
+    # TODO: only calculate pairFeatures for same domain (to speed up execution)
+    def jaccardSimilarity(self):
+        self.extractNounsVerbs()
+        for conceptA in MyModel.dataset:
+            for conceptB in MyModel.dataset:
+                if conceptB.domain == conceptA.domain:
+                    # jaccardSimilarity is symmetric and is automatically added by PairFeatures to both A->B and B->A
+                    js = len(conceptA.features.nounsSet.intersection(conceptB.features.nounsSet))/\
+                         len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))
+                    self.pairFeatures.setJaccardSimilarity(conceptA, conceptB, js)
