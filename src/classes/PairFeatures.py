@@ -14,7 +14,7 @@ class PairFeatures:
     def __init__(self):
         # set a matrix of features
         # self.features = [[self.PairFeats() for i in range(len(Model.dataset))] for j in range(len(Model.dataset))] # list version is inefficient
-        self.features = {j.id: {i.id: self.PairFeats() for i in Model.dataset} for j in Model.dataset}    # dict is faster
+        self.features = {self.keyOf(j): {self.keyOf(i): self.PairFeats() for i in Model.dataset} for j in Model.dataset}    # dict is faster
 
 
     def keyOf(self, concept):   # if we want to change key we only need to change this
