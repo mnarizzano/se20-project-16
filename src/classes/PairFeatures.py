@@ -23,7 +23,7 @@ class PairFeatures:
 
     def addLink(self, conceptA, conceptB):
         # adds link from A to B, NOTE that rows are "referencing" while columns are "referred"
-        self.PairFeats[conceptA.title][conceptB.title].link = 1
+        self.PairFeats[self.keyOf(conceptA)][self.keyOf(conceptB)].link = 1
 
     def setJaccardSimilarity(self, conceptA, conceptB, js):
         # jaccardSimilarity is symmetric, Add it to both A->B and B->A
