@@ -9,6 +9,7 @@ class Concept:
         self.content = content
         self.domain = domain
         self.features = Features()
+        self.meta = Meta()
 
     def __eq__(self, other):
         return self.title == other  # Needed for 'IndexOf' when paring the desired Graph Matrix

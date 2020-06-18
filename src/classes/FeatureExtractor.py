@@ -6,6 +6,11 @@ from Settings import Settings
 
 class FeatureExtractor:
 
+    pairFeatures = None
+
+    def __init__(self, pairFeatures):
+        self.pairFeatures = pairFeatures
+
     def extractSentences(self):
         loaded = (MyModel.dataset[len(MyModel.dataset)-1].features.annotatedSentences is not None) and \
                  MyModel.dataset[len(MyModel.dataset) - 1].features.annotatedSentences != []
@@ -46,7 +51,6 @@ class FeatureExtractor:
         return (contains or lemmatized)
 
 
-
     def extractNounsVerbs(self):
         loaded = (MyModel.dataset[len(MyModel.dataset) - 1].features.nouns is not None) and \
                  MyModel.dataset[len(MyModel.dataset) - 1].features.nouns != []
@@ -69,3 +73,21 @@ class FeatureExtractor:
     def NounsVerbs2Set(self):   # This is batch List2Set
         for concept in MyModel.dataset:
             concept.features.nounsSet = set(f['lemma'] for f in concept.features.nouns)
+
+    def referenceDistance(self, conceptA, conceptB):  # using EQUAL weights
+        num1 = 0
+        num2 = 0
+        den1 = 0
+        den2 = 0
+        for concept in MyModel.dataset:
+            num1 = (self.pairFeatures[self.pairFeatures.keyOf(concept)][self.pairFeatures.keyOf(conceptB)] *
+                    self.pairFeatures[self.pairFeatures.keyOf(concept)][self.pairFeatures.keyOf(conceptA)]) + num1
+            num2 = (self.pairFeatures[self.pairFeatures.keyOf(concept)][self.pairFeatures.keyOf(conceptA)] *
+                    self.pairFeatures[self.pairFeatures.keyOf(concept)][self.pairFeatures.keyOf(conceptB)]) + num2
+            den1 = self.pairFeatures[self.pairFeatures.keyOf(
+                concept)][self.pairFeatures.keyOf(conceptA)] + den1
+            den2 = self.pairFeatures[self.pairFeatures.keyOf(
+                concept)][self.pairFeatures.keyOf(conceptB)] + den2
+
+        dist = (num1/den1) - (num2/den2)
+        self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
