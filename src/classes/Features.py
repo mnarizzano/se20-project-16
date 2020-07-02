@@ -1,14 +1,16 @@
 
 class Features:
-    conllu = None
-    annotatedSentences = None # This contains a list where each entry is an annotated sentence of the concept
 
     def __init__(self):
+        self.conllu = None
+        self.annotatedSentences = None # This contains a list where each entry is an annotated sentence of the concept
         self.sentences = []
         self.nounsList = []
         self.verbsList = []
         self.nounsSet = set()
         self.verbsSet = set()
+        self.nounsPlain = []
+        self.verbsPlain = []
 
     def get_numberOfSentences(self):
         return len(self.sentences)

@@ -14,6 +14,7 @@ class Engine(Model):
         Settings.logger.debug('Cache: ' + str(Settings.useCache and os.path.exists(Settings.conceptsPickle)) +
                               ", Annotation Elapsed time: " + str(elapsed_time))
         feature.extractNounsVerbs()
+        feature.documentTermMatrix()
 
 
     def plot(self):

@@ -1,2 +1,4 @@
 conllu
 ufal.udpipe
+gensim
+pandas
