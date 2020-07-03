@@ -1,4 +1,6 @@
 from Features import Features
+from Meta import Meta
+
 class Concept:
     title, url, content, id, domain = [None, None, None, None, None]
 

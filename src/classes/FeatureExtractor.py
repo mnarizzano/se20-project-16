@@ -80,14 +80,12 @@ class FeatureExtractor:
         den1 = 0
         den2 = 0
         for concept in MyModel.dataset:
-            num1 = (self.pairFeatures[self.pairFeatures.keyOf(concept)][self.pairFeatures.keyOf(conceptB)] *
-                    self.pairFeatures[self.pairFeatures.keyOf(concept)][self.pairFeatures.keyOf(conceptA)]) + num1
-            num2 = (self.pairFeatures[self.pairFeatures.keyOf(concept)][self.pairFeatures.keyOf(conceptA)] *
-                    self.pairFeatures[self.pairFeatures.keyOf(concept)][self.pairFeatures.keyOf(conceptB)]) + num2
-            den1 = self.pairFeatures[self.pairFeatures.keyOf(
-                concept)][self.pairFeatures.keyOf(conceptA)] + den1
-            den2 = self.pairFeatures[self.pairFeatures.keyOf(
-                concept)][self.pairFeatures.keyOf(conceptB)] + den2
-
+            num1 += (self.pairFeatures.features[concept.id][conceptB.id].link *
+                        self.pairFeatures.features[conceptA.id][concept.id].link)
+            num2 += (self.pairFeatures.features[concept.id][conceptA.id].link *
+                        self.pairFeatures.features[conceptB.id][concept.id].link)
+            den1 += (self.pairFeatures.features[conceptA.id][concept.id].link)
+            den2 += (self.pairFeatures.features[conceptB.id][concept.id].link)
+        
         dist = (num1/den1) - (num2/den2)
         self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)

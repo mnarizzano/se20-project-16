@@ -20,7 +20,7 @@ class PairFeatures:
 
     def addLink(self, conceptA, conceptB):
         # adds link from A to B, NOTE that rows are "referencing" while columns are "referred"
-        self.PairFeats[self.keyOf(conceptA)][self.keyOf(conceptB)].link = 1
+        self.features[self.keyOf(conceptA)][self.keyOf(conceptB)].link = 1
 
     def setReferenceDistance(self, conceptA, conceptB, dist):
         self.features[self.keyOf(conceptA)][self.keyOf(conceptB)].referenceDistance = dist
