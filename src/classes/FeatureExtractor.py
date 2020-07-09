@@ -56,7 +56,7 @@ class FeatureExtractor:
         sparse_count = scipy.sparse.csr_matrix(tdm)
         corpus = matutils.Sparse2Corpus(sparse_count)
         id2word = dict((v, k) for k, v in vectorizer.vocabulary_.items())
-        lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=135, passes=15)  # TODO: play with these numbers
+        lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=10, passes=15)  # TODO: play with these numbers
         corpus_transformed = lda[corpus]
         print(list(zip([a for a in corpus_transformed], self.dtm.index)))
         print('stop')
