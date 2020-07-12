@@ -1,5 +1,7 @@
+import wikipediaapi
 from Settings import Settings
 from Model import Model
+
 
 class PairFeatures:
 
@@ -9,13 +11,16 @@ class PairFeatures:
         def __init__(self):
             self.link = 0
             self.jaccardSimilarity = 0
-
-
+            self.referenceDistance = 0
+            
+            
     def __init__(self):
         # set a matrix of features
         # self.features = [[self.PairFeats() for i in range(len(Model.dataset))] for j in range(len(Model.dataset))] # list version is inefficient
         self.features = {self.keyOf(j): {self.keyOf(i): self.PairFeats() for i in Model.dataset} for j in Model.dataset}    # dict is faster
 
+    def keyOf(self, concept):
+        return concept.id
 
     def keyOf(self, concept):   # if we want to change key we only need to change this
         return concept.id
@@ -29,3 +34,6 @@ class PairFeatures:
         # jaccardSimilarity is symmetric, Add it to both A->B and B->A
         self.features[self.keyOf(conceptA)][self.keyOf(conceptB)].jaccardSimilarity = js
         self.features[self.keyOf(conceptB)][self.keyOf(conceptA)].jaccardSimilarity = js
+        
+    def setReferenceDistance(self, conceptA, conceptB, dist):
+        self.PairFeats[self.keyOf(conceptA)][self.keyOf(conceptB)].referenceDistance = dist

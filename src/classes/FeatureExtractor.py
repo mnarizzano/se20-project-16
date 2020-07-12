@@ -85,7 +85,6 @@ class FeatureExtractor:
         return (contains or lemmatized)
 
 
-
     def extractNounsVerbs(self):
         # TODO check all nouns/verbs/corpus * list/set combinations
         loaded = (MyModel.dataset[len(MyModel.dataset) - 1].features.nounsList is not None) and \
@@ -129,3 +128,19 @@ class FeatureExtractor:
                     js = len(conceptA.features.nounsSet.intersection(conceptB.features.nounsSet))/\
                          len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))
                     self.pairFeatures.setJaccardSimilarity(conceptA, conceptB, js)
+
+    def referenceDistance(self, conceptA, conceptB):  # using EQUAL weights
+        num1 = 0
+        num2 = 0
+        den1 = 0
+        den2 = 0
+        for concept in MyModel.dataset:
+            num1 += (self.pairFeatures.features[concept.id][conceptB.id].link *
+                        self.pairFeatures.features[conceptA.id][concept.id].link)
+            num2 += (self.pairFeatures.features[concept.id][conceptA.id].link *
+                        self.pairFeatures.features[conceptB.id][concept.id].link)
+            den1 += (self.pairFeatures.features[conceptA.id][concept.id].link)
+            den2 += (self.pairFeatures.features[conceptB.id][concept.id].link)
+        
+        dist = (num1/den1) - (num2/den2)
+        self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
