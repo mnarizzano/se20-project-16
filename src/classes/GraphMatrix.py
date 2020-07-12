@@ -28,3 +28,9 @@ class GraphMatrix:
                     Settings.logger.debug("[" + Model.dataset[row].domain + "]" + Model.dataset[row].title + ", " +
                                           "[" + Model.dataset[col].domain + "]" + Model.dataset[col].title + ", " +
                                           str(self.matrix[row][col]))
+
+    def getPrereq(self, conceptA, conceptB):
+        # adds A->B, NOTE that rows are prerequisites while columns are "postrequisites"
+        row = Model.dataset.index(conceptA.title)
+        col = Model.dataset.index(conceptB.title)
+        return self.matrix[row][col]

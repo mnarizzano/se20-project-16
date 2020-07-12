@@ -145,3 +145,6 @@ class FeatureExtractor:
         
         dist = (num1/den1) - (num2/den2)
         self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
+
+    def getRefDistance(self, conceptA, conceptB):   # TODO check if index are correct
+        return self.pairFeatures.features[str(conceptA.id)][conceptB.id].referenceDistance

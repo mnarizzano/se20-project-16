@@ -1,4 +1,7 @@
 conllu
+sklearn
 ufal.udpipe
 gensim
 pandas
+tensorflow
+keras
