@@ -3,11 +3,20 @@ from Model import Model
 import time
 import os
 from Settings import Settings
-
+from PairFeatures import PairFeatures
 class Engine(Model):
+
+    pairFeatures = None
+
+    def __init__(self):
+        self.pairFeatures = PairFeatures()
+
+
     def process(self):
-        # for the moment just featureExtraction
-        feature = FeatureExtractor()
+        # initialize and pass my PairFeatures to the FeatureExtractor
+        feature = FeatureExtractor(self.pairFeatures)
+
+        # processing of single Features
         start_time = time.time()
         feature.extractSentences()
         elapsed_time = time.time() - start_time
@@ -15,6 +24,10 @@ class Engine(Model):
                               ", Annotation Elapsed time: " + str(elapsed_time))
         feature.extractNounsVerbs()
         feature.documentTermMatrix()
+
+        # begin processing of pair Features
+        feature.jaccardSimilarity()
+
 
 
     def plot(self):
