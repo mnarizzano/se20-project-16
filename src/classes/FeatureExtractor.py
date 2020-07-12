@@ -65,8 +65,9 @@ class FeatureExtractor:
         id2word = dict((v, k) for k, v in vectorizer.vocabulary_.items())
         lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=10, passes=15)  # TODO: play with these numbers
         corpus_transformed = lda[corpus]
-        print(list(zip([a for a in corpus_transformed], self.dtm.index)))
-        print('stop')
+        # print(list(zip([a for a in corpus_transformed], self.dtm.index)))
+        # [p for p in list(zip([a for a in corpus_transformed], self.dtm.index))] #cercare il concetto t.c. c.title == p[1] e fare c.features.lda = p[0] (in realtà sarebbe meglio fare un dizionario con chiave = indice del topic e valore = prob di appartenere a quel topic)
+        # print('stop')
 
     def sentenceOfFocus(self, concept, annotatedSentence):
         # check if in sentence appears title of concept

@@ -31,14 +31,19 @@ class MetaExtractor:
             print("%s: %s" % (title, categories[title]))
 
     def annotateConcepts(self):
-        for concept in Model.dataset:
-            # NOTE page contains backlinks: links from another page that points to page
-            # (e.g. page='indice di rifrazion, another page='anisotropia')
-            page = self.wikipedia.page(concept.title)
-            if concept.id != str(page.pageid):
-                raise ValueError("Couldn't find a correspondence in wikiApi for concept '" +
-                                 concept.title + "' with Id: '" + concept.id + "'")
-            concept.meta = page
+        loaded = (Model.dataset[len(Model.dataset) - 1].meta.links is not None) and \
+                 (Model.dataset[len(Model.dataset) - 1].meta.links != []) and \
+                 (Model.dataset[len(Model.dataset) - 1].meta.categories is not None) and \
+                 (Model.dataset[len(Model.dataset) - 1].meta.categories != [])
+        if not loaded:  # if already present it has been loaded from pickle
+            for concept in Model.dataset:
+                # NOTE page contains backlinks: links from another page that points to page
+                # (e.g. page='indice di rifrazion, another page='anisotropia')
+                page = self.wikipedia.page(concept.title)
+                if concept.id != str(page.pageid):
+                    raise ValueError("Couldn't find a correspondence in wikiApi for concept '" +
+                                     concept.title + "' with Id: '" + concept.id + "'")
+                concept.meta = page
 
     def extractLinks(self):
         for concept in Model.dataset:

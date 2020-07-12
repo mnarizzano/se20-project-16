@@ -18,30 +18,33 @@ class Engine(Model):
         # initialize and pass my PairFeatures to the FeatureExtractor
         feature = FeatureExtractor(self.pairFeatures)
 
-        # processing of single Features
+        # processing of meta features
+        Settings.logger.info("Fetching Meta Info...")
         meta = MetaExtractor(self.pairFeatures)
         meta.annotateConcepts()
         meta.extractLinkConnections()
 
         # example for RefD calculation
-        ***
+        '''
         for conceptA in Model.dataset:
             for conceptB in Model.dataset:
                 if conceptA.title == 'Significatività' and conceptB.title == 'Outlier':     # wikipedia pages for test
                     feature.referenceDistance(conceptA, conceptB)
-        ***
+        '''
         start_time = time.time()
         feature.extractSentences()
         elapsed_time = time.time() - start_time
         Settings.logger.debug('Cache: ' + str(Settings.useCache and os.path.exists(Settings.conceptsPickle)) +
                               ", Annotation Elapsed time: " + str(elapsed_time))
         feature.extractNounsVerbs()
+        Settings.logger.info("Starting LDA...")
         feature.documentTermMatrix()
+        feature.LDA()   # TODO: let LDA call extractNounsVerbs and documentTermMatrix
 
         # begin processing of pair Features
         feature.jaccardSimilarity()
 
-
+        Settings.logger.info("Starting Network training...")
 
     def plot(self):
         self.plotConcept('1745121')
