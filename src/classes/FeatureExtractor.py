@@ -119,8 +119,8 @@ class FeatureExtractor:
         for concept in MyModel.dataset:
             concept.features.nounsSet = set(f['lemma'] for f in concept.features.nouns)
 
-    # TODO: only calculate pairFeatures for same domain (to speed up execution)
-    def jaccardSimilarity(self):
+    # TODO: only calculate pairFeatures for same domain (to speed up execution) -> no more separation by domain
+    def jaccardSimilarity(self):    # calculated over Nouns
         self.extractNounsVerbs()
         for conceptA in MyModel.dataset:
             for conceptB in MyModel.dataset:
@@ -144,6 +144,8 @@ class FeatureExtractor:
             den2 += (self.pairFeatures.features[conceptB.id][concept.id].link)
         
         dist = (num1/den1) - (num2/den2)
+        if dist != 0:       # TODO:never entering this. To correct
+            print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
         self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
 
     def getRefDistance(self, conceptA, conceptB):   # TODO check if index are correct

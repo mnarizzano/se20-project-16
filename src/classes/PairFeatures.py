@@ -22,10 +22,6 @@ class PairFeatures:
     def keyOf(self, concept):
         return concept.id
 
-    def keyOf(self, concept):   # if we want to change key we only need to change this
-        return concept.id
-
-
     def addLink(self, conceptA, conceptB):
         # adds link from A to B, NOTE that rows are "referencing" while columns are "referred"
         self.features[self.keyOf(conceptA)][self.keyOf(conceptB)].link = 1
