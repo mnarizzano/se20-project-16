@@ -11,7 +11,8 @@ class Features:
         self.verbsSet = set()
         self.nounsPlain = []
         self.verbsPlain = []
-
+        self.ldaVector = []
+        self.LDAEntropy = 0
     def get_numberOfSentences(self):
         return len(self.sentences)
 

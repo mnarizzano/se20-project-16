@@ -20,7 +20,7 @@ class Parser(object):
             return os.scandir(path)
 
 
-    def cache(self):
+    def cache(self):    # TODO: maybe add caching of desiredMatrix (it's not really needed)
         Settings.logger.debug('Caching dataset...')
         pickle.dump(Model.dataset, open(self.conceptsPickle, "wb+"))
 

@@ -4,12 +4,11 @@ from Model import Model as MyModel
 from conllu import parse
 from Settings import Settings
 from sklearn.feature_extraction.text import CountVectorizer
-from gensim.test.utils import common_texts
-from gensim.corpora.dictionary import Dictionary
+import time
 import pandas as pd
 from gensim import matutils, models
 import scipy.sparse
-
+from math import log2
 
 class FeatureExtractor:
 
@@ -45,29 +44,58 @@ class FeatureExtractor:
 
 
     def LDA(self):
-        common_dictionary = Dictionary(common_texts)
-        common_corpus = [common_dictionary.doc2bow(text) for text in common_texts]
-        # Train the model on the corpus.
-        #lda = LdaModel(common_corpus, num_topics=10)
+        numberOfTopics = 10  # TODO: either read from Settings or Configuration(and have Engine write to it->easier for configuration), or pass to method from engine
+        if (not hasattr(MyModel.dataset[-1].features, 'ldaVector')) or (MyModel.dataset[-1].features.ldaVector == []):
+            Settings.logger.debug('Starting LDA Calculation with ' + str(numberOfTopics) + ' topics')
+            start_time = time.time()
+            vectorizer = CountVectorizer()
+            corpus = [[noun['lemma']for noun in concept.features.nounsList]for concept in MyModel.dataset] # TODO already calculated in nounsPlain
+            data = vectorizer.fit_transform([' '.join(concept) for concept in corpus]) # TODO: play with stop-words: Ita e/o TF-ID (parole comuni a tutti i concetti non portano informazione per quel singolo concetto)
+            # TODO: move dtm to another location
+            self.dtm = pd.DataFrame(data.toarray(), columns=vectorizer.get_feature_names())
+            # print(dtm.shape) # is #of concepts x #of different words in corpus
+            self.dtm.index = [concept.title for concept in MyModel.dataset]
+            # print(self.dtm)
+            tdm = self.dtm.transpose()
+            sparse_count = scipy.sparse.csr_matrix(tdm)
+            corpus = matutils.Sparse2Corpus(sparse_count)
+            id2word = dict((v, k) for k, v in vectorizer.vocabulary_.items())
+            lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=numberOfTopics, passes=15)  # TODO: play with these numbers
+            corpus_transformed = lda[corpus]
+            ldaVectors = dict(list(zip(self.dtm.index, [a for a in corpus_transformed])))
+            # ldaVectors = {'concept.title':[topicNumber, probability of concept belonging to topicNumber]}
+            # topicNumber is an int in range [0, numberofTopics)
+            # probability is a float in range [0, 1]
+            for concept in MyModel.dataset: # Note: dataset and ldaVectors have same order, might speed up going by index instead of dictionary(dictionary is safer)
+                concept.features.ldaVector = [0]*numberOfTopics
+                for ldaComponent in ldaVectors[concept.title]:
+                    concept.features.ldaVector[ldaComponent[0]] = ldaComponent[1]
+            elapsed_time = time.time() - start_time
+            Settings.logger.debug('LDA calculation Elapsed time: ' + str(elapsed_time))
+        else:
+            Settings.logger.debug('Skipped LDA calculation')
 
-    def documentTermMatrix(self):
-        vectorizer = CountVectorizer()
-        corpus = [[noun['lemma']for noun in concept.features.nounsList]for concept in MyModel.dataset] # TODO already calculated in nounsPlain
-        data = vectorizer.fit_transform([' '.join(concept) for concept in corpus]) # TODO: play with stop-words: Ita e/o TF-ID (parole comuni a tutti i concetti non portano informazione per quel singolo concetto)
-        # TODO: move dtm to another location
-        self.dtm = pd.DataFrame(data.toarray(), columns=vectorizer.get_feature_names())
-        # print(dtm.shape) # is #of concepts x #of different words in corpus
-        self.dtm.index = [concept.title for concept in MyModel.dataset]
-        print(self.dtm)
-        tdm = self.dtm.transpose()
-        sparse_count = scipy.sparse.csr_matrix(tdm)
-        corpus = matutils.Sparse2Corpus(sparse_count)
-        id2word = dict((v, k) for k, v in vectorizer.vocabulary_.items())
-        lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=10, passes=15)  # TODO: play with these numbers
-        corpus_transformed = lda[corpus]
-        # print(list(zip([a for a in corpus_transformed], self.dtm.index)))
-        # [p for p in list(zip([a for a in corpus_transformed], self.dtm.index))] #cercare il concetto t.c. c.title == p[1] e fare c.features.lda = p[0] (in realtà sarebbe meglio fare un dizionario con chiave = indice del topic e valore = prob di appartenere a quel topic)
-        # print('stop')
+    # calculate the kl divergence KL(P || Q)
+    def kl_divergence(self, p, q):
+        return sum(p[i] * log2(p[i] / q[i]) for i in range(len(p)))
+
+    # calculate entropy H(P)
+    def entropy(self, p):
+        return -sum([p[i] * log2(p[i]) for i in range(len(p))])
+
+    # calculate cross entropy H(P, Q)
+    def cross_entropy(self, p, q):
+        return self.entropy(p) + self.kl_divergence(p, q)
+
+    def LDACrossEntropy(self):
+        for conceptA in MyModel.dataset:
+            conceptA.features.LDAEntropy = self.entropy(conceptA.features.ldaVector)    # this annotates ALL concepts
+            for conceptB in MyModel.dataset:
+                self.pairFeatures.setLDACrossEntropy(
+                    self.cross_entropy(conceptA.features.ldaVector, conceptB.features.ldaVector))
+                self.pairFeatures.setLDA_KLDivergence(
+                    self.kl_divergence(conceptA.features.ldaVector, conceptB.features.ldaVector))
+
 
     def sentenceOfFocus(self, concept, annotatedSentence):
         # check if in sentence appears title of concept
@@ -124,8 +152,7 @@ class FeatureExtractor:
         self.extractNounsVerbs()
         for conceptA in MyModel.dataset:
             for conceptB in MyModel.dataset:
-                if conceptB.domain == conceptA.domain:
-                    # jaccardSimilarity is symmetric and is automatically added by PairFeatures to both A->B and B->A
+                if conceptB.domain == conceptA.domain:  # To speed up, not possible if don't have domains
                     js = len(conceptA.features.nounsSet.intersection(conceptB.features.nounsSet))/\
                          len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))
                     self.pairFeatures.setJaccardSimilarity(conceptA, conceptB, js)
@@ -146,8 +173,12 @@ class FeatureExtractor:
         dist = (num1/den1) - (num2/den2)
         self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
 
-    def getRefDistance(self, conceptA, conceptB):   # TODO check if index are correct
-        return self.pairFeatures.features[str(conceptA.id)][conceptB.id].referenceDistance
+    # TODO: instead of theese call this_Feature_Extractor_instance.pairFeatures.get...  (eventually .getPairFeatures().get..)
+    def getRefDistance(self, conceptA, conceptB):
+        return self.pairFeatures.getRefDistance(conceptA, conceptB)
 
-    def getJaccardSim(self, conceptA, conceptB):   # TODO check if index are correct
-        return self.pairFeatures.features[str(conceptA.id)][conceptB.id].jaccardSimilarity
+    def getJaccardSim(self, conceptA, conceptB):
+        return self.pairFeatures.getJaccardSim(conceptA, conceptB)
+
+    def getLDACrossEntropy(self, conceptA, conceptB):
+        return self.pairFeatures.getLDACrossEntropy(conceptA, conceptB)

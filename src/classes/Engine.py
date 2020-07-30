@@ -44,9 +44,7 @@ class Engine(Model):
         Settings.logger.debug('Cache: ' + str(Settings.useCache and os.path.exists(Settings.conceptsPickle)) +
                               ", Annotation Elapsed time: " + str(elapsed_time))
         feature.extractNounsVerbs()
-        Settings.logger.info("Starting LDA...")
-        #feature.documentTermMatrix()
-        #feature.LDA()   # TODO: let LDA call extractNounsVerbs and documentTermMatrix
+        feature.LDA()   # TODO: let LDA call extractNounsVerbs?
 
         # begin processing of pair Features
 
@@ -57,6 +55,8 @@ class Engine(Model):
         meta.extractLinkConnections()
         ### example for RefD calculation
         '''
+        # call to RefD calculation (calculated between pairs, should move for:for: in FeatureExtractor and have single method)
+        # feature.refDistance() which calculates them all and then getter as feature.getRefDistance(ConceptA, ConceptB)
         for conceptA in Model.dataset:
             for conceptB in Model.dataset:
                 if conceptA.title == 'Significatività' and conceptB.title == 'Outlier':     # wikipedia pages for test
@@ -64,6 +64,7 @@ class Engine(Model):
         '''
         ## processing of raw features
         feature.jaccardSimilarity()
+        feature.LDACrossEntropy()
 
         # create and train net
         encoder = LabelEncoder()
