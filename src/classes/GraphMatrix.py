@@ -12,7 +12,6 @@ class GraphMatrix:
 
 
     def getStatistics(self):
-        self.unknownPrereqs = len(Model.dataset)**2 - self.numberOfNonPrereqs - self.numberOfPrereqs
         return [self.numberOfPrereqs, self.numberOfNonPrereqs, self.unknownPrereqs]
 
     def addPrereq(self, conceptA, conceptB, value):
@@ -20,10 +19,11 @@ class GraphMatrix:
         row = Model.dataset.index(conceptA)
         col = Model.dataset.index(conceptB)
         self.matrix[row][col] = value
-        if value == 0:
+        if int(value) == 0:
             self.numberOfNonPrereqs += 1
-        elif value == 1:
-            self.numberOPrereqs += 1
+        elif int(value) == 1:
+            self.numberOfPrereqs += 1
+        self.unknownPrereqs = len(Model.dataset) ** 2 - self.numberOfNonPrereqs - self.numberOfPrereqs
 
     def plotGraph(self):
         for row in range(len(self.matrix[:][0])):
@@ -34,11 +34,13 @@ class GraphMatrix:
 
     def plotPrereqs(self):
         Settings.logger.debug(
-            "Total prereqs: " + str(self.numberOfPrereqs) + ", " + str(self.numberOfPrereqs/len(Model.dataset)) + "%")
+            "Total concepts: " + str(len(Model.dataset)) + ". Total possible Prerequisites: " + str(len(Model.dataset)**2))
         Settings.logger.debug(
-            "Total prereqs: " + str(self.numberOfNonPrereqs) + ", " + str(self.numberOfNonPrereqs / len(Model.dataset)) + "%")
+            "Total prereqs: " + str(self.numberOfPrereqs) + ", " + str(self.numberOfPrereqs*100 / len(Model.dataset)**2) + "%")
         Settings.logger.debug(
-            "Total prereqs: " + str(self.unknownPrereqs) + ", " + str(self.unknownPrereqs / len(Model.dataset)) + "%")
+            "Total NonPrereqs: " + str(self.numberOfNonPrereqs) + ", " + str(self.numberOfNonPrereqs*100 / len(Model.dataset)**2) + "%")
+        Settings.logger.debug(
+            "Total Unknowns: " + str(self.unknownPrereqs) + ", " + str(self.unknownPrereqs*100 / len(Model.dataset)**2) + "%")
         for row in range(len(self.matrix[:][0])):
             for col in range(len(self.matrix[0][:])):
                 if self.matrix[row][col] != -1:

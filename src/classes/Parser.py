@@ -50,7 +50,7 @@ class Parser(object):
             for entry in self.listDirectory(self.resourcePath):
                 if entry.is_file() and entry.name.split('-')[-1] == 'pairs.txt':
                     numberOfEntries = numberOfEntries + self.parsePairs(entry)
-            Settings.logger.debug("Loaded " + numberOfEntries + " entries of prerequisite relationship")
+            Settings.logger.debug("Loaded " + str(numberOfEntries) + " entries of prerequisite relationship")
         Model.desiredGraph.plotPrereqs()
 
     def parsePages(self, file):
