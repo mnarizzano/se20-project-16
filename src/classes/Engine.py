@@ -23,7 +23,7 @@ def baseline_model():
     model.add(Dense(8, input_dim=1, activation='relu'))
     model.add(Dense(3, activation='softmax'))
     # Compile model
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])  # add other metrics
     return model
 
 class Engine(Model):
@@ -78,21 +78,20 @@ class Engine(Model):
         results = cross_val_score(estimator, X, dummy_y, cv=kfold)
         print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
 
-
     def plot(self):
-        self.plotConcept('1745121')
+        # TODO: trigger GUI.plot() here to plot results
+        pass
 
     def plotConcept(self, conceptId):
-        for concept in self.dataset:
-            if concept.id == conceptId:
-                print("concept content is: " + concept.content)
+        # TODO: move to GUI.plot() concept?
+        pass
 
     def classifierFormatter(self, feature):
         features = []
         desired = []
         for conceptA in Model.dataset:
             for conceptB in Model.dataset:
-                features.append([feature.getRefDistance(conceptA, conceptB)])
+                features.append([feature.getJaccardSim(conceptA, conceptB)])
                 desired.append(Model.desiredGraph.getPrereq(conceptA, conceptB))
         return {'features': features, "desired": desired}
 

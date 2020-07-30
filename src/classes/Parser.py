@@ -46,9 +46,11 @@ class Parser(object):
                 Model.desiredGraph = pickle.load(file)
         else:
             Model.desiredGraph = GraphMatrix()
+            numberOfEntries = 0
             for entry in self.listDirectory(self.resourcePath):
                 if entry.is_file() and entry.name.split('-')[-1] == 'pairs.txt':
-                    self.parsePairs(entry)
+                    numberOfEntries = numberOfEntries + self.parsePairs(entry)
+            Settings.logger.debug("Loaded " + numberOfEntries + " entries of prerequisite relationship")
         Model.desiredGraph.plotPrereqs()
 
     def parsePages(self, file):
@@ -81,10 +83,13 @@ class Parser(object):
             Model.dataset.append(c)
 
     def parsePairs(self, entry):
+        numberOfEntries = 0
         file = open(entry, 'r', encoding='utf8')
         for line in file.readlines():
+            numberOfEntries += 1
             Settings.logger.debug("pairs line fetched: " + line)
             prereq = line.strip('\n')
             if len(prereq) > 1:
                 prereq = prereq.split(',')
                 Model.desiredGraph.addPrereq(prereq[0], prereq[1], prereq[2])
+        return numberOfEntries

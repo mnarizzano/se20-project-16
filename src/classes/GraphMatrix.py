@@ -2,17 +2,28 @@ from Settings import Settings
 from Model import Model
 
 class GraphMatrix:
-    matrix = [] # -1 if prereq not present (in dataset), 0 if prereq explicitly 0 (in dataset), 1 if prereq
 
     def __init__(self):
+        # -1 if prereq not present (in dataset), 0 if prereq explicitly 0 (in dataset), 1 if prereq
         self.matrix = [[-1 for i in range(len(Model.dataset))] for j in range(len(Model.dataset))]
+        self.numberOfPrereqs = 0
+        self.numberOfNonPrereqs = 0
+        self.unknownPrereqs = 0
 
+
+    def getStatistics(self):
+        self.unknownPrereqs = len(Model.dataset)**2 - self.numberOfNonPrereqs - self.numberOfPrereqs
+        return [self.numberOfPrereqs, self.numberOfNonPrereqs, self.unknownPrereqs]
 
     def addPrereq(self, conceptA, conceptB, value):
         # adds A->B, NOTE that rows are prerequisites while columns are "postrequisites"
         row = Model.dataset.index(conceptA)
         col = Model.dataset.index(conceptB)
         self.matrix[row][col] = value
+        if value == 0:
+            self.numberOfNonPrereqs += 1
+        elif value == 1:
+            self.numberOPrereqs += 1
 
     def plotGraph(self):
         for row in range(len(self.matrix[:][0])):
@@ -22,6 +33,12 @@ class GraphMatrix:
             Settings.logger.debug(row2string + "\n")
 
     def plotPrereqs(self):
+        Settings.logger.debug(
+            "Total prereqs: " + str(self.numberOfPrereqs) + ", " + str(self.numberOfPrereqs/len(Model.dataset)) + "%")
+        Settings.logger.debug(
+            "Total prereqs: " + str(self.numberOfNonPrereqs) + ", " + str(self.numberOfNonPrereqs / len(Model.dataset)) + "%")
+        Settings.logger.debug(
+            "Total prereqs: " + str(self.unknownPrereqs) + ", " + str(self.unknownPrereqs / len(Model.dataset)) + "%")
         for row in range(len(self.matrix[:][0])):
             for col in range(len(self.matrix[0][:])):
                 if self.matrix[row][col] != -1:
