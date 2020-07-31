@@ -67,6 +67,8 @@ class FeatureExtractor:
             # topicNumber is an int in range [0, numberofTopics)
             # probability is a float in range [0, 1]
             for concept in MyModel.dataset: # Note: dataset and ldaVectors have same order, might speed up going by index instead of dictionary(dictionary is safer)
+                if sum([p[1] for p in ldaVectors[concept.title]]) < 0.1:
+                    Settings.logger.error("Error something wrong in topic modeling: Concept '" +  concept.title + "' is not assigned to any topic")
                 leftOutProbability = (1-sum([p[1] for p in ldaVectors[concept.title]]))/(numberOfTopics-len(ldaVectors[concept.title]))
                 concept.features.ldaVector = [leftOutProbability]*numberOfTopics    # TODO: qwertyuiop WARNING randomly chosen bottom line for LDA confidence
                 for ldaComponent in ldaVectors[concept.title]:
