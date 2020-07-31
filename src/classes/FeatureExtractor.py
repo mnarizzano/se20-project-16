@@ -67,7 +67,8 @@ class FeatureExtractor:
             # topicNumber is an int in range [0, numberofTopics)
             # probability is a float in range [0, 1]
             for concept in MyModel.dataset: # Note: dataset and ldaVectors have same order, might speed up going by index instead of dictionary(dictionary is safer)
-                concept.features.ldaVector = [0]*numberOfTopics
+                leftOutProbability = (1-sum([p[1] for p in ldaVectors[concept.title]]))/(numberOfTopics-len(ldaVectors[concept.title]))
+                concept.features.ldaVector = [leftOutProbability]*numberOfTopics    # TODO: qwertyuiop WARNING randomly chosen bottom line for LDA confidence
                 for ldaComponent in ldaVectors[concept.title]:
                     concept.features.ldaVector[ldaComponent[0]] = ldaComponent[1]
             elapsed_time = time.time() - start_time
@@ -91,9 +92,9 @@ class FeatureExtractor:
         for conceptA in MyModel.dataset:
             conceptA.features.LDAEntropy = self.entropy(conceptA.features.ldaVector)    # this annotates ALL concepts
             for conceptB in MyModel.dataset:
-                self.pairFeatures.setLDACrossEntropy(
+                self.pairFeatures.setLDACrossEntropy(conceptA, conceptB,
                     self.cross_entropy(conceptA.features.ldaVector, conceptB.features.ldaVector))
-                self.pairFeatures.setLDA_KLDivergence(
+                self.pairFeatures.setLDA_KLDivergence(conceptA, conceptB,
                     self.kl_divergence(conceptA.features.ldaVector, conceptB.features.ldaVector))
 
 
