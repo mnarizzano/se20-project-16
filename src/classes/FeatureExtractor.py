@@ -171,8 +171,12 @@ class FeatureExtractor:
             den1 += (self.pairFeatures.features[conceptA.id][concept.id].link)
             den2 += (self.pairFeatures.features[conceptB.id][concept.id].link)
         
-        dist = (num1/den1) - (num2/den2)
-        self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
+        if (den1 != 0 or den2 != 0):
+            dist = (num1/den1) - (num2/den2)
+            self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
+        else:
+            # if den1 or den2 = 0, it means that A and B are no prerequisites
+            self.pairFeatures.setReferenceDistance(conceptA, conceptB, 0)
 
     # TODO: instead of theese call this_Feature_Extractor_instance.pairFeatures.get...  (eventually .getPairFeatures().get..)
     def getRefDistance(self, conceptA, conceptB):
