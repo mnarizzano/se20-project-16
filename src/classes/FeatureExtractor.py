@@ -173,7 +173,7 @@ class FeatureExtractor:
             den1 += (self.pairFeatures.features[conceptA.id][concept.id].link)
             den2 += (self.pairFeatures.features[conceptB.id][concept.id].link)
         
-        if (den1 != 0 or den2 != 0):
+        if (den1 != 0 and den2 != 0):
             dist = (num1/den1) - (num2/den2)
             self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
         else:
