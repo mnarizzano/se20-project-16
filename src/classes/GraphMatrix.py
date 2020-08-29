@@ -3,9 +3,12 @@ from Model import Model
 
 class GraphMatrix:
 
+    unknown = -1
+    isPrereq = 1
+    notPrereq = 0
     def __init__(self):
         # -1 if prereq not present (in dataset), 0 if prereq explicitly 0 (in dataset), 1 if prereq
-        self.matrix = [[-1 for i in range(len(Model.dataset))] for j in range(len(Model.dataset))]
+        self.matrix = [[self.unknown for i in range(len(Model.dataset))] for j in range(len(Model.dataset))]
         self.numberOfPrereqs = 0
         self.numberOfNonPrereqs = 0
         self.unknownPrereqs = 0

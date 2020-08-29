@@ -17,14 +17,21 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 
 # define baseline model
-def baseline_model():
+def baseline_model():#input_size, output_size):
+    input_size = 2
+    output_size = 2
     # create model
     model = Sequential()
-    model.add(Dense(8, input_dim=1, activation='relu'))
-    model.add(Dense(3, activation='softmax'))
+    model.add(Dense(8, input_dim=input_size, activation='relu'))
+    model.add(Dense(output_size, activation='softmax'))   # 3 if accepted output is isPrereq/notPrereq/unknown
     # Compile model
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])  # add other metrics
     return model
+
+
+def build_baseline_model(input_size, output_size):
+    return baseline_model(input_size, output_size)
+
 
 class Engine(Model):
 
@@ -68,14 +75,15 @@ class Engine(Model):
 
         # create and train net
         encoder = LabelEncoder()
-        encoder.fit(self.classifierFormatter(feature)['desired'])
-        encoded_Y = encoder.transform(self.classifierFormatter(feature)['desired'])
+        result_set = self.classifierFormatter(feature)
+        encoder.fit(result_set['desired'])
+        encoded_Y = encoder.transform(result_set['desired'])
         dummy_y = np_utils.to_categorical(encoded_Y)
         Settings.logger.info("Starting Network training...")
 
         estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=5, verbose=0)
         kfold = KFold(n_splits=3, shuffle=True)
-        X = np.array(self.classifierFormatter(feature)['features'])
+        X = np.array(result_set['features'])
         results = cross_val_score(estimator, X, dummy_y, cv=kfold)
         print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
 
@@ -88,12 +96,18 @@ class Engine(Model):
         pass
 
     def classifierFormatter(self, feature):
+        # check all concept pairs and return their features and their desired prerequisite label
         features = []
         desired = []
         for conceptA in Model.dataset:
             for conceptB in Model.dataset:
-                features.append([feature.getJaccardSim(conceptA, conceptB)])
-                desired.append(Model.desiredGraph.getPrereq(conceptA, conceptB))
-        return {'features': features, "desired": desired}
+                # Only consider known relations since % of unknown is > 90% and biases the system to always output "UNKNOWN"
+                if Model.desiredGraph.getPrereq(conceptA, conceptB) != Model.desiredGraph.unknown:
+                    features.append([feature.getJaccardSim(conceptA, conceptB), 1])
+                    desired.append(Model.desiredGraph.getPrereq(conceptA, conceptB))
+
+        number_of_classes = len(list(set(desired))) # = 2 if classes are isPrereq/notPrereq, 3 if Unknown is allowed
+        # since output class from estimator is array_encoded of the label it has a dimension === to the number of different clases
+        return {'features': features, "desired": desired, "input_size": len(features[0]), "output_size": number_of_classes}
 
 
