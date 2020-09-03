@@ -13,8 +13,12 @@ class Features:
         self.verbsPlain = []
         self.ldaVector = []
         self.LDAEntropy = 0
+
     def get_numberOfSentences(self):
         return len(self.sentences)
 
     def get_annotatedSentences(self):
         return self.sentences
+
+    def get_LDAVector(self):
+        return self.ldaVector

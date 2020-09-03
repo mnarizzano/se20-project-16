@@ -189,3 +189,6 @@ class FeatureExtractor:
 
     def getLDACrossEntropy(self, conceptA, conceptB):
         return self.pairFeatures.getLDACrossEntropy(conceptA, conceptB)
+
+    def getLDA_KLDivergence(self, conceptA, conceptB):
+        return self.pairFeatures.getLDA_KLDivergence(conceptA, conceptB)
