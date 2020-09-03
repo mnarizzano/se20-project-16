@@ -21,12 +21,13 @@ class GraphMatrix:
         # adds A->B, NOTE that rows are prerequisites while columns are "postrequisites"
         row = Model.dataset.index(conceptA)
         col = Model.dataset.index(conceptB)
-        self.matrix[row][col] = value
-        if int(value) == 0:
-            self.numberOfNonPrereqs += 1
-        elif int(value) == 1:
-            self.numberOfPrereqs += 1
-        self.unknownPrereqs = len(Model.dataset) ** 2 - self.numberOfNonPrereqs - self.numberOfPrereqs
+        if self.matrix[row][col] == self.unknown:   # some prerequisites might were duplicated in the original dataset
+            self.matrix[row][col] = value
+            if int(value) == 0:
+                self.numberOfNonPrereqs += 1
+            elif int(value) == 1:
+                self.numberOfPrereqs += 1
+            self.unknownPrereqs = len(Model.dataset) ** 2 - self.numberOfNonPrereqs - self.numberOfPrereqs
 
     def plotGraph(self):
         for row in range(len(self.matrix[:][0])):

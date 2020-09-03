@@ -78,9 +78,13 @@ class Parser(object):
             id = info['id']
             url = info['url']
             title = info['title']
-            content = child.text.replace(urllib.parse.quote('<'), '<').replace(urllib.parse.quote('>'), '>')
-            c = Concept(id=id, url=url, title=title, content=content, domain=domain)
-            Model.dataset.append(c)
+            # to avoid having duplicated concepts from different domains
+            # which in turn lead to considering a single prereq relationship multiple times and biases the model
+            # TODO if input is free from duplicates this is just overhead
+            if not title in Model.dataset:
+                content = child.text.replace(urllib.parse.quote('<'), '<').replace(urllib.parse.quote('>'), '>')
+                c = Concept(id=id, url=url, title=title, content=content, domain=domain)
+                Model.dataset.append(c)
 
     def parsePairs(self, entry):
         numberOfEntries = 0

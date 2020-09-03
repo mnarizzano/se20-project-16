@@ -70,7 +70,7 @@ class FeatureExtractor:
                 if sum([p[1] for p in ldaVectors[concept.title]]) < 0.1:
                     Settings.logger.error("Error something wrong in topic modeling: Concept '" +  concept.title + "' is not assigned to any topic")
                 leftOutProbability = (1-sum([p[1] for p in ldaVectors[concept.title]]))/(numberOfTopics-len(ldaVectors[concept.title]))
-                concept.features.ldaVector = [leftOutProbability]*numberOfTopics    # TODO: qwertyuiop WARNING randomly chosen bottom line for LDA confidence
+                concept.features.ldaVector = [leftOutProbability]*numberOfTopics    # TODO: qwertyuiop WARNING pseudo-randomly assigned LDA confidence for concepts not explicitly in LDA output
                 for ldaComponent in ldaVectors[concept.title]:
                     concept.features.ldaVector[ldaComponent[0]] = ldaComponent[1]
             elapsed_time = time.time() - start_time

@@ -44,7 +44,7 @@ class Engine(Model):
         ## processing of meta features
         Settings.logger.info("Fetching Meta Info...")
         meta = MetaExtractor(self.pairFeatures)
-        #meta.annotateConcepts()
+        meta.annotateConcepts()
         meta.extractLinkConnections()
         ### example for RefD calculation
         '''
@@ -94,17 +94,24 @@ class Engine(Model):
         # TODO: move to GUI.plot() concept?
         pass
 
-    def classifierFormatter(self, feature):
+    def classifierFormatter(self, feature, undersampleBiggerClass=False, resampleSmallerClass=False):
         # check all concept pairs and return their features and their desired prerequisite label
         features = []
         desired = []
+        classRatio = {}
         for conceptA in Model.dataset:
             for conceptB in Model.dataset:
                 # Only consider known relations since % of unknown is > 90% and biases the system to always output "UNKNOWN"
                 if Model.desiredGraph.getPrereq(conceptA, conceptB) != Model.desiredGraph.unknown:
+                    if not classRatio.__contains__(Model.desiredGraph.getPrereq(conceptA, conceptB)):
+                        classRatio[Model.desiredGraph.getPrereq(conceptA, conceptB)] = 0
+                    classRatio[Model.desiredGraph.getPrereq(conceptA, conceptB)] += 1 # increase this class counter
                     features.append([feature.getJaccardSim(conceptA, conceptB)])
                     desired.append(Model.desiredGraph.getPrereq(conceptA, conceptB))
 
+        # classRatio has same value as GraphMatrix.getStatistics()
+        if resampleSmallerClass:
+            pass
         number_of_classes = len(list(set(desired))) # = 2 if classes are isPrereq/notPrereq, 3 if Unknown is allowed
         # since output class from estimator is array_encoded of the label it has a dimension === to the number of different clases
         return {'features': features, "desired": desired, "input_size": len(features[0]), "output_size": number_of_classes}
