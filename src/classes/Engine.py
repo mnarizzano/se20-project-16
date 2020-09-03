@@ -16,22 +16,8 @@ from keras.utils import np_utils
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 
-# define baseline model
-def baseline_model():#input_size, output_size):
-    input_size = 2
-    output_size = 2
-    # create model
-    model = Sequential()
-    model.add(Dense(8, input_dim=input_size, activation='relu'))
-    model.add(Dense(output_size, activation='softmax'))   # 3 if accepted output is isPrereq/notPrereq/unknown
-    # Compile model
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])  # add other metrics
-    return model
-
-
 def build_baseline_model(input_size, output_size):
     return baseline_model(input_size, output_size)
-
 
 class Engine(Model):
 
@@ -80,6 +66,19 @@ class Engine(Model):
         encoded_Y = encoder.transform(result_set['desired'])
         dummy_y = np_utils.to_categorical(encoded_Y)
         Settings.logger.info("Starting Network training...")
+        Settings.logger.info("Number of features = Input Size = " + str(result_set['input_size']))
+        Settings.logger.info("Number of classes = Output Size = " + str(result_set['output_size']))
+        # define baseline model
+        def baseline_model():
+            input_size = 2
+            output_size = 2
+            # create model
+            model = Sequential()
+            model.add(Dense(8, input_dim=result_set['input_size'], activation='relu'))
+            model.add(Dense(result_set['output_size'], activation='softmax'))  # 3 if accepted output is isPrereq/notPrereq/unknown
+            # Compile model
+            model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])  # add other metrics
+            return model
 
         estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=5, verbose=0)
         kfold = KFold(n_splits=3, shuffle=True)
@@ -103,7 +102,7 @@ class Engine(Model):
             for conceptB in Model.dataset:
                 # Only consider known relations since % of unknown is > 90% and biases the system to always output "UNKNOWN"
                 if Model.desiredGraph.getPrereq(conceptA, conceptB) != Model.desiredGraph.unknown:
-                    features.append([feature.getJaccardSim(conceptA, conceptB), 1])
+                    features.append([feature.getJaccardSim(conceptA, conceptB)])
                     desired.append(Model.desiredGraph.getPrereq(conceptA, conceptB))
 
         number_of_classes = len(list(set(desired))) # = 2 if classes are isPrereq/notPrereq, 3 if Unknown is allowed
