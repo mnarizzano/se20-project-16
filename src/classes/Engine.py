@@ -16,6 +16,7 @@ from keras.layers import Dense
 from keras.wrappers.scikit_learn import KerasClassifier
 from keras.utils import np_utils
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_validate
 from sklearn.model_selection import KFold
 
 def build_baseline_model(input_size, output_size):
@@ -65,21 +66,30 @@ class Engine(Model):
         encoder = LabelEncoder()
         result_set = self.classifierFormatter(feature)
         encoder.fit(result_set['desired'])
-        encoded_Y = encoder.transform(result_set['desired'])
+        encoded_Y = encoder.transform(result_set['desired'])    # from generic label to integer: ['a', 'a', 'b', 1, 1, 1, 1]->[1, 1, 2, 0, 0, 0, 0]
         dummy_y = np_utils.to_categorical(encoded_Y)
+        # the above line goes from integer to oneshot array encoded: [1, 1, 2, 0, 0, 0, 0] ->
+        '''
+          [[0., 1., 0.],
+           [0., 1., 0.],
+           [0., 0., 1.],
+           [1., 0., 0.],
+           [1., 0., 0.],
+           [1., 0., 0.],
+           [1., 0., 0.]]
+        '''
         Settings.logger.info("Starting Network training...")
         Settings.logger.info("Number of features = Input Size = " + str(result_set['input_size']))
         Settings.logger.info("Number of classes = Output Size = " + str(result_set['output_size']))
         # define baseline model
         def baseline_model():
-            input_size = 2
-            output_size = 2
             # create model
             model = Sequential()
             model.add(Dense(20, input_dim=result_set['input_size'], activation='relu'))
             model.add(Dense(20, input_dim=result_set['input_size'], activation='relu'))
             model.add(Dense(result_set['output_size'], activation='softmax'))  # 3 if accepted output is isPrereq/notPrereq/unknown
             # Compile model
+            # whats the impact of metrics or loss when this gets managed from KerasClassifier?
             model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])  # add other metrics
             return model
 
@@ -87,8 +97,12 @@ class Engine(Model):
         estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=5, verbose=0)
         kfold = KFold(n_splits=3, shuffle=True)
         X = np.array(result_set['features'])
-        results = cross_val_score(estimator, X, dummy_y, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
-        print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
+        results = cross_val_score(estimator, X, dummy_y, n_jobs=-1, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
+        print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
+
+        scoring = ['accuracy', 'f1', 'precision_macro', 'recall_macro'] # difference between macro and not macro? f1 === f-score?
+        scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
+        print(sorted(scores.keys()))
 
     def plot(self):
         # TODO: trigger GUI.plot() here to plot results
