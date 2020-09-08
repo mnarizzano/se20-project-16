@@ -7,8 +7,9 @@ from matplotlib.figure import Figure
 from PyQt5.Qt import QFont, Qt
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QLabel, QLineEdit, QCheckBox, QTableWidget,
                              QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QTableWidgetItem, QSpacerItem,
-                             QSizePolicy, QFileDialog)
+                             QSizePolicy, QFileDialog, QStackedWidget)
 from PyQt5.QtGui import QDoubleValidator
+from PyQt5.QtCore import pyqtSignal
 import random
 
 class Window(QMainWindow):
@@ -17,27 +18,50 @@ class Window(QMainWindow):
 
         self.setWindowTitle('Prelearn')
         self.resize(1000, 500)
-        self.startPage = StartPage()
-        self.statisticPage = StatisticPage()
-        self.resultPage = ResultPage()
-        self.setCentralWidget(self.startPage)
 
-class StartPage(QWidget):
+        self.buildPages()
+
+    def buildPages(self):
+        self.pages = Page()
+        self.setCentralWidget(self.pages)
+
+class Page(QStackedWidget):
     def __init__(self):
         super().__init__()
 
-        self.createLeftWidget()
-        self.createRightWidget()
-        self.createButton()
+        self.startPage = StartPage()
+        self.statisticPage = StatisticPage()
+        self.resultPage = ResultPage()
+
+        self.addWidget(self.startPage)
+        self.addWidget(self.statisticPage)
+        self.addWidget(self.resultPage)
+
+        self.startPage.startRequest1.connect(lambda: self.setCurrentIndex(2))  # startPage -> resultPage
+        self.startPage.startRequest2.connect(lambda: self.setCurrentIndex(1)) # startPage -> statisticPage
+        self.statisticPage.statisticRequest1.connect(lambda: self.setCurrentIndex(0))  # statisticPage -> startPage
+        self.resultPage.resultRequest1.connect(lambda: self.setCurrentIndex(0))  # resultPage -> startPage
+        self.resultPage.resultRequest2.connect(lambda: self.setCurrentIndex(1))  # resultPage -> statisticPage
+
+class StartPage(QWidget):
+    startRequest1 = pyqtSignal()
+    startRequest2 = pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+
+        self.createStartLeftWidget()
+        self.createStartRightWidget()
+        self.createStartButtonWidget()
 
         startPageLayout = QGridLayout()
-        startPageLayout.addWidget(self.leftWidget, 0, 0, 1, 0)
-        startPageLayout.addWidget(self.rightWidget, 0, 1, 3, 2)
-        startPageLayout.addWidget(self.buttonWidget, 1, 0, 2, 0)
+        startPageLayout.addWidget(self.startLeftWidget, 0, 0, 1, 0)
+        startPageLayout.addWidget(self.startRightWidget, 0, 1, 3, 2)
+        startPageLayout.addWidget(self.startButtonWidget, 1, 0, 2, 0)
         self.setLayout(startPageLayout)
 
-    def createLeftWidget(self):
-        self.leftWidget = QWidget()
+    def createStartLeftWidget(self):
+        self.startLeftWidget = QWidget()
 
         self.startLeftFileButton = QPushButton()
         self.startLeftFileButton.setText('Premi per caricare il dataset')
@@ -56,53 +80,57 @@ class StartPage(QWidget):
         self.startLeftLineEdit2 = LineEdit()
         self.startLeftLineEdit3 = LineEdit()
 
-        leftLayout = QVBoxLayout()
-        leftLayout.addWidget(self.startLeftFileButton)
-        leftLayout.addWidget(self.startLeftDatasetLabel)
-        leftLayout.addWidget(self.startLeftLabel1)
-        leftLayout.addWidget(self.startLeftLabel2)
-        leftLayout.addWidget(self.startLeftLineEdit1)
-        leftLayout.addWidget(self.startLeftLabel3)
-        leftLayout.addWidget(self.startLeftLineEdit2)
-        leftLayout.addWidget(self.startLeftLabel4)
-        leftLayout.addWidget(self.startLeftLineEdit3)
-        self.leftWidget.setLayout(leftLayout)
+        startLeftLayout = QVBoxLayout()
+        startLeftLayout.addWidget(self.startLeftFileButton)
+        startLeftLayout.addWidget(self.startLeftDatasetLabel)
+        startLeftLayout.addWidget(self.startLeftLabel1)
+        startLeftLayout.addWidget(self.startLeftLabel2)
+        startLeftLayout.addWidget(self.startLeftLineEdit1)
+        startLeftLayout.addWidget(self.startLeftLabel3)
+        startLeftLayout.addWidget(self.startLeftLineEdit2)
+        startLeftLayout.addWidget(self.startLeftLabel4)
+        startLeftLayout.addWidget(self.startLeftLineEdit3)
+        self.startLeftWidget.setLayout(startLeftLayout)
 
-    def createRightWidget(self):
-        self.rightWidget = QWidget()
+    def createStartRightWidget(self):
+        self.startRightWidget = QWidget()
 
-        self.startRightLabel1 = Label(
-            'Caricare una configurazione precedente?')
+        self.startRightLabel1 = Label('Caricare una configurazione precedente?')
 
         self.startRightCheckBox = QCheckBox()
         self.startRightCheckBox.setCheckable(True)
         self.startRightCheckBox.setChecked(False)
         self.startRightCheckBox.stateChanged.connect(self.enableTable)
 
+        self.startRightButton = QPushButton()
+        self.startRightButton.setText('Statistiche delle configurazioni')
+        self.startRightButton.setFixedSize(200, 30)
+        self.startRightButton.clicked.connect(self.startRequest2)
+
         self.createTable()
 
-        rightLayout = QGridLayout()
-        rightLayout.addWidget(self.startRightLabel1, 0, 0)
-        rightLayout.addWidget(self.startRightCheckBox, 0, 1)
-        rightLayout.addWidget(self.startTable, 1, 0, 1, 3)
-        self.rightWidget.setLayout(rightLayout)
+        startRightLayout = QGridLayout()
+        startRightLayout.addWidget(self.startRightLabel1, 0, 0)
+        startRightLayout.addWidget(self.startRightCheckBox, 0, 1)
+        startRightLayout.addWidget(self.startRightButton, 0, 2)
+        startRightLayout.addWidget(self.startTable, 1, 0, 1, 4)
+        self.startRightWidget.setLayout(startRightLayout)
 
-    def createButton(self):
-        self.buttonWidget = QWidget()
+    def createStartButtonWidget(self):
+        self.startButtonWidget = QWidget()
 
-        self.startPushButton = QPushButton(self)
-        self.startPushButton.setText('Calcolo modello')
-        self.startPushButton.setCheckable(True)
-        self.startPushButton.setFixedSize(200, 30)
-        self.startPushButton.clicked.connect(self.runModel)
+        self.startButton = QPushButton(self)
+        self.startButton.setText('Calcolo modello')
+        self.startButton.setFixedSize(200, 30)
+        self.startButton.clicked.connect(self.runModel)
+        self.startButton.clicked.connect(self.startRequest1)
 
-        self.verticalSpacer = QSpacerItem(
-            0, 500, QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.verticalSpacer = QSpacerItem(0, 500, QSizePolicy.Ignored, QSizePolicy.Ignored)
 
         buttonLayout = QVBoxLayout()
         buttonLayout.addItem(self.verticalSpacer)
-        buttonLayout.addWidget(self.startPushButton)
-        self.buttonWidget.setLayout(buttonLayout)
+        buttonLayout.addWidget(self.startButton)
+        self.startButtonWidget.setLayout(buttonLayout)
 
     def createTable(self):
         if os.path.isfile('saved.txt'):
@@ -113,7 +141,7 @@ class StartPage(QWidget):
             file.close()
         else:
             self.rows = 0
-        self.rows = 4   # da rimuovere, ora solo per provare funzionamento
+        self.rows = 4   # #TODO: da rimuovere, ora solo per provare funzionamento
         self.columns = 4
         self.startTable = QTableWidget(self.rows, self.columns)
         self.startTable.setHorizontalHeaderLabels(
@@ -123,8 +151,7 @@ class StartPage(QWidget):
         self.startTable.setDisabled(True)
         for row in range(self.rows):
             startRightCheckBoxItem = QTableWidgetItem(row)
-            startRightCheckBoxItem.setFlags(
-                Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+            startRightCheckBoxItem.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
             startRightCheckBoxItem.setCheckState(Qt.Unchecked)
             self.startTable.setItem(row, 0, startRightCheckBoxItem)
         if os.path.isfile('saved.txt'):
@@ -145,8 +172,7 @@ class StartPage(QWidget):
 
     def selectConfiguration(self, item):
         if item.checkState() == Qt.Checked:
-            values = re.findall(
-                '[0-9]+', self.startTable.item(item.row(), 3).text())
+            values = re.findall('[0-9]+', self.startTable.item(item.row(), 3).text())
             self.startLeftLineEdit1.setText(values[0])
             self.startLeftLineEdit2.setText(values[1])
             self.startLeftLineEdit3.setText(values[2])
@@ -155,16 +181,17 @@ class StartPage(QWidget):
         options = QFileDialog().Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(
-            self, "QFileDialog.getOpenFileName()", "", "All Files (*);;Python Files (*.py)", options=options)
+            self, "Scegliere il dataset", "", "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
-            self.startLeftDatasetLabel.setText(
-                'Dataset caricato: \n' + os.path.basename(fileName))
+            self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
 
     def runModel(self):  # TODO: to run model with inserted or selected parameters
-        # add main of program
         pass
 
-class StatisticPage(StartPage):
+class StatisticPage(QWidget):
+    statisticRequest1 = pyqtSignal()
+    statisticRequest2 = pyqtSignal()
+
     def __init__(self):
         super().__init__()
 
@@ -172,7 +199,7 @@ class StatisticPage(StartPage):
         self.createPrecisionGraphWidget()
         self.createFScoreGraphWidget()
         self.createRecallGraphWidget()
-        self.createReturnButton()
+        self.createResultReturnButton()
 
         statisticLayout = QGridLayout()
         statisticLayout.addWidget(self.accuracyWidget, 0, 0)
@@ -226,15 +253,16 @@ class StatisticPage(StartPage):
         recallLayout.addWidget(self.recallGraph)
         self.recallWidget.setLayout(recallLayout)
 
-    def createReturnButton(self):
+    def createResultReturnButton(self):
         self.returnWidget = QWidget()
 
-        self.returnButton = QPushButton()
-        self.returnButton.setText('Torna alla pagina iniziale')
-        self.returnButton.setFixedSize(200, 30)
-        #TODO: function to connect to return to initial page
+        self.resultReturnButton = QPushButton()
+        self.resultReturnButton.setText('Torna alla pagina iniziale')
+        self.resultReturnButton.setFixedSize(200, 30)
+        self.resultReturnButton.clicked.connect(self.statisticRequest1)
+
         returnLayout = QVBoxLayout()
-        returnLayout.addWidget(self.returnButton)
+        returnLayout.addWidget(self.resultReturnButton)
         self.returnWidget.setLayout(returnLayout)
 
 class Canvas(FigureCanvas):
@@ -250,36 +278,47 @@ class Canvas(FigureCanvas):
         ax.plot(data, 'r-')
         self.draw()
 
-class ResultPage(StartPage):
+class ResultPage(QWidget):
+    resultRequest1 = pyqtSignal()
+    resultRequest2 = pyqtSignal()
+
     def __init__(self):
         super().__init__()
 
-        self.createResultWidget()
+        self.createResultLeftWidget()
+        self.createResultRightWidget()
         self.createSaveWidget()
-        self.returnStartPageWidget()
+        self.createResultButtonWidget()
 
         resultPageLayout = QVBoxLayout()
-        resultPageLayout.addWidget(self.resultWidget)
+        resultPageLayout.addWidget(self.resultLeftWidget)
         resultPageLayout.addWidget(self.saveWidget)
         resultPageLayout.addWidget(self.returnWidget)
         self.setLayout(resultPageLayout)
 
-    def createResultWidget(self):
-        self.resultWidget = QWidget()
+    def createResultLeftWidget(self):
+        self.resultLeftWidget = QWidget()
 
-        self.resultLabel1 = Label('Risultato del calcolo sul modello configurato:')
-        self.resultLabel2 = Label('Accuracy: ')
-        self.resultLabel3 = Label('Precision: ')
-        self.resultLabel4 = Label('Fscore: ')
-        self.resultLabel5 = Label('Recall: ')
+        self.resultLeftLabel1 = Label('Risultato del calcolo sul modello configurato:')
+        self.resultLeftLabel2 = Label('Accuracy: ')
+        self.resultLeftLabel3 = Label('Precision: ')
+        self.resultLeftLabel4 = Label('Fscore: ')
+        self.resultLeftLabel5 = Label('Recall: ')
 
-        resultLayout = QVBoxLayout()
-        resultLayout.addWidget(self.resultLabel1)
-        resultLayout.addWidget(self.resultLabel2)
-        resultLayout.addWidget(self.resultLabel3)
-        resultLayout.addWidget(self.resultLabel4)
-        resultLayout.addWidget(self.resultLabel5)
-        self.resultWidget.setLayout(resultLayout)
+        resultLeftLayout = QVBoxLayout()
+        resultLeftLayout.addWidget(self.resultLeftLabel1)
+        resultLeftLayout.addWidget(self.resultLeftLabel2)
+        resultLeftLayout.addWidget(self.resultLeftLabel3)
+        resultLeftLayout.addWidget(self.resultLeftLabel4)
+        resultLeftLayout.addWidget(self.resultLeftLabel5)
+        self.resultLeftWidget.setLayout(resultLeftLayout)
+
+    def createResultRightWidget(self):
+        self.resultRightWidget = QWidget()
+        
+        self.resultRightLabel1 = Label('Statistiche del dataset:')
+        self.resultRightLabel2 = Label('Numero voci: ')
+        #TODO: add list of statistics
 
     def createSaveWidget(self):
         self.saveWidget = QWidget()
@@ -298,26 +337,32 @@ class ResultPage(StartPage):
         self.saveYesButton.clicked.connect(self.saveConfiguration)
         #self.saveNoButton.clicked.connect() #TODO: function of no button
 
-        saveLayout = QHBoxLayout()
-        saveLayout.addWidget(self.saveLabel1)
-        saveLayout.addWidget(self.saveYesButton)
-        saveLayout.addWidget(self.saveNoButton)
-        saveLayout.addItem(self.saveHSpacer)
+        saveLayout = QGridLayout()
+        saveLayout.addWidget(self.saveLabel1, 0, 0, 0, 3)
+        saveLayout.addWidget(self.saveYesButton, 1, 0)
+        saveLayout.addWidget(self.saveNoButton, 1, 1)
+        saveLayout.addItem(self.saveHSpacer, 1, 2)
         self.saveWidget.setLayout(saveLayout)
 
-    def returnStartPageWidget(self):
+    def createResultButtonWidget(self):
         self.returnWidget = QWidget()
 
-        self.returnButton = QPushButton()
-        self.returnButton.setText('Torna alla pagina iniziale')
-        self.returnButton.setFixedSize(200, 30)
+        self.resultReturnButton = QPushButton()
+        self.resultReturnButton.setText('Torna alla pagina iniziale')
+        self.resultReturnButton.setFixedSize(200, 30)
         self.returnVSpacer = QSpacerItem(0, 100, QSizePolicy.Ignored, QSizePolicy.Ignored)
+        
+        self.resultStatisticButton = QPushButton()
+        self.resultStatisticButton.setText('Statistiche delle configurazioni')
+        self.resultStatisticButton.setFixedSize(200, 30)        
 
-        self.returnButton.clicked.connect(self.returnStartPage)
+        self.resultReturnButton.clicked.connect(self.resultRequest1)
+        self.resultStatisticButton.clicked.connect(self.resultRequest2)
 
         returnLayout = QVBoxLayout()
         returnLayout.addItem(self.returnVSpacer)
-        returnLayout.addWidget(self.returnButton)
+        returnLayout.addWidget(self.resultStatisticButton)
+        returnLayout.addWidget(self.resultReturnButton)
         self.returnWidget.setLayout(returnLayout)
 
     def saveConfiguration(self):
@@ -326,18 +371,14 @@ class ResultPage(StartPage):
         file = open('saved.txt', 'a')
         file.write(str(saveDate.year) + '-' + str(saveDate.month) +
                    '-' + str(saveDate.day) + '\t')
-        file.write('(' + self.resultLabel2.text() + ',' + 'valore' + '),' +
-                   '(' + self.resultLabel3.text() + ',' + 'valore' + '),' +
-                   '(' + self.resultLabel4.text() + ',' + 'valore' + '),' +
-                   '(' + self.resultLabel5.text() + ',' + 'valore' + ')\t')
+        file.write('(' + self.resultLeftLabel2.text() + ',' + 'valore' + '),' +
+                   '(' + self.resultLeftLabel3.text() + ',' + 'valore' + '),' +
+                   '(' + self.resultLeftLabel4.text() + ',' + 'valore' + '),' +
+                   '(' + self.resultLeftLabel5.text() + ',' + 'valore' + ')\t')
         file.write('(' + self.startLeftLabel2.text() + ',' + self.startLeftLineEdit1.text() + '),' +
                    '(' + self.startLeftLabel3.text() + ',' + self.startLeftLineEdit2.text() + '),' +
                    '(' + self.startLeftLabel4.text() + ',' + self.startLeftLineEdit3.text() + ')\n')
         file.close()
-
-    def returnStartPage(self):
-        #TODO: return button to start page
-        pass
 
 class Label(QLabel):
     def __init__(self, text):
