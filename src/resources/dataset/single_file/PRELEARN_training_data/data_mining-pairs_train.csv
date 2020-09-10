@@ -1,0 +1,424 @@
+Outlier,Analisi delle componenti principali,0
+Sistema esperto,Base di conoscenza,0
+Regressione di Poisson,Metodo della massima verosimiglianza,0
+Albero di decisione,Data mining,0
+Dbscan,Clustering gerarchico,0
+Rete neurale artificiale,Distribuzione di probabilità a priori,0
+Indice di posizione,Statistica descrittiva,0
+Distribuzione di probabilità a priori,Analisi dei dati,0
+Intervallo di confidenza,Mediana (statistica),0
+Moda (statistica),Indice di posizione,0
+Macchine a vettori di supporto,Regressione lineare,0
+Macchine a vettori di supporto,Distribuzione congiunta,1
+K-medoids,Distanza di Minkowski,0
+Quartile,Scarto interquartile,0
+K-medoids,Outlier,0
+Test di verifica d'ipotesi,Probabilità a posteriori,0
+Probabilità condizionata,Regressione di Poisson,0
+Metodo della massima verosimiglianza,Rete bayesiana,0
+Variabilità,Indice di posizione,0
+K-means,Clustering,1
+Rete bayesiana,Teorema di Bayes,1
+Analisi dei dati,Regole di associazione,0
+Popolazione statistica,F1 score,0
+Albero di decisione,Foresta casuale,0
+Sistema esperto,Apprendimento automatico,0
+Probabilità condizionata,Probabilità a posteriori,0
+Metodo della massima verosimiglianza,Distribuzione di probabilità a priori,0
+Discesa del gradiente,Rete neurale artificiale,0
+Linguaggio di interrogazione,Data mining,0
+Data mining,Popolazione statistica,1
+Dbscan,Outlier,0
+Algoritmo apriori,Probabilità condizionata,1
+Outlier,K-medoids,0
+Intervallo di confidenza,Analisi della regressione,0
+Analisi della regressione,Regressione di Poisson,0
+Popolazione statistica,Test t,0
+Probabilità condizionata,Teorema di Bayes,0
+Analisi della regressione,Intervallo di confidenza,0
+Ipotesi nulla,Data mining,0
+Regressione lineare,Discesa del gradiente,0
+Rete bayesiana,Metodo della massima verosimiglianza,1
+Albero di decisione,Macchine a vettori di supporto,0
+Distribuzione condizionata,Funzione di densità di probabilità,1
+Metodo della massima verosimiglianza,Distribuzione condizionata,1
+Algoritmo genetico,Rete neurale artificiale,0
+Distanza di Minkowski,Dbscan,0
+Data mining,Ipotesi nulla,1
+Scarto quadratico medio,Precisione e recupero,0
+Campionamento statistico,Precisione e recupero,0
+Algoritmo genetico,Albero di decisione,0
+Analisi della regressione,Classificazione statistica,0
+Distribuzione di probabilità a priori,Rete neurale artificiale,0
+Correlazione (statistica),K-medoids,0
+Intervallo di confidenza,Data mining,0
+Test di verifica d'ipotesi,Distribuzione di probabilità a priori,0
+Correlazione (statistica),Regressione lineare,0
+Analisi della regressione,Outlier,0
+Funzione di verosimiglianza,Probabilità a posteriori,0
+Data mining,Linguaggio di interrogazione,0
+Scarto quadratico medio,Rete bayesiana,0
+Precisione e recupero,Test di verifica d'ipotesi,1
+Statistica descrittiva,Indice di posizione,0
+Mediana (statistica),Indice di posizione,0
+Foresta casuale,Funzione di densità di probabilità,1
+Precisione e recupero,Matrice di confusione,0
+Regressione lineare,Regressione di Poisson,0
+Funzione di verosimiglianza,Funzione di densità di probabilità,1
+Probabilità condizionata,Albero di decisione,0
+Rete neurale artificiale,Apprendimento automatico,1
+Analisi della regressione,Analisi delle componenti principali,0
+Scarto quadratico medio,K-means,0
+Analisi delle componenti principali,Clustering,0
+Regressione lineare,Correlazione (statistica),0
+Distribuzione condizionata,Regressione di Poisson,0
+K-means,Correlazione (statistica),1
+Probabilità condizionata,Significatività,0
+Ipotesi nulla,Significatività,0
+Rete neurale feed-forward,Rete neurale artificiale,1
+Significatività,Test di verifica d'ipotesi,1
+Probabilità a posteriori,Distribuzione di probabilità a priori,0
+Algoritmo genetico,Selezione naturale,1
+Indice di posizione,Scarto interquartile,0
+F1 score,Scarto quadratico medio,1
+Scarto quadratico medio,Intervallo di confidenza,0
+Probabilità a posteriori,Probabilità condizionata,1
+Analisi delle componenti principali,Data mining,0
+Distribuzione di probabilità a priori,Test di verifica d'ipotesi,0
+Foresta casuale,Apprendimento automatico,1
+Data mining,Clustering,1
+Test t,Test di verifica d'ipotesi,1
+Retropropagazione dell'errore,Classificazione statistica,1
+Scarto quadratico medio,Scarto interquartile,0
+Regole di associazione,Analisi dei dati,0
+Sistema esperto,Rete neurale artificiale,0
+Correlazione (statistica),Data mining,0
+Regressione di Poisson,Funzione di densità di probabilità,1
+F1 score,Ipotesi nulla,1
+Probabilità a posteriori,Rete neurale artificiale,0
+Apprendimento automatico,Analisi della regressione,0
+Analisi dei dati,Clustering gerarchico,0
+K-means,Funzione di densità di probabilità,1
+Rete bayesiana,Apprendimento automatico,1
+Test di verifica d'ipotesi,F1 score,0
+Clustering,Correlazione (statistica),1
+Analisi della regressione,Variabilità,0
+Funzione di densità di probabilità,Rete neurale artificiale,0
+Popolazione statistica,Mediana (statistica),0
+Campionamento statistico,Popolazione statistica,1
+Scarto interquartile,Indice di posizione,0
+Correlazione (statistica),Clustering,0
+Clustering gerarchico,Dbscan,0
+Retropropagazione dell'errore,Distribuzione congiunta,1
+K-means,Distribuzione congiunta,1
+Teorema di Bayes,Campionamento casuale,0
+Rete neurale feed-forward,Classificazione statistica,1
+Distribuzione di probabilità a priori,Minima lunghezza di descrizione,0
+Scarto interquartile,Quartile,1
+Mediana (statistica),K-means,0
+Significatività,Analisi dei dati,0
+Rete neurale artificiale,Discesa del gradiente,0
+Metodo della massima verosimiglianza,Probabilità condizionata,1
+Classificazione statistica,Probabilità a posteriori,0
+Outlier,Dbscan,0
+Analisi della regressione,Regressione lineare,0
+Indice di posizione,Variabilità,0
+Apprendimento ensemble,Boosting,0
+Scarto quadratico medio,Significatività,0
+Analisi della regressione,Significatività,0
+Funzione di densità di probabilità,Probabilità a posteriori,0
+Popolazione statistica,Campionamento statistico,0
+Probabilità a posteriori,Teorema di Bayes,0
+Distribuzione di probabilità a priori,Probabilità a posteriori,0
+Boosting,Discesa del gradiente,0
+Apprendimento automatico,Foresta casuale,0
+Metodo dei minimi quadrati,Analisi della regressione,1
+Scarto quadratico medio,Indice di posizione,0
+Data mining,Correlazione (statistica),1
+Retropropagazione dell'errore,Discesa del gradiente,0
+Scarto interquartile,Funzione di densità di probabilità,0
+Analisi della regressione,Funzione di verosimiglianza,0
+Classificazione statistica,F1 score,0
+Funzione di densità di probabilità,Apprendimento automatico,0
+Algoritmo genetico,Clustering,0
+Precisione e recupero,Information retrieval,1
+Matrice di confusione,Precisione e recupero,0
+Regressione lineare,Distribuzione condizionata,0
+Classificazione statistica,Analisi della regressione,0
+Test t,Scarto quadratico medio,1
+Rete neurale artificiale,Sistema esperto,0
+Outlier,Correlazione (statistica),0
+Probabilità a posteriori,Funzione di verosimiglianza,0
+Iperpiano,Macchine a vettori di supporto,0
+Retropropagazione dell'errore,Sistema non lineare,0
+Distribuzione condizionata,Probabilità a posteriori,0
+Analisi delle componenti principali,Analisi della regressione,0
+Rete bayesiana,Scarto quadratico medio,0
+Analisi delle componenti principali,Outlier,0
+Analisi della regressione,Rete neurale artificiale,0
+Regressione lineare,Probabilità condizionata,0
+Bagging,Boosting,0
+Macchine a vettori di supporto,Iperpiano,1
+Regressione lineare,Distribuzione congiunta,0
+Precisione e recupero,Scarto quadratico medio,1
+Rete neurale artificiale,Rete neurale feed-forward,0
+Rete neurale artificiale,Funzione di densità di probabilità,1
+Funzione di densità di probabilità,Distribuzione condizionata,0
+Precisione e recupero,Clustering,0
+Apprendimento automatico,Sistema esperto,0
+Foresta casuale,Classificazione statistica,1
+Outlier,Analisi della regressione,0
+Distribuzione congiunta,Probabilità condizionata,0
+Teorema di Bayes,Data mining,0
+Funzione di densità di probabilità,Retropropagazione dell'errore,0
+Distribuzione congiunta,Rete neurale artificiale,0
+Discesa del gradiente,Sistema non lineare,0
+Data mining,Dbscan,0
+Boosting,Convalida incrociata,0
+Clustering,Algoritmo genetico,0
+Significatività,Scarto quadratico medio,1
+Data mining,Analisi dei dati,1
+Scarto interquartile,Scarto quadratico medio,0
+Analisi della regressione,Metodo dei minimi quadrati,0
+Dbscan,Distanza di Minkowski,0
+Apprendimento automatico,Rete neurale feed-forward,0
+Significatività,Analisi della regressione,0
+Ipotesi nulla,Test t,0
+Classificazione statistica,Retropropagazione dell'errore,0
+F1 score,Intervallo di confidenza,1
+K-means,Mediana (statistica),0
+Analisi delle componenti principali,Regressione lineare,0
+Probabilità a posteriori,Funzione di densità di probabilità,1
+Data mining,Analisi delle componenti principali,0
+Distribuzione congiunta,Macchine a vettori di supporto,0
+Probabilità a posteriori,Rete bayesiana,0
+Precisione e recupero,Classificazione statistica,1
+Sistema non lineare,Discesa del gradiente,0
+Funzione di densità di probabilità,Distribuzione congiunta,0
+Classificazione statistica,Analisi dei dati,0
+Linguaggio di interrogazione,Modellazione dei dati,0
+Regressione di Poisson,Regressione lineare,0
+Classificazione statistica,Precisione e recupero,0
+Data mining,Teorema di Bayes,0
+Rete neurale feed-forward,Distribuzione congiunta,1
+Metodo della massima verosimiglianza,Regressione di Poisson,0
+Probabilità condizionata,Data mining,0
+Apprendimento ensemble,Foresta casuale,0
+Distribuzione condizionata,Regressione lineare,0
+Macchine a vettori di supporto,Convalida incrociata,0
+Data mining,Scarto quadratico medio,1
+Test di verifica d'ipotesi,Intervallo di confidenza,1
+Foresta casuale,Apprendimento ensemble,1
+Intervallo di confidenza,Teorema di Bayes,0
+Scarto quadratico medio,K-medoids,0
+Modellazione dei dati,Linguaggio di interrogazione,0
+Popolazione statistica,Intervallo di confidenza,0
+Funzione di densità di probabilità,Teorema di Bayes,0
+Funzione di densità di probabilità,Metodo della massima verosimiglianza,0
+Data mining,Rete neurale artificiale,0
+Quartile,Indice di posizione,0
+Metodo della massima verosimiglianza,Intervallo di confidenza,0
+Clustering gerarchico,Correlazione (statistica),1
+Clustering,Matrice di confusione,0
+Correlazione (statistica),Outlier,0
+K-medoids,Analisi dei dati,1
+Funzione di verosimiglianza,Metodo della massima verosimiglianza,0
+Funzione di verosimiglianza,Distribuzione di probabilità a priori,0
+Teorema di Bayes,Intervallo di confidenza,0
+Metodo della massima verosimiglianza,Minima lunghezza di descrizione,0
+Distribuzione di probabilità a priori,Metodo della massima verosimiglianza,0
+Regressione lineare,Metodo della massima verosimiglianza,0
+Probabilità a posteriori,Classificazione statistica,0
+Foresta casuale,Analisi della regressione,0
+Probabilità condizionata,Distribuzione congiunta,0
+Albero di decisione,Algoritmo genetico,0
+Rete bayesiana,Sistema esperto,0
+Data mining,Intervallo di confidenza,1
+Probabilità condizionata,Algoritmo apriori,0
+Analisi della regressione,Foresta casuale,0
+Apprendimento automatico,Distribuzione congiunta,1
+Albero di decisione,Probabilità condizionata,1
+Significatività,Campionamento statistico,1
+Analisi della regressione,Apprendimento automatico,0
+Macchine a vettori di supporto,Analisi della regressione,0
+Funzione di densità di probabilità,Rete neurale feed-forward,0
+Ipotesi nulla,F1 score,0
+Foresta casuale,Distribuzione congiunta,1
+Indice di posizione,Scarto quadratico medio,0
+Selezione naturale,Algoritmo genetico,0
+Rete neurale artificiale,Data mining,0
+Clustering,Data mining,0
+Correlazione (statistica),Analisi delle componenti principali,0
+K-medoids,Correlazione (statistica),1
+Distribuzione congiunta,Apprendimento automatico,0
+Analisi delle componenti principali,Scarto quadratico medio,1
+F1 score,Classificazione statistica,1
+Regressione lineare,Analisi della regressione,1
+K-medoids,Scarto quadratico medio,1
+Funzione di densità di probabilità,Foresta casuale,0
+Intervallo di confidenza,Test di verifica d'ipotesi,0
+Discesa del gradiente,Regressione di Poisson,0
+Campionamento statistico,Significatività,0
+Rete neurale artificiale,Macchine a vettori di supporto,0
+Rete neurale feed-forward,Funzione di densità di probabilità,1
+Data mining,Regole di associazione,1
+Intervallo di confidenza,F1 score,0
+Scarto quadratico medio,Analisi delle componenti principali,0
+F1 score,Precisione e recupero,1
+Classificazione statistica,Rete neurale feed-forward,0
+Analisi dei dati,K-medoids,0
+Sistema non lineare,Retropropagazione dell'errore,0
+Probabilità a posteriori,Distribuzione condizionata,1
+Minima lunghezza di descrizione,Metodo della massima verosimiglianza,0
+F1 score,Popolazione statistica,1
+Precisione e recupero,Popolazione statistica,1
+Distanza di Minkowski,K-medoids,0
+Rete neurale artificiale,Analisi della regressione,0
+Funzione di verosimiglianza,Analisi della regressione,0
+Macchine a vettori di supporto,Rete neurale artificiale,0
+Rete bayesiana,Probabilità a posteriori,1
+Metodo della massima verosimiglianza,Funzione di densità di probabilità,1
+Foresta casuale,Moda (statistica),0
+Popolazione statistica,Data mining,0
+Regressione lineare,Analisi delle componenti principali,0
+Dbscan,Tipo di dato,0
+Scarto quadratico medio,Dbscan,0
+Precisione e recupero,Campionamento statistico,1
+Analisi dei dati,Classificazione statistica,0
+Analisi dei dati,Data mining,0
+Regole di associazione,Data mining,0
+Statistica descrittiva,Scarto interquartile,0
+Precisione e recupero,F1 score,0
+Tipo di dato,Dbscan,0
+Base di conoscenza,Sistema esperto,0
+Distribuzione di probabilità a priori,Teorema di Bayes,0
+Funzione di densità di probabilità,Mediana (statistica),0
+Teorema di Bayes,Funzione di densità di probabilità,1
+Scarto quadratico medio,Funzione di verosimiglianza,0
+Rete neurale artificiale,Algoritmo genetico,0
+Distribuzione condizionata,Metodo della massima verosimiglianza,0
+Regressione di Poisson,Distribuzione condizionata,1
+Distribuzione congiunta,Rete neurale feed-forward,0
+Sistema esperto,Rete bayesiana,0
+Analisi dei dati,Distribuzione di probabilità a priori,0
+Teorema di Bayes,Probabilità condizionata,1
+Funzione di densità di probabilità,Scarto interquartile,0
+Significatività,Probabilità condizionata,0
+Correlazione (statistica),K-means,0
+Data mining,Probabilità condizionata,1
+Distribuzione di probabilità a priori,Funzione di verosimiglianza,0
+Campionamento casuale,Teorema di Bayes,0
+Data mining,Classificazione statistica,1
+Boosting,Apprendimento ensemble,1
+Correlazione (statistica),Clustering gerarchico,0
+Analisi della regressione,Scarto quadratico medio,0
+Data mining,Albero di decisione,0
+Scarto quadratico medio,Test t,0
+Clustering,Analisi delle componenti principali,0
+Scarto quadratico medio,Clustering,0
+Information retrieval,Precisione e recupero,0
+Clustering gerarchico,Dbscan,0
+Data mining,Campionamento statistico,1
+Indice di posizione,Quartile,0
+Significatività,Ipotesi nulla,1
+Minima lunghezza di descrizione,Distribuzione di probabilità a priori,0
+Probabilità a posteriori,Test di verifica d'ipotesi,0
+Scarto interquartile,Statistica descrittiva,1
+Intervallo di confidenza,Rete neurale artificiale,0
+Convalida incrociata,Boosting,0
+Metodo della massima verosimiglianza,Funzione di verosimiglianza,1
+Campionamento statistico,Data mining,0
+Test t,Popolazione statistica,1
+Probabilità condizionata,Metodo della massima verosimiglianza,0
+Distribuzione congiunta,Funzione di densità di probabilità,1
+Matrice di confusione,Clustering,0
+Indice di posizione,Moda (statistica),1
+Clustering,K-means,0
+Analisi dei dati,Significatività,0
+Distribuzione congiunta,Retropropagazione dell'errore,0
+Indice di posizione,Mediana (statistica),1
+Rete neurale artificiale,Elaborazione dati,0
+F1 score,Information retrieval,1
+Dbscan,Clustering gerarchico,0
+Funzione di verosimiglianza,Probabilità condizionata,1
+Funzione di densità di probabilità,Regressione di Poisson,0
+Test di verifica d'ipotesi,Test t,0
+Discesa del gradiente,Retropropagazione dell'errore,0
+Moda (statistica),Foresta casuale,0
+Intervallo di confidenza,Precisione e recupero,0
+Funzione di verosimiglianza,Scarto quadratico medio,0
+Distribuzione congiunta,Regressione lineare,0
+Clustering gerarchico,Scarto quadratico medio,1
+Scarto quadratico medio,Clustering gerarchico,0
+Variabilità,Analisi della regressione,0
+Clustering,Classificazione statistica,0
+Metodo della massima verosimiglianza,Regressione lineare,0
+Precisione e recupero,Intervallo di confidenza,1
+Apprendimento automatico,Rete bayesiana,0
+Boosting,Bagging,0
+Rete neurale artificiale,Probabilità a posteriori,0
+Boosting,Albero di decisione,0
+Test di verifica d'ipotesi,Significatività,0
+Scarto interquartile,Istogramma,0
+Boosting,Distribuzione congiunta,1
+Apprendimento automatico,Funzione di densità di probabilità,1
+Istogramma,Scarto interquartile,0
+Regressione di Poisson,Discesa del gradiente,0
+Classificazione statistica,Data mining,0
+Popolazione statistica,Precisione e recupero,0
+Information retrieval,F1 score,0
+Funzione di verosimiglianza,Regressione di Poisson,0
+Regressione di Poisson,Analisi della regressione,1
+Retropropagazione dell'errore,Funzione di densità di probabilità,1
+Convalida incrociata,Macchine a vettori di supporto,0
+Regressione di Poisson,Funzione di verosimiglianza,1
+Mediana (statistica),Funzione di densità di probabilità,0
+Scarto quadratico medio,Data mining,0
+Probabilità condizionata,Regressione lineare,0
+Probabilità condizionata,Funzione di verosimiglianza,0
+Analisi delle componenti principali,K-means,0
+Intervallo di confidenza,Popolazione statistica,1
+Macchine a vettori di supporto,Albero di decisione,0
+Precisione e recupero,Receiver operating characteristic,0
+Intervallo di confidenza,Scarto quadratico medio,1
+Funzione di densità di probabilità,K-means,0
+Rete neurale artificiale,Intervallo di confidenza,0
+Discesa del gradiente,Regressione lineare,0
+Regressione di Poisson,Probabilità condizionata,1
+Classificazione statistica,Clustering,0
+Teorema di Bayes,Rete bayesiana,0
+K-means,Scarto quadratico medio,1
+Clustering gerarchico,Analisi dei dati,1
+Regressione lineare,Macchine a vettori di supporto,0
+Intervallo di confidenza,Metodo della massima verosimiglianza,0
+Teorema di Bayes,Probabilità a posteriori,0
+Scarto quadratico medio,Analisi della regressione,0
+Albero di decisione,Boosting,0
+Scarto quadratico medio,F1 score,0
+K-means,Analisi delle componenti principali,0
+Test di verifica d'ipotesi,Precisione e recupero,0
+Clustering,Scarto quadratico medio,1
+Dbscan,Data mining,0
+Apprendimento automatico,Rete neurale artificiale,0
+Classificazione statistica,Foresta casuale,0
+Clustering,Precisione e recupero,0
+Distribuzione congiunta,Boosting,0
+Rete neurale feed-forward,Apprendimento automatico,1
+Mediana (statistica),Intervallo di confidenza,0
+Receiver operating characteristic,Precisione e recupero,0
+Foresta casuale,Albero di decisione,1
+Analisi delle componenti principali,Correlazione (statistica),1
+Dbscan,Scarto quadratico medio,1
+Discesa del gradiente,Boosting,0
+Rete neurale artificiale,Distribuzione congiunta,1
+Elaborazione dati,Rete neurale artificiale,0
+Test t,Ipotesi nulla,1
+Teorema di Bayes,Distribuzione di probabilità a priori,0
+Distribuzione congiunta,K-means,0
+Distribuzione congiunta,Rete bayesiana,0
+Mediana (statistica),Popolazione statistica,0
+Analisi della regressione,Macchine a vettori di supporto,0
+Rete bayesiana,Distribuzione congiunta,1
+Distribuzione congiunta,Foresta casuale,0
+Funzione di densità di probabilità,Funzione di verosimiglianza,0
+F1 score,Test di verifica d'ipotesi,1

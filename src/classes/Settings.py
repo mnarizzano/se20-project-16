@@ -3,6 +3,8 @@ import logging
 class Settings:
     # Paths
     resourcePath = '../resources/'
+    datasetPath = resourcePath + 'dataset/single_file/PRELEARN_training_data'
+    #datasetPath = resourcePath + 'dataset/split_files/sample'
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
     pairsPickle = resourcePath + 'cached/pairs.pickle'
 

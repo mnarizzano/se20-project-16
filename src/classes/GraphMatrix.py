@@ -21,13 +21,21 @@ class GraphMatrix:
         # adds A->B, NOTE that rows are prerequisites while columns are "postrequisites"
         row = Model.dataset.index(conceptA)
         col = Model.dataset.index(conceptB)
-        if self.matrix[row][col] == self.unknown:   # some prerequisites might were duplicated in the original dataset
+        if self.matrix[row][col] == self.unknown:   # some prerequisites might be duplicated in the 'pairs' files
             self.matrix[row][col] = value
             if int(value) == 0:
                 self.numberOfNonPrereqs += 1
             elif int(value) == 1:
                 self.numberOfPrereqs += 1
             self.unknownPrereqs = len(Model.dataset) ** 2 - self.numberOfNonPrereqs - self.numberOfPrereqs
+        else:
+            if value != self.matrix[row][col]:
+                Settings.logger.error("Pairs prerequisite relation is inconsistent!!")
+                # TODO: uncomment this (commented to continue tests)
+                # raise Exception("Dataset inconsistent, found different annotation for  '" + conceptA + ', ' + conceptB + "'")
+            else:
+                Settings.logger.info('Skipping pairs prerequisite "' + conceptA + ', ' + conceptB +
+                                 '" cause already added')
 
     def plotGraph(self):
         for row in range(len(self.matrix[:][0])):

@@ -24,7 +24,7 @@ class Parser(object):
         Settings.logger.debug('Caching dataset...')
         pickle.dump(Model.dataset, open(self.conceptsPickle, "wb+"))
 
-    def parse(self, cache = Settings.useCache):
+    def parse(self, cache=Settings.useCache):
         if not cache:
             if os.path.exists(self.conceptsPickle):
                 os.remove(self.conceptsPickle)
@@ -36,9 +36,12 @@ class Parser(object):
             with open(self.conceptsPickle, 'rb') as file:
                 Model.dataset = pickle.load(file)
         else:
-            for entry in self.listDirectory(self.resourcePath):
-                if entry.is_file() and entry.name.split('-')[-1] == 'pages.txt':
-                    self.parsePages(entry)
+            for entry in self.listDirectory(Settings.datasetPath):
+                if entry.is_file() and entry.name.__contains__('pages'):
+                    if Settings.datasetPath.__contains__('single_file'):
+                        self.parseSinglePage(entry)
+                    else:
+                        self.parsePages(entry)
 
         # Load Pairs from pickle or parse them from "*-pairs.txt" files
         if os.path.exists(self.pairsPickle):
@@ -47,11 +50,36 @@ class Parser(object):
         else:
             Model.desiredGraph = GraphMatrix()
             numberOfEntries = 0
-            for entry in self.listDirectory(self.resourcePath):
-                if entry.is_file() and entry.name.split('-')[-1] == 'pairs.txt':
+            for entry in self.listDirectory(Settings.datasetPath):
+                if entry.is_file() and entry.name.__contains__('pairs'):
                     numberOfEntries = numberOfEntries + self.parsePairs(entry)
             Settings.logger.debug("Loaded " + str(numberOfEntries) + " entries of prerequisite relationship")
         Model.desiredGraph.plotPrereqs()
+
+    def parseSinglePage(self, file):
+        # given dataset PR has 419 concepts, 1164 prereqs and 4744 non prereqs
+        domain = 'single_file_pages_has_no_domain'
+        fileString = open(file, 'r', encoding='utf8').read()
+
+        tree = ET.fromstring(fileString)
+        # root = tree.getroot()
+        for doc in tree:
+            info = doc.attrib
+            id = info['id']
+            url = info['url']
+            for bodyChild in doc:
+                if bodyChild.tag == 'title':
+                    title = bodyChild.text
+                elif bodyChild.tag == 'text':
+                    content = bodyChild.text
+            # to avoid having duplicated concepts from different domains
+            # which in turn lead to considering a single prereq relationship multiple times and biases the model
+            # TODO if input is free from duplicates this is just overhead
+            if not title in Model.dataset:
+                c = Concept(id=id, url=url, title=title, content=content, domain=domain)
+                Model.dataset.append(c)
+            else:
+                Settings.logger.info("Skipping concept " + title + " because it is already present")
 
     def parsePages(self, file):
         domain = file.name.split('-')[0]
