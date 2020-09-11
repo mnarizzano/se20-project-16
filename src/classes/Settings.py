@@ -5,6 +5,8 @@ class Settings:
     resourcePath = '../resources/'
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
     pairsPickle = resourcePath + 'cached/pairs.pickle'
+    
+    savedConfigurations = '../resources/saved.txt'
 
     # Caching
     useCache = True

@@ -10,7 +10,10 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QLabel, QLineEd
                              QSizePolicy, QFileDialog, QStackedWidget)
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtCore import pyqtSignal
-import random
+from Parser import Parser
+from Engine import Engine
+from Model import Model
+from Settings import Settings
 
 class Window(QMainWindow):
     def __init__(self):
@@ -30,8 +33,8 @@ class Page(QStackedWidget):
         super().__init__()
 
         self.startPage = StartPage()
-        self.statisticPage = StatisticPage()
-        self.resultPage = ResultPage()
+        self.statisticPage = StatisticPage(self.startPage)
+        self.resultPage = ResultPage(self.startPage)
 
         self.addWidget(self.startPage)
         self.addWidget(self.statisticPage)
@@ -40,12 +43,14 @@ class Page(QStackedWidget):
         self.startPage.startRequest1.connect(lambda: self.setCurrentIndex(2))  # startPage -> resultPage
         self.startPage.startRequest2.connect(lambda: self.setCurrentIndex(1)) # startPage -> statisticPage
         self.statisticPage.statisticRequest1.connect(lambda: self.setCurrentIndex(0))  # statisticPage -> startPage
+        self.statisticPage.statisticRequest2.connect(lambda: self.setCurrentIndex(2)) # statisticPage -> resultPage
         self.resultPage.resultRequest1.connect(lambda: self.setCurrentIndex(0))  # resultPage -> startPage
         self.resultPage.resultRequest2.connect(lambda: self.setCurrentIndex(1))  # resultPage -> statisticPage
 
 class StartPage(QWidget):
     startRequest1 = pyqtSignal()
     startRequest2 = pyqtSignal()
+    savedConfigurations = Settings.savedConfigurations
 
     def __init__(self):
         super().__init__()
@@ -107,7 +112,7 @@ class StartPage(QWidget):
         self.startRightButton.setFixedSize(200, 30)
         self.startRightButton.clicked.connect(self.startRequest2)
 
-        self.createTable()
+        self.createTableWidget()
 
         startRightLayout = QGridLayout()
         startRightLayout.addWidget(self.startRightLabel1, 0, 0)
@@ -123,7 +128,6 @@ class StartPage(QWidget):
         self.startButton.setText('Calcolo modello')
         self.startButton.setFixedSize(200, 30)
         self.startButton.clicked.connect(self.runModel)
-        self.startButton.clicked.connect(self.startRequest1)
 
         self.verticalSpacer = QSpacerItem(0, 500, QSizePolicy.Ignored, QSizePolicy.Ignored)
 
@@ -132,9 +136,9 @@ class StartPage(QWidget):
         buttonLayout.addWidget(self.startButton)
         self.startButtonWidget.setLayout(buttonLayout)
 
-    def createTable(self):
-        if os.path.isfile('saved.txt'):
-            file = open('saved.txt', 'r')
+    def createTableWidget(self):
+        if os.path.exists(self.savedConfigurations):
+            file = open(self.savedConfigurations, 'r')
             fileLength = len(file.readlines())
             if fileLength > 0:
                 self.rows = fileLength
@@ -144,8 +148,7 @@ class StartPage(QWidget):
         self.rows = 4   # #TODO: da rimuovere, ora solo per provare funzionamento
         self.columns = 4
         self.startTable = QTableWidget(self.rows, self.columns)
-        self.startTable.setHorizontalHeaderLabels(
-            ['', 'Data', 'Performance', 'Parametri'])
+        self.startTable.setHorizontalHeaderLabels(['', 'Data', 'Performance', 'Parametri'])
         self.startTable.setColumnWidth(0, 30)
         self.startTable.setGeometry(300, 300, 250, 250)
         self.startTable.setDisabled(True)
@@ -154,13 +157,13 @@ class StartPage(QWidget):
             startRightCheckBoxItem.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
             startRightCheckBoxItem.setCheckState(Qt.Unchecked)
             self.startTable.setItem(row, 0, startRightCheckBoxItem)
-        if os.path.isfile('saved.txt'):
-            file = open('saved.txt', 'r')
+        if os.path.exists(self.savedConfigurations):
+            file = open(self.savedConfigurations, 'r')
             for line in file:
                 fields = line.split('\t')
-                self.startTable.setItem(row, 0, QTableWidgetItem(fields[0]))
-                self.startTable.setItem(row, 1, QTableWidgetItem(fields[1]))
-                self.startTable.setItem(row, 2, QTableWidgetItem(fields[2]))
+                self.startTable.setItem(row, 1, QTableWidgetItem(fields[0]))
+                self.startTable.setItem(row, 2, QTableWidgetItem(fields[1]))
+                self.startTable.setItem(row, 3, QTableWidgetItem(fields[2]))
 
         self.startTable.itemClicked.connect(self.selectConfiguration)
 
@@ -185,115 +188,141 @@ class StartPage(QWidget):
         if fileName:
             self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
 
-    def runModel(self):  # TODO: to run model with inserted or selected parameters
-        pass
+    def runModel(self):
+        # Parse files in Specified folder, optionally we can add input to modify Settings.resourcePath
+        p = Parser()
+        p.parse()
+        Settings.logger.info('Finished Parsing')
+        # Calculate Baseline Performance
+        
+        base = Baseline()
+        basePerformance = base.process()
+        
+        # Calculate Engine Performance
+        engine = Engine()
+        engine.process()
+        # plot statistics
+        engine.plot()
+
+        if Settings.useCache:
+            p.cache()
+            
+        self.startButton.setText('Vai ai risultati')
+        self.startButton.clicked.connect(self.startRequest1)
 
 class StatisticPage(QWidget):
     statisticRequest1 = pyqtSignal()
     statisticRequest2 = pyqtSignal()
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent):
+        super().__init__(parent)
 
-        self.createAccuracyGraphWidget()
-        self.createPrecisionGraphWidget()
-        self.createFScoreGraphWidget()
-        self.createRecallGraphWidget()
-        self.createResultReturnButton()
+        self.parent = parent
 
-        statisticLayout = QGridLayout()
-        statisticLayout.addWidget(self.accuracyWidget, 0, 0)
-        statisticLayout.addWidget(self.precisionWidget, 0, 1)
-        statisticLayout.addWidget(self.fscoreWidget, 1, 0)
-        statisticLayout.addWidget(self.recallWidget, 1, 1)
-        statisticLayout.addWidget(self.returnWidget, 2, 0)
+        self.createGraphWidget()
+        self.createStatisticButtonWidget()
+
+        statisticLayout = QVBoxLayout()
+        statisticLayout.addWidget(self.graphWidget)
+        statisticLayout.addWidget(self.returnWidget)
         self.setLayout(statisticLayout)
 
-    def createAccuracyGraphWidget(self):
-        self.accuracyWidget = QWidget()
+    def createGraphWidget(self):
+        accuracy = {}
+        precision = {}
+        fscore = {}
+        recall = {}
+
+        if os.path.exists(self.parent.savedConfigurations):
+            file = open(self.parent.savedConfigurations, 'r')
+            for line in file:
+                fields = (line.split('\t'))
+                values = re.findall('[0-9]+', fields[1])
+                accuracy[fields[0]] = values[0]
+                precision[fields[0]] = values[1]
+                fscore[fields[0]] = values[2]
+                recall[fields[0]] = values[3]
+
+        self.graphWidget = QWidget()
 
         self.accuracyLabel = Label('Accuracy:')
-        self.accuracyGraph = Canvas()
-
-        accuracyLayout = QVBoxLayout()
-        accuracyLayout.addWidget(self.accuracyLabel)
-        accuracyLayout.addWidget(self.accuracyGraph)
-        self.accuracyWidget.setLayout(accuracyLayout)
-
-    def createPrecisionGraphWidget(self):
-        self.precisionWidget = QWidget()
+        self.accuracyGraph = Graph(accuracy.values(), accuracy.keys())
 
         self.precisionLabel = Label('Precision:')
-        self.precisionGraph = Canvas()
-
-        precisionLayout = QVBoxLayout()
-        precisionLayout.addWidget(self.precisionLabel)
-        precisionLayout.addWidget(self.precisionGraph)
-        self.precisionWidget.setLayout(precisionLayout)
-
-    def createFScoreGraphWidget(self):
-        self.fscoreWidget = QWidget()
+        self.precisionGraph = Graph(precision.values(), precision.keys())
 
         self.fscoreLabel = Label('FScore:')
-        self.fscoreGraph = Canvas()
-
-        fscoreLayout = QVBoxLayout()
-        fscoreLayout.addWidget(self.fscoreLabel)
-        fscoreLayout.addWidget(self.fscoreGraph)
-        self.fscoreWidget.setLayout(fscoreLayout)
-
-    def createRecallGraphWidget(self):
-        self.recallWidget = QWidget()
+        self.fscoreGraph = Graph(fscore.values(), fscore.keys())
 
         self.recallLabel = Label('Recall:')
-        self.recallGraph = Canvas()
+        self.recallGraph = Graph(recall.values(), recall.keys())
 
-        recallLayout = QVBoxLayout()
-        recallLayout.addWidget(self.recallLabel)
-        recallLayout.addWidget(self.recallGraph)
-        self.recallWidget.setLayout(recallLayout)
-
-    def createResultReturnButton(self):
+        graphWidgetLayout = QGridLayout()
+        graphWidgetLayout.addWidget(self.accuracyLabel, 0, 0)
+        graphWidgetLayout.addWidget(self.accuracyGraph, 1, 0)
+        graphWidgetLayout.addWidget(self.precisionLabel, 0, 1)
+        graphWidgetLayout.addWidget(self.precisionGraph, 1, 1)
+        graphWidgetLayout.addWidget(self.fscoreLabel, 2, 0)
+        graphWidgetLayout.addWidget(self.fscoreGraph, 3, 0)
+        graphWidgetLayout.addWidget(self.recallLabel, 2, 1)
+        graphWidgetLayout.addWidget(self.recallGraph, 3, 1)
+        self.graphWidget.setLayout(graphWidgetLayout)
+        
+    def createStatisticButtonWidget(self):
         self.returnWidget = QWidget()
 
-        self.resultReturnButton = QPushButton()
-        self.resultReturnButton.setText('Torna alla pagina iniziale')
-        self.resultReturnButton.setFixedSize(200, 30)
-        self.resultReturnButton.clicked.connect(self.statisticRequest1)
+        self.statisticReturnButton = QPushButton()
+        self.statisticReturnButton.setText('Torna alla pagina iniziale')
+        self.statisticReturnButton.setFixedSize(200, 30)
+        self.statisticReturnButton.clicked.connect(self.statisticRequest1)
 
-        returnLayout = QVBoxLayout()
-        returnLayout.addWidget(self.resultReturnButton)
+        self.statisticResultButton = QPushButton()
+        self.statisticResultButton.setText('Torna alla pagina dei risultati')
+        self.statisticResultButton.setFixedSize(200, 30)
+        self.statisticResultButton.clicked.connect(self.statisticRequest2)
+
+        returnLayout = QHBoxLayout()
+        returnLayout.addWidget(self.statisticReturnButton)
+        returnLayout.addWidget(self.statisticResultButton)
         self.returnWidget.setLayout(returnLayout)
 
-class Canvas(FigureCanvas):
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        FigureCanvas.__init__(self, fig)
+class Graph(QWidget):
+    def __init__(self, dates, stats):
+        super().__init__()
 
-        self.plot()
+        self.figure = Figure(figsize=(5, 4), dpi=100)
+        self.canvas = FigureCanvas(self.figure)
 
-    def plot(self):
-        data = [random.random() for i in range(10)]
-        ax = self.figure.add_subplot(111)
-        ax.plot(data, 'r-')
-        self.draw()
+        self.plot(dates, stats)
+
+        graphLayout = QVBoxLayout()
+        graphLayout.addWidget(self.canvas)
+        self.setLayout(graphLayout)
+
+    def plot(self, dates, stats):
+        ax = self.figure.add_subplot(1, 1, 1)
+        ax.bar(dates, stats, color='blue', width=0.5, align='center')
+        self.canvas.draw()
 
 class ResultPage(QWidget):
     resultRequest1 = pyqtSignal()
     resultRequest2 = pyqtSignal()
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.parent = parent
 
         self.createResultLeftWidget()
         self.createResultRightWidget()
-        self.createSaveWidget()
+        self.createResultSaveWidget()
         self.createResultButtonWidget()
 
-        resultPageLayout = QVBoxLayout()
-        resultPageLayout.addWidget(self.resultLeftWidget)
-        resultPageLayout.addWidget(self.saveWidget)
-        resultPageLayout.addWidget(self.returnWidget)
+        resultPageLayout = QGridLayout()
+        resultPageLayout.addWidget(self.resultLeftWidget, 0, 0)
+        resultPageLayout.addWidget(self.saveWidget, 1, 0)
+        resultPageLayout.addWidget(self.returnWidget, 2, 0)
+        resultPageLayout.addWidget(self.resultRightWidget, 0, 1, 1, 1)
         self.setLayout(resultPageLayout)
 
     def createResultLeftWidget(self):
@@ -315,16 +344,25 @@ class ResultPage(QWidget):
 
     def createResultRightWidget(self):
         self.resultRightWidget = QWidget()
-        
-        self.resultRightLabel1 = Label('Statistiche del dataset:')
-        self.resultRightLabel2 = Label('Numero voci: ')
-        #TODO: add list of statistics
 
-    def createSaveWidget(self):
+        self.resultRightLabel1 = Label('Dataset:')  #TODO: add dataset loaded name
+        self.resultRightLabel2 = Label('Numero voci: ')
+        self.resultRightLabel3 = Label('Numero domini: ')
+        self.resultRightLabel4 = Label('Numero parole: ')
+        #TODO: add another of statistics
+
+        resultRightLayout = QVBoxLayout()
+        resultRightLayout.addWidget(self.resultRightLabel1)
+        resultRightLayout.addWidget(self.resultRightLabel2)
+        resultRightLayout.addWidget(self.resultRightLabel3)
+        resultRightLayout.addWidget(self.resultRightLabel4)
+        self.resultRightWidget.setLayout(resultRightLayout)
+
+    def createResultSaveWidget(self):
         self.saveWidget = QWidget()
 
         self.saveLabel1 = Label('Vuoi salvare la configurazione?')
-
+        
         self.saveYesButton = QPushButton()
         self.saveYesButton.setText('Si')
         self.saveYesButton.setFixedSize(100, 30)
@@ -347,38 +385,41 @@ class ResultPage(QWidget):
     def createResultButtonWidget(self):
         self.returnWidget = QWidget()
 
-        self.resultReturnButton = QPushButton()
-        self.resultReturnButton.setText('Torna alla pagina iniziale')
-        self.resultReturnButton.setFixedSize(200, 30)
+        self.statisticReturnButton = QPushButton()
+        self.statisticReturnButton.setText('Torna alla pagina iniziale')
+        self.statisticReturnButton.setFixedSize(200, 30)
         self.returnVSpacer = QSpacerItem(0, 100, QSizePolicy.Ignored, QSizePolicy.Ignored)
         
         self.resultStatisticButton = QPushButton()
         self.resultStatisticButton.setText('Statistiche delle configurazioni')
         self.resultStatisticButton.setFixedSize(200, 30)        
 
-        self.resultReturnButton.clicked.connect(self.resultRequest1)
+        self.statisticReturnButton.clicked.connect(self.resultRequest1)
         self.resultStatisticButton.clicked.connect(self.resultRequest2)
 
         returnLayout = QVBoxLayout()
         returnLayout.addItem(self.returnVSpacer)
         returnLayout.addWidget(self.resultStatisticButton)
-        returnLayout.addWidget(self.resultReturnButton)
+        returnLayout.addWidget(self.statisticReturnButton)
         self.returnWidget.setLayout(returnLayout)
 
     def saveConfiguration(self):
         saveDate = datetime.datetime.now()
         # data conf, performance(label,valore), parametri(label,valore)
-        file = open('saved.txt', 'a')
+        file = open(self.parent.savedConfigurations, 'a')
         file.write(str(saveDate.year) + '-' + str(saveDate.month) +
-                   '-' + str(saveDate.day) + '\t')
-        file.write('(' + self.resultLeftLabel2.text() + ',' + 'valore' + '),' +
-                   '(' + self.resultLeftLabel3.text() + ',' + 'valore' + '),' +
-                   '(' + self.resultLeftLabel4.text() + ',' + 'valore' + '),' +
-                   '(' + self.resultLeftLabel5.text() + ',' + 'valore' + ')\t')
-        file.write('(' + self.startLeftLabel2.text() + ',' + self.startLeftLineEdit1.text() + '),' +
-                   '(' + self.startLeftLabel3.text() + ',' + self.startLeftLineEdit2.text() + '),' +
-                   '(' + self.startLeftLabel4.text() + ',' + self.startLeftLineEdit3.text() + ')\n')
+                   '-' + str(saveDate.day) + ' ' + str(saveDate.hour) +
+                   ':' + str(saveDate.minute) + ':' + str(saveDate.second) + '\t') #TODO: correct timezone
+        file.write('(' + 'Accuracy' + ',' + 'valore' + '),' +
+                   '(' + 'Precision' + ',' + 'valore' + '),' +
+                   '(' + 'Fscore' + ',' + 'valore' + '),' +
+                   '(' + 'Recall' + ',' + 'valore' + ')\t')
+        file.write('(' + self.parent.startLeftLabel2.text() + ',' + self.parent.startLeftLineEdit1.text() + '),' +
+                   '(' + self.parent.startLeftLabel3.text() + ',' + self.parent.startLeftLineEdit2.text() + '),' +
+                   '(' + self.parent.startLeftLabel4.text() + ',' + self.parent.startLeftLineEdit3.text() + ')\n')
         file.close()
+
+        
 
 class Label(QLabel):
     def __init__(self, text):
