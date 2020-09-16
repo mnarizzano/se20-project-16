@@ -46,7 +46,7 @@ class MetaExtractor:
                     raise ValueError("Couldn't find a correspondence in wikiApi for concept '" +
                                      concept.title + "' with Id: '" + concept.id + "'")
                 concept.meta = page
-                self.parser.cache()
+            self.parser.cache()
 
     def extractLinks(self):
         for concept in Model.dataset:

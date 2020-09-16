@@ -21,6 +21,7 @@ class Parser(object):
 
 
     def cache(self):    # TODO: maybe add caching of desiredMatrix (it's not really needed)
+        # TODO: add check if cached directory exist and eventually create it
         Settings.logger.debug('Caching dataset...')
         pickle.dump(Model.dataset, open(self.conceptsPickle, "wb+"))
 
