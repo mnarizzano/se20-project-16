@@ -6,7 +6,8 @@ class Settings:
     datasetPath = resourcePath + 'dataset/single_file/PRELEARN_training_data'
     #datasetPath = resourcePath + 'dataset/split_files/sample'
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
-    pairsPickle = resourcePath + 'cached/pairs.pickle'
+    pairFeaturesPickle = resourcePath + 'cached/pairsFeatures.pickle'
+    pairsPickle = resourcePath + 'cached/prereqPairs.pickle'
 
     # Caching
     useCache = True

@@ -156,8 +156,11 @@ class FeatureExtractor:
         for conceptA in MyModel.dataset:
             for conceptB in MyModel.dataset:
                 if conceptB.domain == conceptA.domain:  # To speed up, not possible if don't have domains
-                    js = len(conceptA.features.nounsSet.intersection(conceptB.features.nounsSet))/\
-                         len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))
+                    if len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))==0:
+                        js = 0
+                    else:
+                        js = len(conceptA.features.nounsSet.intersection(conceptB.features.nounsSet))/\
+                             len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))
                     self.pairFeatures.setJaccardSimilarity(conceptA, conceptB, js)
 
     def referenceDistance(self, conceptA, conceptB):  # using EQUAL weights

@@ -45,7 +45,7 @@ class Parser(object):
 
         # Load Pairs from pickle or parse them from "*-pairs.txt" files
         if os.path.exists(self.pairsPickle):
-            with open(self.pairsPickle, 'rb', encoding='utf8') as file:
+            with open(self.pairsPickle, 'rb') as file:
                 Model.desiredGraph = pickle.load(file)
         else:
             Model.desiredGraph = GraphMatrix()

@@ -8,6 +8,7 @@ from PairFeatures import PairFeatures
 from MetaExtractor import MetaExtractor
 from Settings import Settings
 from PairFeatures import PairFeatures
+import pickle
 
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
@@ -19,28 +20,32 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import KFold
 
-def build_baseline_model(input_size, output_size):
-    return baseline_model(input_size, output_size)
 
 class Engine(Model):
 
     pairFeatures = None
 
     def __init__(self):
-        self.pairFeatures = PairFeatures()
+        if os.path.exists(Settings.pairFeaturesPickle):
+            with open(Settings.pairFeaturesPickle, 'rb') as file:
+                self.pairFeatures = pickle.load(file)
+        else: self.pairFeatures = PairFeatures()
 
 
-    def process(self):
+    def process(self, parser):
         # initialize and pass my PairFeatures to the FeatureExtractor
         feature = FeatureExtractor(self.pairFeatures)
         # begin processing of single Features
+        Settings.logger.debug('Starting sencence extraction (might take a lot)...')
         start_time = time.time()
         feature.extractSentences()
         elapsed_time = time.time() - start_time
-        Settings.logger.debug('Cache: ' + str(Settings.useCache and os.path.exists(Settings.conceptsPickle)) +
+        Settings.logger.debug('Using Cache: ' + str(Settings.useCache and os.path.exists(Settings.conceptsPickle)) +
                               ", Annotation Elapsed time: " + str(elapsed_time))
+        parser.cache()
         feature.extractNounsVerbs()
         feature.LDA()   # TODO: let LDA call extractNounsVerbs?
+        parser.cache()
 
         # begin processing of pair Features
 
@@ -48,6 +53,7 @@ class Engine(Model):
         Settings.logger.info("Fetching Meta Info...")
         meta = MetaExtractor(self.pairFeatures)
         meta.annotateConcepts()
+        parser.cache()
         meta.extractLinkConnections()
         ### example for RefD calculation
         '''
@@ -61,6 +67,7 @@ class Engine(Model):
         ## processing of raw features
         feature.jaccardSimilarity()
         feature.LDACrossEntropy()
+        parser.cache()
 
         # create and train net
         encoder = LabelEncoder()
@@ -112,7 +119,7 @@ class Engine(Model):
         # TODO: move to GUI.plot() concept?
         pass
 
-    def classifierFormatter(self, feature, undersampleBiggerClass=False, resampleSmallerClass=True):    # resample = True changes results: why? shouldn't wheights account for unbalanced classes?!?
+    def classifierFormatter(self, feature, dropBiggerClass=False, resampleSmallerClass=True):    # resample = True changes results: why? shouldn't wheights account for unbalanced classes?!?
         # check all concept pairs and return their features and their desired prerequisite label
         features = []
         desired = []
@@ -148,14 +155,15 @@ class Engine(Model):
                 features.append(features[randomItem])
             if desired.count(1) != desired.count(0):
                 raise Exception("Classes are not balanced, # of 0: " + str(desired.count(0)) + ", # of 1: " + str(desired.count(1)))
-        # if undersampleBiggerClass:    # TODO now implementing class balancing through class_weights
+        # if dropBiggerClass:    # TODO now implementing class balancing through class_weights
         number_of_classes = len(list(set(desired))) # = 2 if classes are isPrereq/notPrereq, 3 if Unknown is allowed
 
         # different examples for class weight blancing
-        #weights = {0: 1, 1: 1}  # should behave as if no weights were specified
+
         #weights = {0: 1, 1: classRatio[0] / classRatio[1]}  # ratio between classes
         #weights = {0: classRatio[1], 1: classRatio[0]}      # opposite ratio: in the end ratios are the same as above
         weights = {0: 1/desired.count(0), 1: 1/desired.count(0)}  # inverse ratio: in the end ratios are the same as above
+        #weights = {0: 1, 1: 1}  # should behave as if no weights were specified
 
 
         # since output class from estimator is array_encoded of the label it has a dimension === to the number of different clases
