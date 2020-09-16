@@ -13,10 +13,10 @@ from math import log2
 class FeatureExtractor:
 
     pairFeatures = None
+    parser = Parser()
 
     def __init__(self, pairFeatures):
         self.pairFeatures = pairFeatures
-
 
     def extractSentences(self):
         loaded = (MyModel.dataset[len(MyModel.dataset)-1].features.annotatedSentences is not None) and \
@@ -41,7 +41,7 @@ class FeatureExtractor:
                     for sentence in concept.features.annotatedSentences:
                         self.sentenceOfFocus(MyModel.dataset[MyModel.dataset.index('Probabilità condizionata')], sentence)
                 '''
-
+            self.parser.cache()
 
     def LDA(self):
         numberOfTopics = 10  # TODO: either read from Settings or Configuration(and have Engine write to it->easier for configuration), or pass to method from engine
@@ -75,6 +75,7 @@ class FeatureExtractor:
                     concept.features.ldaVector[ldaComponent[0]] = ldaComponent[1]
             elapsed_time = time.time() - start_time
             Settings.logger.debug('LDA calculation Elapsed time: ' + str(elapsed_time))
+            self.parser.cache()
         else:
             Settings.logger.debug('Skipped LDA calculation')
 
@@ -91,6 +92,7 @@ class FeatureExtractor:
         return self.entropy(p) + self.kl_divergence(p, q)
 
     def LDACrossEntropy(self):
+        Settings.logger.debug('Calculating LDA cross-entropy...')
         for conceptA in MyModel.dataset:
             conceptA.features.LDAEntropy = self.entropy(conceptA.features.ldaVector)    # this annotates ALL concepts
             for conceptB in MyModel.dataset:
@@ -152,6 +154,7 @@ class FeatureExtractor:
 
     # TODO: only calculate pairFeatures for same domain (to speed up execution) -> no more separation by domain
     def jaccardSimilarity(self):    # calculated over Nouns
+        Settings.logger.debug('Calculating Jaccard Similarity')
         self.extractNounsVerbs()
         for conceptA in MyModel.dataset:
             for conceptB in MyModel.dataset:

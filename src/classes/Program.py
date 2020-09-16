@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     # Calculate Engine Performance
     engine = Engine()
-    engine.process(parser=p)
+    engine.process()
     # plot statistics
     engine.plot()
 

@@ -1,5 +1,4 @@
 import random
-
 from FeatureExtractor import FeatureExtractor
 from Model import Model
 import time
@@ -19,6 +18,8 @@ from keras.utils import np_utils
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import KFold
+from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedShuffleSplit
 
 
 class Engine(Model):
@@ -32,7 +33,7 @@ class Engine(Model):
         else: self.pairFeatures = PairFeatures()
 
 
-    def process(self, parser):
+    def process(self):
         # initialize and pass my PairFeatures to the FeatureExtractor
         feature = FeatureExtractor(self.pairFeatures)
         # begin processing of single Features
@@ -42,10 +43,8 @@ class Engine(Model):
         elapsed_time = time.time() - start_time
         Settings.logger.debug('Using Cache: ' + str(Settings.useCache and os.path.exists(Settings.conceptsPickle)) +
                               ", Annotation Elapsed time: " + str(elapsed_time))
-        parser.cache()
         feature.extractNounsVerbs()
         feature.LDA()   # TODO: let LDA call extractNounsVerbs?
-        parser.cache()
 
         # begin processing of pair Features
 
@@ -53,7 +52,6 @@ class Engine(Model):
         Settings.logger.info("Fetching Meta Info...")
         meta = MetaExtractor(self.pairFeatures)
         meta.annotateConcepts()
-        parser.cache()
         meta.extractLinkConnections()
         ### example for RefD calculation
         '''
@@ -67,15 +65,16 @@ class Engine(Model):
         ## processing of raw features
         feature.jaccardSimilarity()
         feature.LDACrossEntropy()
-        parser.cache()
 
-        # create and train net
+        # obtain input and output from desiredGraphMatrix, PairFeatures and Model.dataset (for single ones)
         encoder = LabelEncoder()
         result_set = self.classifierFormatter(feature)
+        # featurs = inputs
+        X = np.array(result_set['features'])
+        # labels = outputs
         encoder.fit(result_set['desired'])
         encoded_Y = encoder.transform(result_set['desired'])    # from generic label to integer: ['a', 'a', 'b', 1, 1, 1, 1]->[1, 1, 2, 0, 0, 0, 0]
-        dummy_y = np_utils.to_categorical(encoded_Y)
-        # the above line goes from integer to oneshot array encoded: [1, 1, 2, 0, 0, 0, 0] ->
+        # next line goes from integer to oneshot array encoded: [1, 1, 2, 0, 0, 0, 0] ->
         '''
           [[0., 1., 0.],
            [0., 1., 0.],
@@ -85,31 +84,51 @@ class Engine(Model):
            [1., 0., 0.],
            [1., 0., 0.]]
         '''
+        dummy_y = np_utils.to_categorical(encoded_Y)
+
+        # Log data and build model with input and output size based on data's ones
         Settings.logger.info("Starting Network training...")
         Settings.logger.info("Number of features = Input Size = " + str(result_set['input_size']))
-        Settings.logger.info("Number of classes = Output Size = " + str(result_set['output_size']))
-        # define baseline model
-        def baseline_model():
+        modelOutput = result_set['output_size']
+        activationFunction = 'softmax'
+        lossFunction = 'categorical_crossentropy'
+        if modelOutput == 2:
+            modelOutput = 1  # for binary classification 2 classes are classified by 1 probability, wile x classes (>2) are classified by x-1 probabilities
+            activationFunction = 'sigmoid'
+            lossFunction = 'binary_crossentropy'
+        Settings.logger.info("Number of classes = " + str(result_set['output_size']))
+        Settings.logger.info("Output Size = " + str(modelOutput))
+        Settings.logger.info("Last layer activation function = " + activationFunction)
+        # define neural network
+        def neural_network():
             # create model
             model = Sequential()
             model.add(Dense(20, input_dim=result_set['input_size'], activation='relu'))
-            model.add(Dense(20, input_dim=result_set['input_size'], activation='relu'))
-            model.add(Dense(result_set['output_size'], activation='softmax'))  # 3 if accepted output is isPrereq/notPrereq/unknown
+            # TODO: might add drop layer to mitigate overfitting
+            model.add(Dense(20, activation='relu'))
+            model.add(Dense(modelOutput, activation=activationFunction))  # 3 if accepted output is isPrereq/notPrereq/unknown
             # Compile model
             # whats the impact of metrics or loss when this gets managed from KerasClassifier?
-            model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])  # add other metrics
+            model.compile(loss=lossFunction, optimizer='adam', metrics=['accuracy'])  # add other metrics?
             return model
 
         # classWeight = {0: 1, 1: 2}    # penalize errors on class 0 more than on class 1 since class 0 is half the number of samples of those of class 1
-        estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=5, verbose=0)
-        kfold = KFold(n_splits=3, shuffle=True)
-        X = np.array(result_set['features'])
-        results = cross_val_score(estimator, X, dummy_y, n_jobs=-1, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
-        print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
+        estimator = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+        estimator._estimator_type = "classifier"
+        # kfold = KFold(n_splits=10, shuffle=True)
+        # StratifiedKFold tries to balance set classes between Folds, 7 is a random number not set to random just for reproducibility
+        kfold = StratifiedShuffleSplit(n_splits=2, shuffle=True, random_state=7)
+        for train, test in kfold.split(X, encoded_Y):
+            Settings.logger.debug('train -  {}   |   test -  {}'.format(
+            np.bincount(encoded_Y[train]), np.bincount(encoded_Y[test])))
+        #results = cross_val_score(estimator, X, dummy_y, n_jobs=-1, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
+        #print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
 
         scoring = ['accuracy', 'f1', 'precision_macro', 'recall_macro'] # difference between macro and not macro? f1 === f-score?
-        scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
-        print(sorted(scores.keys()))
+        # scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
+        scores = cross_validate(neural_network(), X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,
+                                fit_params={'class_weight': result_set['class_weights'], 'epochs':20, 'batch_size':5, 'verbose':0})
+        print(str(scores))
 
     def plot(self):
         # TODO: trigger GUI.plot() here to plot results

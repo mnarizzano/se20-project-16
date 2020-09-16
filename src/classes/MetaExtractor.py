@@ -3,11 +3,13 @@ import wikipediaapi    # https://github.com/martin-majlis/Wikipedia-API/
 # Not using official library because of https://stackoverflow.com/questions/34869597/wikipedia-api-for-python
 from Settings import Settings
 import pickle
+from Parser import Parser
 
 
 class MetaExtractor:
 
     pairFeatures = None
+    parser = Parser()
 
     def __init__(self, pairFeatures):
         self.wikipedia = wikipediaapi.Wikipedia(
@@ -44,6 +46,7 @@ class MetaExtractor:
                     raise ValueError("Couldn't find a correspondence in wikiApi for concept '" +
                                      concept.title + "' with Id: '" + concept.id + "'")
                 concept.meta = page
+                self.parser.cache()
 
     def extractLinks(self):
         for concept in Model.dataset:
