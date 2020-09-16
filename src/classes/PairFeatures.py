@@ -9,7 +9,7 @@ class PairFeatures:
 
     class PairFeats:
         def __init__(self):
-            self.link = 0
+            self.link = None
             self.jaccardSimilarity = 0
             self.referenceDistance = 0
             self.LDACrossEntropy = 0
@@ -24,9 +24,12 @@ class PairFeatures:
         return concept.id
 
     # SETTERS
-    def addLink(self, conceptA, conceptB):
+    def addLink(self, conceptA, conceptB, value):
         # adds link from A to B, NOTE that rows are "referencing" while columns are "referred"
-        self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].link = 1
+        self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].link = value
+
+    def linksLoaded(self):
+        return self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].link is not None
 
     def setJaccardSimilarity(self, conceptA, conceptB, js):
         # (jaccardSimilarity is symmetric)

@@ -38,14 +38,14 @@ class Parser(object):
         else:
             for entry in self.listDirectory(Settings.datasetPath):
                 if entry.is_file() and entry.name.__contains__('pages'):
-                    if Settings.datasetPath.__contains__('single_file'):
-                        self.parseSinglePage(entry)
-                    else:
+                    if Settings.datasetPath.__contains__('split_files'):
                         self.parsePages(entry)
+                    else:
+                        self.parseSinglePage(entry)
 
         # Load Pairs from pickle or parse them from "*-pairs.txt" files
         if os.path.exists(self.pairsPickle):
-            with open(self.pairsPickle, 'rb', encoding='utf8') as file:
+            with open(self.pairsPickle, 'rb') as file:
                 Model.desiredGraph = pickle.load(file)
         else:
             Model.desiredGraph = GraphMatrix()
@@ -54,6 +54,7 @@ class Parser(object):
                 if entry.is_file() and entry.name.__contains__('pairs'):
                     numberOfEntries = numberOfEntries + self.parsePairs(entry)
             Settings.logger.debug("Loaded " + str(numberOfEntries) + " entries of prerequisite relationship")
+        # TODO: here return statistics to Alessio to plot in the GUI
         Model.desiredGraph.plotPrereqs()
 
     def parseSinglePage(self, file):
