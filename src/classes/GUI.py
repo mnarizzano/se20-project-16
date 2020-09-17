@@ -7,7 +7,8 @@ from matplotlib.figure import Figure
 from PyQt5.Qt import QFont, Qt
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QLabel, QLineEdit, QCheckBox, QTableWidget,
                              QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QTableWidgetItem, QSpacerItem,
-                             QSizePolicy, QFileDialog, QStackedWidget)
+                             QSizePolicy, QFileDialog, QStackedWidget, QHeaderView, QMenuBar, QAction, QDialog,
+                             QTextBrowser)
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtCore import pyqtSignal
 from Parser import Parser
@@ -27,6 +28,45 @@ class Window(QMainWindow):
     def buildPages(self):
         self.pages = Page()
         self.setCentralWidget(self.pages)
+    
+    def createMenu(self):
+        guideAction = QAction('Guida', self)
+        guideAction.triggered.connect(self.openGuideDialog)
+
+        self.toolBar = self.addToolBar('Help')
+        self.toolBar.addAction(guideAction)
+
+    def openGuideDialog(self):
+        self.guideDialog = Guide()
+        self.guideDialog.show()
+
+
+class Guide(QDialog):
+    guidePage = Settings.guidePage
+
+    def __init__(self):
+        super().__init__()
+
+        self.resize(400, 400)
+        self.setWindowTitle('Guida')
+
+        self.createGuideWidget()
+
+        guideDialogLayout = QVBoxLayout()
+        guideDialogLayout.addWidget(self.guideWidget)
+        self.setLayout(guideDialogLayout)
+
+    def createGuideWidget(self):
+        self.guideWidget = QWidget()
+
+        self.guideText = QTextBrowser()
+        self.guideHtml = open(self.guidePage).read()
+        self.guideText.setHtml(self.guideHtml)
+
+        guideLayout = QVBoxLayout()
+        guideLayout.addWidget(self.guideText)
+        self.guideWidget.setLayout(guideLayout)
+
 
 class Page(QStackedWidget):
     def __init__(self):
@@ -145,25 +185,29 @@ class StartPage(QWidget):
             file.close()
         else:
             self.rows = 0
-        self.rows = 4   # #TODO: da rimuovere, ora solo per provare funzionamento
         self.columns = 4
         self.startTable = QTableWidget(self.rows, self.columns)
         self.startTable.setHorizontalHeaderLabels(['', 'Data', 'Performance', 'Parametri'])
+        self.startTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.startTable.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.startTable.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
         self.startTable.setColumnWidth(0, 30)
         self.startTable.setGeometry(300, 300, 250, 250)
         self.startTable.setDisabled(True)
-        for row in range(self.rows):
-            startRightCheckBoxItem = QTableWidgetItem(row)
-            startRightCheckBoxItem.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-            startRightCheckBoxItem.setCheckState(Qt.Unchecked)
-            self.startTable.setItem(row, 0, startRightCheckBoxItem)
         if os.path.exists(self.savedConfigurations):
             file = open(self.savedConfigurations, 'r')
+            fields = []
             for line in file:
-                fields = line.split('\t')
-                self.startTable.setItem(row, 1, QTableWidgetItem(fields[0]))
-                self.startTable.setItem(row, 2, QTableWidgetItem(fields[1]))
-                self.startTable.setItem(row, 3, QTableWidgetItem(fields[2]))
+                element = line.split('\t')
+                fields.append(element)
+            for row in range(0, len(fields)):
+                startRightCheckBoxItem = QTableWidgetItem(row)
+                startRightCheckBoxItem.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+                startRightCheckBoxItem.setCheckState(Qt.Unchecked)
+                self.startTable.setItem(row, 0, startRightCheckBoxItem)
+                self.startTable.setItem(row, 1, QTableWidgetItem(fields[row][0]))
+                self.startTable.setItem(row, 2, QTableWidgetItem(fields[row][1]))
+                self.startTable.setItem(row, 3, QTableWidgetItem(fields[row][2]))
 
         self.startTable.itemClicked.connect(self.selectConfiguration)
 
@@ -181,10 +225,9 @@ class StartPage(QWidget):
             self.startLeftLineEdit3.setText(values[2])
 
     def loadDataset(self):
-        options = QFileDialog().Options()
-        options |= QFileDialog.DontUseNativeDialog
+        fileDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName, _ = QFileDialog.getOpenFileName(
-            self, "Scegliere il dataset", "", "All Files (*);;Python Files (*.py)", options=options)
+            self, "Scegliere il dataset", "", "All Files (*);;Python Files (*.py)")
         if fileName:
             self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
 
@@ -238,24 +281,28 @@ class StatisticPage(QWidget):
             for line in file:
                 fields = (line.split('\t'))
                 values = re.findall('[0-9]+', fields[1])
-                accuracy[fields[0]] = values[0]
-                precision[fields[0]] = values[1]
-                fscore[fields[0]] = values[2]
-                recall[fields[0]] = values[3]
+                accuracy[fields[0]] = int(values[0])
+                precision[fields[0]] = int(values[1])
+                fscore[fields[0]] = int(values[2])
+                recall[fields[0]] = int(values[3])
 
         self.graphWidget = QWidget()
 
         self.accuracyLabel = Label('Accuracy:')
-        self.accuracyGraph = Graph(accuracy.values(), accuracy.keys())
+        self.accuracyGraph = Graph()
+        self.accuracyGraph.plot(accuracy.keys(), accuracy.values())
 
         self.precisionLabel = Label('Precision:')
-        self.precisionGraph = Graph(precision.values(), precision.keys())
+        self.precisionGraph = Graph(self, width=5, height=4)
+        self.precisionGraph.plot(precision.keys(), precision.values())
 
         self.fscoreLabel = Label('FScore:')
-        self.fscoreGraph = Graph(fscore.values(), fscore.keys())
+        self.fscoreGraph = Graph(self, width=5, height=4)
+        self.fscoreGraph.plot(fscore.keys(), fscore.values())
 
         self.recallLabel = Label('Recall:')
-        self.recallGraph = Graph(recall.values(), recall.keys())
+        self.recallGraph = Graph(self, width=5, height=4)
+        self.recallGraph.plot(recall.keys(), recall.values())
 
         graphWidgetLayout = QGridLayout()
         graphWidgetLayout.addWidget(self.accuracyLabel, 0, 0)
@@ -286,23 +333,20 @@ class StatisticPage(QWidget):
         returnLayout.addWidget(self.statisticResultButton)
         self.returnWidget.setLayout(returnLayout)
 
-class Graph(QWidget):
-    def __init__(self, dates, stats):
-        super().__init__()
 
-        self.figure = Figure(figsize=(5, 4), dpi=100)
-        self.canvas = FigureCanvas(self.figure)
+class Graph(FigureCanvas):
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
 
-        self.plot(dates, stats)
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
 
-        graphLayout = QVBoxLayout()
-        graphLayout.addWidget(self.canvas)
-        self.setLayout(graphLayout)
+    def plot(self, x, y):
+        ax = self.figure.add_subplot(111)
+        ax.bar(x, y, color='blue', width=0.2)
+        ax.set_ylim(0, 100)
+        self.draw()
 
-    def plot(self, dates, stats):
-        ax = self.figure.add_subplot(1, 1, 1)
-        ax.bar(dates, stats, color='blue', width=0.5, align='center')
-        self.canvas.draw()
 
 class ResultPage(QWidget):
     resultRequest1 = pyqtSignal()
@@ -349,13 +393,14 @@ class ResultPage(QWidget):
         self.resultRightLabel2 = Label('Numero voci: ')
         self.resultRightLabel3 = Label('Numero domini: ')
         self.resultRightLabel4 = Label('Numero parole: ')
-        #TODO: add another of statistics
+        self.resultHSpacer = QSpacerItem(400, 0, QSizePolicy.Maximum, QSizePolicy.Maximum)
+        #TODO: add list of statistics
 
         resultRightLayout = QVBoxLayout()
         resultRightLayout.addWidget(self.resultRightLabel1)
         resultRightLayout.addWidget(self.resultRightLabel2)
         resultRightLayout.addWidget(self.resultRightLabel3)
-        resultRightLayout.addWidget(self.resultRightLabel4)
+        resultRightLayout.addItem(self.resultHSpacer)
         self.resultRightWidget.setLayout(resultRightLayout)
 
     def createResultSaveWidget(self):
@@ -409,17 +454,15 @@ class ResultPage(QWidget):
         file = open(self.parent.savedConfigurations, 'a')
         file.write(str(saveDate.year) + '-' + str(saveDate.month) +
                    '-' + str(saveDate.day) + ' ' + str(saveDate.hour) +
-                   ':' + str(saveDate.minute) + ':' + str(saveDate.second) + '\t') #TODO: correct timezone
+                   ':' + str(saveDate.minute) + ':' + str(saveDate.second) + '\t')
         file.write('(' + 'Accuracy' + ',' + 'valore' + '),' +
                    '(' + 'Precision' + ',' + 'valore' + '),' +
                    '(' + 'Fscore' + ',' + 'valore' + '),' +
-                   '(' + 'Recall' + ',' + 'valore' + ')\t')
+                   '(' + 'Recall' + ',' + 'valore' + ')\t') #TODO: substitute valore con output of nn
         file.write('(' + self.parent.startLeftLabel2.text() + ',' + self.parent.startLeftLineEdit1.text() + '),' +
                    '(' + self.parent.startLeftLabel3.text() + ',' + self.parent.startLeftLineEdit2.text() + '),' +
                    '(' + self.parent.startLeftLabel4.text() + ',' + self.parent.startLeftLineEdit3.text() + ')\n')
-        file.close()
-
-        
+        file.close()  
 
 class Label(QLabel):
     def __init__(self, text):

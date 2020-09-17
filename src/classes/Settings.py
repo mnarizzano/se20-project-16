@@ -6,6 +6,7 @@ class Settings:
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
     pairsPickle = resourcePath + 'cached/pairs.pickle'
     
+    guidePage = '../resources/guide.html'
     savedConfigurations = '../resources/saved.txt'
 
     # Caching
