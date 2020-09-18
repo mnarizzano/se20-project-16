@@ -9,6 +9,9 @@ import pandas as pd
 from gensim import matutils, models
 import scipy.sparse
 from math import log2
+from gensim.models import Word2Vec
+
+
 
 class FeatureExtractor:
 
@@ -207,3 +210,18 @@ class FeatureExtractor:
 
     def getLDA_KLDivergence(self, conceptA, conceptB):
         return self.pairFeatures.getLDA_KLDivergence(conceptA, conceptB)
+
+    def loadWordEmbeddings(self):
+        model = Word2Vec.load(Settings.glove_WIKI)  # glove model
+        Settings.logger.info('Loaded Glove model')
+        # model.wv['ciao']  # Reads the n-dimension vector for 'ciao', uguale a model.wv.get_vector('ciaomos')
+        # model.wv.cosine_similarities(model.wv['azzurro'], [model.wv['verde'], model.wv['blu']])   # cos.similarity tra azzurro-viola e azzurro-verde
+        # model.wv.distance('azzurro', 'blu')   # distanza euclidea? tra due parole, .distances() lo tra una e più parole (come cos_sim[)
+        # model.wv.doesnt_match(['azzurro', 'blu','gatto'])
+        # model.wv.most_similar(['gatto'], topn=5)  # torna le topn similitudini per gatto
+        # model.wv.most_similar_cosmul(['gatto'], topn=5)   # differente algoritmo, risultato diverso da sopra
+        # model.wv.n_similarity(['gatto', 'giallo'], ['cane', 'verde']) # cosine_simil tra 2 liste di parole(l'ordine non importa, se inverto giallo e gatto ottengo sempre stesso valore)
+
+if __name__ == '__main__':
+    f = FeatureExtractor()
+    f.loadWordEmbeddings()

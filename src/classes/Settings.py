@@ -5,6 +5,8 @@ class Settings:
     resourcePath = '../resources/'
     datasetPath = resourcePath + 'dataset/single_file/PRELEARN_training_data'
     #datasetPath = resourcePath + 'dataset/split_files/sample'
+    Models = resourcePath + 'Model/'
+    glove_WIKI = Models + 'Glove/glove_WIKI'
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
     pairFeaturesPickle = resourcePath + 'cached/pairsFeatures.pickle'
     pairsPickle = resourcePath + 'cached/prereqPairs.pickle'
