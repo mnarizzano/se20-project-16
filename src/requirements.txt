@@ -5,3 +5,4 @@ gensim
 pandas
 tensorflow
 keras
+git+git://github.com/facebookresearch/fastText.git

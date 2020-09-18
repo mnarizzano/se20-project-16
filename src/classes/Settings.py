@@ -15,6 +15,9 @@ class Settings:
     # Udpipe
     udpipeModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'
 
+    # Word-Embedding model path
+    wordVecModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'
+
     # Logging
     logger = None
     logLevel = logging.DEBUG

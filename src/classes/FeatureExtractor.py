@@ -93,13 +93,17 @@ class FeatureExtractor:
 
     def LDACrossEntropy(self):
         Settings.logger.debug('Calculating LDA cross-entropy...')
-        for conceptA in MyModel.dataset:
-            conceptA.features.LDAEntropy = self.entropy(conceptA.features.ldaVector)    # this annotates ALL concepts
-            for conceptB in MyModel.dataset:
-                self.pairFeatures.setLDACrossEntropy(conceptA, conceptB,
-                    self.cross_entropy(conceptA.features.ldaVector, conceptB.features.ldaVector))
-                self.pairFeatures.setLDA_KLDivergence(conceptA, conceptB,
-                    self.kl_divergence(conceptA.features.ldaVector, conceptB.features.ldaVector))
+        if not self.pairFeatures.LDACrossEntropyLoaded():
+            for conceptA in MyModel.dataset:
+                conceptA.features.LDAEntropy = self.entropy(conceptA.features.ldaVector)    # this annotates ALL concepts
+                for conceptB in MyModel.dataset:
+                    self.pairFeatures.setLDACrossEntropy(conceptA, conceptB,
+                        self.cross_entropy(conceptA.features.ldaVector, conceptB.features.ldaVector))
+                    self.pairFeatures.setLDA_KLDivergence(conceptA, conceptB,
+                        self.kl_divergence(conceptA.features.ldaVector, conceptB.features.ldaVector))
+            self.parser.cache()
+        else:
+            Settings.logger.debug('Skipping LDA since it was already present')
 
 
     def sentenceOfFocus(self, concept, annotatedSentence):
@@ -185,6 +189,11 @@ class FeatureExtractor:
         else:
             # if den1 or den2 = 0, it means that A and B are no prerequisites
             self.pairFeatures.setReferenceDistance(conceptA, conceptB, 0)
+
+    def trainLSTMNet(self):
+        # please note that this needs a wordembedding model in Settings.wordVecModelPath, you can download one as follows
+        # fasttext.util.download_model('it', if_exists='ignore')
+        pass
 
     # TODO: instead of theese call this_Feature_Extractor_instance.pairFeatures.get...  (eventually .getPairFeatures().get..)
     def getRefDistance(self, conceptA, conceptB):

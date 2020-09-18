@@ -9,11 +9,14 @@ class PairFeatures:
 
     class PairFeats:
         def __init__(self):
+            # generic check
+            # TODO: something's wrong here: most of the values are 0 over the all dataset
+            # sum([sum([self.pairFeatures.pairFeatures[a.id][b.id].LDA_KLDivergence for a in MyModel.dataset]) for b in MyModel.dataset])
             self.link = None
-            self.jaccardSimilarity = 0
-            self.referenceDistance = 0
-            self.LDACrossEntropy = 0
-            self.LDA_KLDivergence = 0
+            self.jaccardSimilarity = None
+            self.referenceDistance = None
+            self.LDACrossEntropy = None
+            self.LDA_KLDivergence = None
 
     def __init__(self):
         # set a matrix of PairFeats
@@ -29,7 +32,10 @@ class PairFeatures:
         self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].link = value
 
     def linksLoaded(self):
-        return self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].link is not None
+        # Probably std() is a better check than sum() (if they're all the same value, even if |= 0, they're still useless)
+        return (self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].link is not None and
+                sum([sum([self.pairFeatures[a.id][b.id].link for a in Model.dataset]) for b
+                     in Model.dataset]) > 0)
 
     def setJaccardSimilarity(self, conceptA, conceptB, js):
         # (jaccardSimilarity is symmetric)
@@ -40,6 +46,9 @@ class PairFeatures:
 
     def setLDACrossEntropy(self, conceptA, conceptB, value):
         self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].LDACrossEntropy = value
+
+    def LDACrossEntropyLoaded(self):
+        return self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].LDACrossEntropy is not None
 
     def setLDA_KLDivergence(self, conceptA, conceptB, value):
         self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].LDA_KLDivergence = value
