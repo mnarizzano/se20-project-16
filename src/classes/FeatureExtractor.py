@@ -193,9 +193,14 @@ class FeatureExtractor:
             # if den1 or den2 = 0, it means that A and B are no prerequisites
             self.pairFeatures.setReferenceDistance(conceptA, conceptB, 0)
 
-    def trainLSTMNet(self):
+    def trainLSTMNet(self, inputs, outputs):
         # please note that this needs a wordembedding model in Settings.wordVecModelPath, you can download one as follows
         # fasttext.util.download_model('it', if_exists='ignore')
+
+        # using Glove model from isti.cnr
+        model = self.loadWordEmbeddings()
+        # inputs and outputs belongs to the training set for the actual training of the classifier (the parent one, not this)
+        # every kfold iteration in the parent we retrain this based on the parent trainset
         pass
 
     # TODO: instead of theese call this_Feature_Extractor_instance.pairFeatures.get...  (eventually .getPairFeatures().get..)
@@ -214,6 +219,7 @@ class FeatureExtractor:
     def loadWordEmbeddings(self):
         model = Word2Vec.load(Settings.glove_WIKI)  # glove model
         Settings.logger.info('Loaded Glove model')
+        return model
         # model.wv['ciao']  # Reads the n-dimension vector for 'ciao', uguale a model.wv.get_vector('ciaomos')
         # model.wv.cosine_similarities(model.wv['azzurro'], [model.wv['verde'], model.wv['blu']])   # cos.similarity tra azzurro-viola e azzurro-verde
         # model.wv.distance('azzurro', 'blu')   # distanza euclidea? tra due parole, .distances() lo tra una e più parole (come cos_sim[)
@@ -223,5 +229,6 @@ class FeatureExtractor:
         # model.wv.n_similarity(['gatto', 'giallo'], ['cane', 'verde']) # cosine_simil tra 2 liste di parole(l'ordine non importa, se inverto giallo e gatto ottengo sempre stesso valore)
 
 if __name__ == '__main__':
-    f = FeatureExtractor()
+    from PairFeatures import PairFeatures
+    f = FeatureExtractor(PairFeatures())
     f.loadWordEmbeddings()
