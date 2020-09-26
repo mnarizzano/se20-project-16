@@ -208,6 +208,7 @@ class StartPage(QWidget):
                 self.startTable.setItem(row, 1, QTableWidgetItem(fields[row][0]))
                 self.startTable.setItem(row, 2, QTableWidgetItem(fields[row][1]))
                 self.startTable.setItem(row, 3, QTableWidgetItem(fields[row][2]))
+            file.close()
 
         self.startTable.itemClicked.connect(self.selectConfiguration)
 
@@ -227,7 +228,7 @@ class StartPage(QWidget):
     def loadDataset(self):
         fileDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName, _ = QFileDialog.getOpenFileName(
-            self, "Scegliere il dataset", "", "All Files (*);;Python Files (*.py)")
+            self, "Scegliere il dataset", "", "Text Files (*.txt);;CSV Files (*.csv)")
         if fileName:
             self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
 
@@ -285,7 +286,7 @@ class StatisticPage(QWidget):
                 precision[fields[0]] = int(values[1])
                 fscore[fields[0]] = int(values[2])
                 recall[fields[0]] = int(values[3])
-
+            file.close()
         self.graphWidget = QWidget()
 
         self.accuracyLabel = Label('Accuracy:')
@@ -389,7 +390,7 @@ class ResultPage(QWidget):
     def createResultRightWidget(self):
         self.resultRightWidget = QWidget()
 
-        self.resultRightLabel1 = Label('Dataset:')  #TODO: add dataset loaded name
+        self.resultRightLabel1 = Label('Dataset:')
         self.resultRightLabel2 = Label('Numero voci: ')
         self.resultRightLabel3 = Label('Numero domini: ')
         self.resultRightLabel4 = Label('Numero parole: ')
@@ -418,7 +419,7 @@ class ResultPage(QWidget):
         self.saveHSpacer = QSpacerItem(500, 0, QSizePolicy.Maximum, QSizePolicy.Maximum)
 
         self.saveYesButton.clicked.connect(self.saveConfiguration)
-        #self.saveNoButton.clicked.connect() #TODO: function of no button
+        self.saveNoButton.clicked.connect(self.disableSaveConfiguration)
 
         saveLayout = QGridLayout()
         saveLayout.addWidget(self.saveLabel1, 0, 0, 0, 3)
@@ -448,6 +449,22 @@ class ResultPage(QWidget):
         returnLayout.addWidget(self.statisticReturnButton)
         self.returnWidget.setLayout(returnLayout)
 
+    def showResult(self):  # TODO: open new window with results (like guide)
+        self.showDialog = QDialog()
+        self.showDialog.resize(400, 400)
+        self.showDialog.setWindowTitle('Risultati')
+
+        self.showDialog.show()
+
+    def saveResult(self):
+        resultDialog = QFileDialog(
+            None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+        fileName = QFileDialog.getSaveFileName(
+            self, "Salva i risultati", "", "Text Files (*.txt)")
+        file = open(fileName[0], 'w')
+        file.write()  # TODO: insert result of the model
+        file.close()
+
     def saveConfiguration(self):
         saveDate = datetime.datetime.now()
         # data conf, performance(label,valore), parametri(label,valore)
@@ -463,6 +480,10 @@ class ResultPage(QWidget):
                    '(' + self.parent.startLeftLabel3.text() + ',' + self.parent.startLeftLineEdit2.text() + '),' +
                    '(' + self.parent.startLeftLabel4.text() + ',' + self.parent.startLeftLineEdit3.text() + ')\n')
         file.close()  
+
+        def disableSaveConfiguration(self):
+            self.saveWidget.setDisabled(True)
+
 
 class Label(QLabel):
     def __init__(self, text):
