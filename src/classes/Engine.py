@@ -20,6 +20,7 @@ from sklearn.model_selection import cross_validate
 from sklearn.model_selection import KFold
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.metrics import accuracy_score
 
 
 class Engine(Model):
@@ -88,7 +89,7 @@ class Engine(Model):
 
         # Log data and build model with input and output size based on data's ones
         Settings.logger.info("Starting Network training...")
-        Settings.logger.info("Number of features = Input Size = " + str(result_set['input_size']))
+        Settings.logger.debug("Number of features = Input Size = " + str(result_set['input_size']))
         modelOutput = result_set['output_size']
         activationFunction = 'softmax'
         lossFunction = 'categorical_crossentropy'
@@ -127,7 +128,7 @@ class Engine(Model):
         #print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
 
         scoring = ['accuracy', 'f1_macro', 'f1_micro', 'average_precision', 'balanced_accuracy', 'precision_macro', 'recall_macro'] # difference between macro and not macro? f1 === f-score?
-        scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
+        scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold, fit_params={'class_weight': result_set['class_weights']})
         #scores = cross_validate(neural_network(), X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,
         #                        fit_params={'class_weight': result_set['class_weights'], 'epochs':20, 'batch_size':5, 'verbose':0})
         Settings.logger.debug(str(scores))
@@ -135,8 +136,30 @@ class Engine(Model):
         Settings.logger.debug("Recall: %0.2f (+/- %0.2f)" % (scores['test_recall_macro'].mean(), scores['test_recall_macro'].std() * 2))
         Settings.logger.debug("Precision: %0.2f (+/- %0.2f)" % (scores['test_average_precision'].mean(), scores['test_average_precision'].std() * 2))
         Settings.logger.debug("F1: %0.2f (+/- %0.2f)" % (scores['test_f1_macro'].mean(), scores['test_f1_macro'].std() * 2))
+
+        i = 1
+        for train_index, test_index in kfold.split(X, encoded_Y):
+            X_train = X[train_index]
+            X_test = X[test_index]
+            y_train = encoded_Y[train_index]
+            y_test = encoded_Y[test_index]
+
+            model = neural_network()
+            #model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+            #model._estimator_type = "classifier"
+
+            # Train the model
+            model.fit(X_train, y_train, epochs=20, batch_size=5)  # Training the model
+            print(f"Accuracy for the fold no. {i} on the test set: {accuracy_score(y_test,(model.predict(X_test) > 0.5).astype('int32'))}")
+            print("accuracy as seen from model.evaluate: " + str(model.evaluate(X_test, y_test)[1]))  # if plain simple keras sequential model
+            #print("accuracy as seen from model.evaluate: " + str(model.score(X_test, y_test)))          # if KerasClassifier wrapper
+            i += 1
+
+        '''
         return ({'accuracy': scores['test_accuracy'].mean(), 'recall': scores['test_recall_macro'].mean(),
                  'precision': scores['test_average_precision'].mean(), 'f1': scores['test_f1_macro'].mean()})
+        '''
+        return None
 
     def plot(self):
         # TODO: trigger GUI.plot() here to plot results
@@ -146,55 +169,96 @@ class Engine(Model):
         # TODO: move to GUI.plot() concept?
         pass
 
-    def classifierFormatter(self, feature, dropBiggerClass=False, resampleSmallerClass=True):    # resample = True changes results: why? shouldn't wheights account for unbalanced classes?!?
+    def classifierFormatter(self, feature, dropBiggerClass=True, resampleSmallerClass=False):    # resample = True changes results: why? shouldn't wheights account for unbalanced classes?!?
+        Settings.logger.debug('Beginning dataset formatting')
         # check all concept pairs and return their features and their desired prerequisite label
-        features = []
-        desired = []
+        prereqData = []
+        notPrereqData = []
+        prereqLabel = []
+        notPrereqLabel = []
+        total = 0
         classRatio = {}
         for conceptA in Model.dataset:
             for conceptB in Model.dataset:
                 # Only consider known relations since % of unknown is > 90% and biases the system to always output "UNKNOWN"
                 if Model.desiredGraph.getPrereq(conceptA, conceptB) != Model.desiredGraph.unknown:
+                    total = total+1
+                    # counter: counts every class occurrencies, creates new class if it hasn't yet encountered it
                     if not classRatio.__contains__(int(Model.desiredGraph.getPrereq(conceptA, conceptB))):
                         classRatio[int(Model.desiredGraph.getPrereq(conceptA, conceptB))] = 0
                     classRatio[int(Model.desiredGraph.getPrereq(conceptA, conceptB))] += 1 # increase this class counter
                     # TODO define above a simple dictionary containing features we want to consider and automatically map it here
-                    features.append([feature.getJaccardSim(conceptA, conceptB),
-                                     feature.getRefDistance(conceptA, conceptB),
-                                     feature.getLDACrossEntropy(conceptA, conceptB),
-                                     feature.getLDA_KLDivergence(conceptA, conceptB),
-                                     *conceptA.getFeatures().get_LDAVector(),   # spread operator: *['a', 'b'] = a, b
-                                     *conceptB.getFeatures().get_LDAVector(),
-                                     # int(Model.desiredGraph.getPrereq(conceptA, conceptB))    # this is cheating but the model is not giving 100% in this case. Classifier too much simple?
-                    ])
-                    # features.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
-                    # features.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
-                    desired.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
-
+                    if int(Model.desiredGraph.getPrereq(conceptA, conceptB)) == Model.desiredGraph.isPrereq:
+                        prereqData.append([feature.getJaccardSim(conceptA, conceptB),
+                                         feature.getRefDistance(conceptA, conceptB),
+                                         feature.getLDACrossEntropy(conceptA, conceptB),
+                                         feature.getLDA_KLDivergence(conceptA, conceptB),
+                                         *conceptA.getFeatures().get_LDAVector(),   # spread operator: *['a', 'b'] = a, b
+                                         *conceptB.getFeatures().get_LDAVector(),
+                                         # int(Model.desiredGraph.getPrereq(conceptA, conceptB))    # this is cheating but the model is not giving 100% in this case. Classifier too much simple?
+                        ])
+                        # features.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
+                        # features.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
+                        prereqLabel.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
+                    if int(Model.desiredGraph.getPrereq(conceptA, conceptB)) == Model.desiredGraph.notPrereq:
+                        notPrereqData.append([feature.getJaccardSim(conceptA, conceptB),
+                                                    feature.getRefDistance(conceptA, conceptB),
+                                                    feature.getLDACrossEntropy(conceptA, conceptB),
+                                                    feature.getLDA_KLDivergence(conceptA, conceptB),
+                                                    *conceptA.getFeatures().get_LDAVector(),
+                                                    # spread operator: *['a', 'b'] = a, b
+                                                    *conceptB.getFeatures().get_LDAVector(),
+                                                    # int(Model.desiredGraph.getPrereq(conceptA, conceptB))    # this is cheating but the model is not giving 100% in this case. Classifier too much simple?
+                                                    ])
+                        # features.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
+                        # features.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
+                        notPrereqLabel.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
+        if len(notPrereqLabel) + len(prereqLabel) != total:
+            raise Exception("Not all labels are of prerequisition")
+        if abs(classRatio[0] - classRatio[1]) != abs(len(notPrereqLabel) - len(prereqLabel)):
+            raise Exception("Something wrong in classes count")
         # classRatio has same value as GraphMatrix.getStatistics()
+        minorData = notPrereqData if len(notPrereqLabel) - len(prereqLabel) < 0 else prereqData
+        biggerData = prereqData if len(notPrereqLabel) - len(prereqLabel) < 0 else notPrereqData
+
+        minorLabel = notPrereqLabel if len(notPrereqLabel) - len(prereqLabel) < 0 else prereqLabel
+        biggerLabel = prereqLabel if len(notPrereqLabel) - len(prereqLabel) < 0 else notPrereqLabel
+        pickedIndex = []
         if resampleSmallerClass:
-            minorClass = 0 if classRatio[0] - classRatio[1] < 0 else 1
-            for i in range(abs(classRatio[0] - classRatio[1])):
-                randomItem = random.choice(range(min(classRatio[0], classRatio[1])))
-                while desired[randomItem] != minorClass:    # really, really, really dumb way to resample, TODO: keep classes separate
-                    randomItem = random.choice(range(min(classRatio[0], classRatio[1])))
-                desired.append(desired[randomItem])
-                features.append(features[randomItem])
-            if desired.count(1) != desired.count(0):
-                raise Exception("Classes are not balanced, # of 0: " + str(desired.count(0)) + ", # of 1: " + str(desired.count(1)))
-        # if dropBiggerClass:    # TODO now implementing class balancing through class_weights
-        number_of_classes = len(list(set(desired))) # = 2 if classes are isPrereq/notPrereq, 3 if Unknown is allowed
+            while abs(len(minorLabel)-len(biggerLabel)) > 0:
+                randomItem = random.choice(range(len(minorLabel)))
+                if not pickedIndex.__contains__(randomItem):
+                    pickedIndex.append(randomItem)
+                    minorLabel.append(minorLabel[randomItem])
+                    minorData.append(minorData[randomItem])
+            Settings.logger.debug("resampled a total of " + str(len(pickedIndex)) + " concepts")
+        elif dropBiggerClass:
+            while abs(len(minorLabel) - len(biggerLabel)) > 0:
+                randomItem = random.choice(range(len(biggerLabel)))
+                pickedIndex.append(randomItem)
+                biggerLabel.pop(randomItem)
+                biggerData.pop(randomItem)
+            Settings.logger.debug("dropped a total of " + str(len(pickedIndex)) + " concepts")
+
+        if len(pickedIndex) != abs(classRatio[0] - classRatio[1]):
+            raise Exception("Something wrong resampling lowerClass: resampled " + str(
+                len(pickedIndex)) + ", original difference " + str(abs(classRatio[0] - classRatio[1])))
+
+        number_of_classes = 2 # 2 if classes are isPrereq/notPrereq, 3 if Unknown is allowed
 
         # different examples for class weight blancing
 
         #weights = {0: 1, 1: classRatio[0] / classRatio[1]}  # ratio between classes
         #weights = {0: classRatio[1], 1: classRatio[0]}      # opposite ratio: in the end ratios are the same as above
-        weights = {0: 1/desired.count(0), 1: 1/desired.count(0)}  # inverse ratio: in the end ratios are the same as above
+        weights = {0: 1/len(prereqLabel), 1: 1/len(notPrereqLabel)}  # inverse ratio: in the end ratios are the same as above
         #weights = {0: 1, 1: 1}  # should behave as if no weights were specified
 
 
+        features = [*prereqData, *notPrereqData]
+        labels = [*prereqLabel, *notPrereqLabel]
+        Settings.logger.debug('Finished dataset formatting')
         # since output class from estimator is array_encoded of the label it has a dimension === to the number of different clases
-        return {'features': features, "desired": desired, "input_size": len(features[0]),
+        return {'features': features, "desired": labels, "input_size": len(features[0]),
                 "output_size": number_of_classes, 'class_weights': weights}
 
 
