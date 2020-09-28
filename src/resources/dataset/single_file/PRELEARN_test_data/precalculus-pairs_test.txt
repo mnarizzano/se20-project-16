@@ -1,0 +1,200 @@
+Equazione differenziale,Numero
+Asintoto,Retta
+Sistema di riferimento cartesiano,Retta
+Decomposizione in fratti semplici,Aritmetica
+Poligono,Segmento
+Teorema binomiale,Addizione
+Principio d'induzione,Dimostrazione matematica
+Funzione continua,Matematica
+Asintoto,Matematica
+Settore circolare,Geometria
+Aritmetica,Matematica
+Variabili dipendenti e indipendenti,Funzione (matematica)
+Algebra,Numero
+Onda sinusoidale,Matematica
+Circonferenza,Geometria
+Somma vuota,Aritmetica
+Equazione lineare,Equazione
+Disuguaglianza,Matematica
+Disuguaglianza,Uguaglianza (matematica)
+Equazione parametrica,Equazione
+Limite di una funzione,Funzione (matematica)
+Teorema dei seni,Segmento
+Minore (algebra lineare),Matrice quadrata
+Sistema di coordinate,Geometria
+Seno (matematica),Matematica
+Limite di una successione,Matematica
+Potenza (matematica),Aritmetica
+Teorema delle radici razionali,Equazione
+Divisione dei polinomi,Moltiplicazione
+Teorema dei seni,Seno (matematica)
+Equazione lineare,Matematica
+Perpendicolarità,Angolo
+Algebra,Matematica
+Triangolo rettangolo,Poligono
+Coefficiente binomiale,Moltiplicazione
+Reciproco,Moltiplicazione
+Sezione conica,Matematica
+Secante (geometria),Curva (matematica)
+Angolo retto,Geometria
+Matrice triangolare,Matematica
+Geometria analitica,Sistema di riferimento cartesiano
+Reciproco,Matematica
+Sistema di equazioni lineari,Matematica
+Logaritmo naturale,Aritmetica
+Triangolo rettangolo,Retta
+Logaritmo,Matematica
+Eccentricità (matematica),Retta
+Equazione,Uguaglianza (matematica)
+Crescita esponenziale,Numero
+Funzione iniettiva,Funzione (matematica)
+Serie,Calcolo infinitesimale
+Somma vuota,Addizione
+Prodotto scalare,Aritmetica
+Addizione,Matematica
+Logaritmo,Numero
+Polinomio,Numero
+Funzioni pari e dispari,Matematica
+Trigonometria,Geometria
+Sistema di equazioni lineari,Uguaglianza (matematica)
+Curva piana,Geometria
+Decomposizione in fratti semplici,Moltiplicazione
+Rettangolo,Matematica
+Matrice triangolare,Matrice
+Funzione trigonometrica inversa,Trigonometria
+Cilindro (geometria),Matematica
+Funzione trigonometrica inversa,Geometria
+Equazione lineare,Geometria
+Punto (geometria),Geometria
+Polinomio,Matematica
+Criterio di Cartesio,Addizione
+Addizione,Numero
+Teorema dei seni,Punto (geometria)
+Limite di una funzione,Calcolo infinitesimale
+Sistema di riferimento cartesiano,Angolo
+Numero complesso,Numero
+Geometria,Matematica
+Posizione,Vettore (matematica)
+Funzione monotona,Matematica
+Funzione periodica,Matematica
+Crescita esponenziale,Funzione (matematica)
+Sistema di coordinate polari,Geometria
+Base (algebra lineare),Matematica
+Risoluzione di un'equazione,Numero
+Triangolo,Punto (geometria)
+Divisione dei polinomi,Polinomio
+Teorema fondamentale dell'algebra,Matematica
+Divisione dei polinomi,Numero
+Cono,Matematica
+Equazione algebrica,Numero
+Raggio (geometria),Retta
+Prodotto scalare,Moltiplicazione
+Prodotto vettoriale,Numero
+Serie geometrica,Calcolo infinitesimale
+Moto circolare,Geometria
+Settore circolare,Matematica
+Equazione parametrica,Matematica
+Topologia prodotto,Aritmetica
+Espressione matematica,Matematica
+Divisione (matematica),Numero
+Disuguaglianza,Equazione
+Radice quadrata,Potenza (matematica)
+Associatività,Numero complesso
+Numero reale,Disuguaglianza
+Addizione,Circonferenza
+Equazione,Teorema di Pitagora
+Funzione definita a tratti,Funzione inversa
+Numero razionale,Radicale (matematica)
+Numero primo,Radice (matematica)
+Associatività,Moltiplicazione
+Fuoco (geometria),Circonferenza
+Perpendicolarità,Sistema di coordinate
+Addizione,Numero razionale
+Potenza (matematica),Equazione di secondo grado
+Secante (geometria),Asintoto
+Addizione,Numero negativo
+Funzione costante,Funzioni pari e dispari
+Insieme,Numero
+Equazione lineare,Equazione di secondo grado
+Moltiplicazione,Numero razionale
+Logaritmo,Coefficiente angolare
+Notazione scientifica,Numero reale
+Polinomio,Circonferenza
+Funzione (matematica),Radicale (matematica)
+Addizione,Commutatività
+Divisione (matematica),Moltiplicazione
+Sistema di coordinate,Numero complesso
+Circonferenza unitaria,Radicale (matematica)
+Forza,Matematica
+Unione (insiemistica),Insieme vuoto
+Numero complesso,Radice (matematica)
+Equazione lineare,Sistema di riferimento cartesiano
+Potenza (matematica),Reciproco
+Associatività,Commutatività
+Circonferenza unitaria,Numero intero
+Numero negativo,Divisione (matematica)
+Potenza (matematica),Numero reale
+Numero intero,Reciproco
+Numeri pari e dispari,Funzioni pari e dispari
+Insieme,Numero reale
+Serie geometrica,Geometria
+Unione (insiemistica),Numero naturale
+Moltiplicazione,Funzione (matematica)
+Circonferenza,Geometria analitica
+Numero reale,Radicale (matematica)
+Fuoco (geometria),Ellisse
+Polinomio,Funzione (matematica)
+Sistema di coordinate,Numero reale
+Composizione di funzioni,Funzioni pari e dispari
+Associatività,Funzione (matematica)
+Circonferenza,Equazione di secondo grado
+Numero,Equazione differenziale
+Retta,Asintoto
+Retta,Sistema di riferimento cartesiano
+Aritmetica,Decomposizione in fratti semplici
+Segmento,Poligono
+Addizione,Teorema binomiale
+Dimostrazione matematica,Principio d'induzione
+Matematica,Funzione continua
+Matematica,Asintoto
+Geometria,Settore circolare
+Matematica,Aritmetica
+Funzione (matematica),Variabili dipendenti e indipendenti
+Numero,Algebra
+Matematica,Onda sinusoidale
+Geometria,Circonferenza
+Aritmetica,Somma vuota
+Equazione,Equazione lineare
+Matematica,Disuguaglianza
+Uguaglianza (matematica),Disuguaglianza
+Equazione,Equazione parametrica
+Funzione (matematica),Limite di una funzione
+Segmento,Teorema dei seni
+Matrice quadrata,Minore (algebra lineare)
+Geometria,Sistema di coordinate
+Matematica,Seno (matematica)
+Potenza (matematica),Radice quadrata
+Numero complesso,Associatività
+Disuguaglianza,Numero reale
+Circonferenza,Addizione
+Teorema di Pitagora,Equazione
+Funzione inversa,Funzione definita a tratti
+Radicale (matematica),Numero razionale
+Radice (matematica),Numero primo
+Moltiplicazione,Associatività
+Circonferenza,Fuoco (geometria)
+Sistema di coordinate,Perpendicolarità
+Numero razionale,Addizione
+Equazione di secondo grado,Potenza (matematica)
+Asintoto,Secante (geometria)
+Numero negativo,Addizione
+Funzioni pari e dispari,Funzione costante
+Numero,Insieme
+Equazione di secondo grado,Equazione lineare
+Numero razionale,Moltiplicazione
+Coefficiente angolare,Logaritmo
+Numero reale,Notazione scientifica
+Circonferenza,Polinomio
+Radicale (matematica),Funzione (matematica)
+Commutatività,Addizione
+Moltiplicazione,Divisione (matematica)

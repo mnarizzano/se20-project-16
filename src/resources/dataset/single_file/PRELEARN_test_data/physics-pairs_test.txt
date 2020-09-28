@@ -1,0 +1,200 @@
+Accelerazione di gravità,Posizione
+Legge di Snell,Indice di rifrazione
+Accelerazione,Spostamento (cinematica)
+Durezza,Elasticità (meccanica)
+Onda d'urto (fluidodinamica),Onda
+Moto parabolico,Interazione gravitazionale
+Sistema di riferimento non inerziale,Sistema di riferimento
+Legge di gravitazione universale,Fisica
+Indice di rifrazione,Onda
+Forza elettromotrice,Differenza di potenziale elettrico
+Indice di rifrazione,Rifrazione
+Livello energetico,Energia
+Urto elastico,Energia cinetica
+Spettroscopia di assorbimento,Lunghezza d'onda
+Potenza (fisica),Energia
+Lavoro (fisica),Posizione
+Spettro elettromagnetico,Lunghezza d'onda
+Spettro di emissione,Frequenza
+Riflessione speculare,Onda
+Riflessione interna totale,Luce
+Livello energetico,Fisica
+Campo magnetico,Magnete
+Diffrazione,Onda
+Caduta libera,Spostamento (cinematica)
+Urto anelastico,Fisica
+Radiazione elettromagnetica,Magnete
+Campo magnetico,Corrente elettrica
+Accelerazione di gravità,Forza
+Caduta libera,Fisica
+Dispersione ottica,Luce
+Effetto Doppler,Fisica
+Sistema di riferimento non inerziale,Moto (fisica)
+Forza elettromotrice,Fisica
+Equazione del moto,Moto (fisica)
+Onda stazionaria,Frequenza
+Accelerazione,Velocità
+Capacità elettrica,Differenza di potenziale elettrico
+Boom sonico,Fisica
+Campo elettrico,Fisica
+Legge di Ohm,Differenza di potenziale elettrico
+Spettro elettromagnetico,Campo elettrico
+Riflessione interna totale,Fisica
+Legge di Snell,Moto (fisica)
+Potenziale elettrico,Forza
+Urto elastico,Fisica
+Energia potenziale elettrica,Campo (fisica)
+Moto parabolico,Velocità
+Campo gravitazionale terrestre,Forza
+Effetto Doppler,Lunghezza d'onda
+Accelerazione di gravità,Interazione gravitazionale
+Urto elastico,Energia
+Campo gravitazionale,Legge di gravitazione universale
+Energia potenziale,Vettore (matematica)
+Effetto Doppler,Frequenza
+Potenziale elettrico,Forza di Coulomb
+Accelerazione di gravità,Moto (fisica)
+Spostamento (cinematica),Distanza (matematica)
+Onda,Fisica
+Conduttore elettrico,Corrente elettrica
+Spettroscopia di assorbimento,Energia
+Onda d'urto (fluidodinamica),Energia
+Legge di Snell,Luce
+Magnetismo,Fisica
+Accelerazione di gravità,Fisica
+Interazione gravitazionale,Fisica
+Moto parabolico,Moto (fisica)
+Energia potenziale,Lavoro (fisica)
+Spettro di emissione,Magnete
+Isolante elettrico,Forza di Coulomb
+Magnetismo,Forza
+Boom sonico,Onda
+Circuiti in serie e in parallelo,Legge di Ohm
+Scorrimento viscoso,Forza
+Energia cinetica,Fisica
+Elettrostatica,Campo elettrico
+Diffusione ottica,Lunghezza d'onda
+Potenziale elettrico,Moto (fisica)
+Elettrostatica,Moto (fisica)
+Spettro di emissione,Campo magnetico
+Effetto fotoelettrico,Luce
+Urto elastico,Distanza (matematica)
+Momento meccanico,Leva (fisica)
+Tensione (meccanica),Fisica
+Costante di gravitazione universale,Legge di gravitazione universale
+Riflessione speculare,Luce
+Raggio luminoso,Luce
+Riflessione interna totale,Onda
+Riflessione interna totale,Riflessione (fisica)
+Campo gravitazionale terrestre,Moto (fisica)
+Spostamento (cinematica),Posizione
+Campo magnetico,Fisica
+Forza elettromotrice,Campo magnetico
+Radiazione elettromagnetica,Energia
+Isolante elettrico,Energia
+Campo gravitazionale,Massa (fisica)
+Isolante elettrico,Fisica
+Voltmetro,Differenza di potenziale elettrico
+Urto anelastico,Massa (fisica)
+Spettro elettromagnetico,Forza di Coulomb
+Legge di Snell,Lunghezza d'onda
+Campo magnetico,Sistema di riferimento inerziale
+Energia,Pianeta
+Energia meccanica,Campo gravitazionale
+Principi della dinamica,Moto (fisica)
+Legge di Hooke,Lavoro (fisica)
+Elettrone,Energia meccanica
+Massa (fisica),Onda
+Energia potenziale,Interazione gravitazionale
+Indice di rifrazione,Campo elettrico
+Effetto fotoelettrico,Urto
+Indice di rifrazione,Riflessione (fisica)
+Diffrazione,Campo (fisica)
+Conduttore elettrico,Spettro elettromagnetico
+Campo magnetico,Velocità
+Energia,Urto
+Intensità acustica,Onda
+Indice di rifrazione,Diffusione ottica
+Potenziale elettrico,Joule
+Temperatura,Fisica
+Livello energetico,Temperatura
+Radiazione elettromagnetica,Velocità
+Magnetismo,Corrente elettrica
+Potenziale elettrico,Campo magnetico
+Energia,Joule
+Diffrazione,Diffusione ottica
+Capacità elettrica,Coulomb
+Isolante elettrico,Differenza di potenziale elettrico
+Magnetismo,Linea di campo
+Distanza (matematica),Microscopio ottico
+Elettrostatica,Corrente elettrica
+Spostamento (cinematica),Massa (fisica)
+Elettrone,Elettroscopio
+Elettroscopio,Elettrostatica
+Elettrone,Frequenza
+Temperatura,Spettroscopia di assorbimento
+Principi della dinamica,Urto
+Laser,Spettroscopia di assorbimento
+Posizione,Forza
+Accelerazione,Lavoro (fisica)
+Spettroscopia di assorbimento,Pianeta
+Indice di rifrazione,Laser
+Interazione gravitazionale,Effetto Doppler
+Ampiezza,Effetto Doppler
+Onda,Tensione (meccanica)
+Campo gravitazionale terrestre,Momento meccanico
+Accelerazione,Potenziale elettrico
+Energia potenziale,Potenza (fisica)
+Riflessione speculare,Vettore (matematica)
+Elettrone,Spettroscopia di assorbimento
+Elasticità (meccanica),Onda
+Posizione,Accelerazione di gravità
+Indice di rifrazione,Legge di Snell
+Spostamento (cinematica),Accelerazione
+Elasticità (meccanica),Durezza
+Onda,Onda d'urto (fluidodinamica)
+Interazione gravitazionale,Moto parabolico
+Sistema di riferimento,Sistema di riferimento non inerziale
+Fisica,Legge di gravitazione universale
+Onda,Indice di rifrazione
+Differenza di potenziale elettrico,Forza elettromotrice
+Rifrazione,Indice di rifrazione
+Energia,Livello energetico
+Energia cinetica,Urto elastico
+Lunghezza d'onda,Spettroscopia di assorbimento
+Energia,Potenza (fisica)
+Posizione,Lavoro (fisica)
+Lunghezza d'onda,Spettro elettromagnetico
+Frequenza,Spettro di emissione
+Onda,Riflessione speculare
+Luce,Riflessione interna totale
+Fisica,Livello energetico
+Magnete,Campo magnetico
+Onda,Diffrazione
+Spostamento (cinematica),Caduta libera
+Fisica,Urto anelastico
+Sistema di riferimento inerziale,Campo magnetico
+Pianeta,Energia
+Campo gravitazionale,Energia meccanica
+Moto (fisica),Principi della dinamica
+Lavoro (fisica),Legge di Hooke
+Energia meccanica,Elettrone
+Onda,Massa (fisica)
+Interazione gravitazionale,Energia potenziale
+Campo elettrico,Indice di rifrazione
+Urto,Effetto fotoelettrico
+Riflessione (fisica),Indice di rifrazione
+Campo (fisica),Diffrazione
+Spettro elettromagnetico,Conduttore elettrico
+Velocità,Campo magnetico
+Urto,Energia
+Onda,Intensità acustica
+Diffusione ottica,Indice di rifrazione
+Joule,Potenziale elettrico
+Fisica,Temperatura
+Temperatura,Livello energetico
+Velocità,Radiazione elettromagnetica
+Corrente elettrica,Magnetismo
+Campo magnetico,Potenziale elettrico
+Joule,Energia
+Diffusione ottica,Diffrazione

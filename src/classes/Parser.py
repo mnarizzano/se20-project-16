@@ -13,7 +13,7 @@ class Parser(object):
     resourcePath = Settings.resourcePath
     conceptsPickle = Settings.conceptsPickle
     pairsPickle = Settings.pairsPickle
-
+    test = {}
 
     def listDirectory(self, path):
         if os.path.exists(path):
@@ -24,6 +24,27 @@ class Parser(object):
         # TODO: add check if cached directory exist and eventually create it
         Settings.logger.debug('Caching dataset...')
         pickle.dump(Model.dataset, open(self.conceptsPickle, "wb+"))
+
+    def parseTest(self):
+        numberOfEntries = 0
+        for entry in self.listDirectory(Settings.testsetPath):
+            if entry.is_file() and entry.name.__contains__('pairs'):
+                parsed = self.parseTestFile(entry)
+                numberOfEntries = numberOfEntries + len(parsed)
+                self.test[entry.name.split('-')[0]] = parsed
+
+    def parseTestFile(self, entry):
+        parsed = []
+        file = open(entry, 'r', encoding='utf8')
+        for line in file.readlines():
+            Settings.logger.debug("test pairs line fetched: " + line)
+            prereq = line.strip('\n')
+            if len(prereq) > 1:
+                prereq = prereq.split(',')
+                fromConcept = prereq[0] # Model.dataset[Model.dataset.index(prereq[0])]
+                toConcept = prereq[1] # Model.dataset[Model.dataset.index(prereq[1])]
+                parsed.append([fromConcept, toConcept])
+        return parsed
 
     def parse(self, cache=Settings.useCache):
         if not cache:

@@ -4,12 +4,19 @@ class Settings:
     # Paths
     resourcePath = '../resources/'
     datasetPath = resourcePath + 'dataset/single_file/PRELEARN_training_data'
+    testsetPath = resourcePath + 'dataset/single_file/PRELEARN_test_data'
     #datasetPath = resourcePath + 'dataset/split_files/sample'
     Models = resourcePath + 'Model/'
     glove_WIKI = Models + 'Glove/glove_WIKI'
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
     pairFeaturesPickle = resourcePath + 'cached/pairsFeatures.pickle'
     pairsPickle = resourcePath + 'cached/prereqPairs.pickle'
+
+    # type of run
+    generateOutput = True
+
+    # type of balancing algorithm
+    resampleSmallerClass = False
 
     # Caching
     useCache = True

@@ -1,0 +1,200 @@
+Sistema di riferimento cartesiano,Retta
+Poligono,Segmento
+Pendenza topografica,Geometria
+Terna pitagorica,Teorema di Pitagora
+Circonferenza,Geometria
+Terna pitagorica,Triangolo rettangolo
+Bidimensionalità,Piano (geometria)
+Dodecagono,Angolo
+Sistema di coordinate,Geometria
+Parallelogramma,Angolo
+Aquilone (geometria),Angolo
+Pentagono,Spigolo
+Perpendicolarità,Angolo
+Rettangolo,Punto (geometria)
+Diametro,Raggio (geometria)
+Rombo (geometria),Spigolo
+Triangolo rettangolo,Poligono
+Rombo (geometria),Parallelogramma
+Funzione trigonometrica,Retta
+Lunghezza di un arco,Distanza (matematica)
+Rombo (geometria),Vertice (geometria)
+Angolo retto,Geometria
+Seno (matematica),Funzione trigonometrica
+Funzione trigonometrica inversa,Segmento
+Triangolo equilatero,Angolo
+Punto medio,Punto (geometria)
+Trapezio,Geometria
+Poliedro,Geometria
+Poliedro,Punto (geometria)
+Sezione (geometria descrittiva),Geometria
+Triangolo equilatero,Geometria
+Ottagono,Segmento
+Diametro,Segmento
+Poliedro,Retta
+Decagono,Spigolo
+Auto similarità,Similitudine (geometria)
+Spigolo,Retta
+Teorema della bisettrice,Punto (geometria)
+Poligono stellato,Vertice (geometria)
+Terna pitagorica,Retta
+Sistema di riferimento cartesiano,Bidimensionalità
+Pentagono,Punto (geometria)
+Terna pitagorica,Poligono
+Teorema della bisettrice,Geometria
+Ennagono,Segmento
+Funzione trigonometrica inversa,Geometria
+Punto (geometria),Geometria
+Triangolo isoscele,Geometria
+Terna pitagorica,Angolo
+Parallelogramma,Segmento
+Rombo (geometria),Geometria
+Sistema di riferimento cartesiano,Angolo
+Triangolo equilatero,Retta
+Trapezio,Retta
+Asse di un segmento,Segmento
+Congruenza (geometria),Vertice (geometria)
+Simmetria,Geometria
+Ettagono,Poligono
+Diametro,Retta
+Rettangolo,Poligono
+Poligono,Angolo
+Prisma,Retta
+Diagonale,Spigolo
+Triangolo,Punto (geometria)
+Disuguaglianza triangolare,Retta
+Dodecagono,Geometria
+Endecagono,Retta
+Decagono,Segmento
+Spigolo,Punto (geometria)
+Teorema di Pitagora,Punto (geometria)
+Raggio (geometria),Retta
+Tangente (geometria),Triangolo
+Ettagono,Spigolo
+Rettangolo,Vertice (geometria)
+Rotazione (matematica),Punto (geometria)
+Rombo (geometria),Segmento
+Aquilone (geometria),Quadrilatero
+Vertice (geometria),Punto (geometria)
+Seno (matematica),Segmento
+Tangente (geometria),Spigolo
+Piramide (geometria),Retta
+Bidimensionalità,Punto (geometria)
+Lunghezza di un arco,Circonferenza
+Prisma,Segmento
+Esagono,Angolo
+Poliedro,Vertice (geometria)
+Raggio (geometria),Geometria
+Parallelismo (geometria),Punto (geometria)
+Prisma,Parallelismo (geometria)
+Teorema della bisettrice,Spigolo
+Asse di un segmento,Retta
+Diagonale,Punto (geometria)
+Decagono,Poligono
+Terna pitagorica,Geometria
+Terna pitagorica,Angolo retto
+Congruenza (geometria),Geometria
+Teorema della bisettrice,Triangolo
+Terna pitagorica,Vertice (geometria)
+Disuguaglianza triangolare,Geometria
+Triangolo isoscele,Segmento
+Angolo,Bidimensionalità
+Quadrilatero,Parallelismo (geometria)
+Perpendicolarità,Cono
+Angolo,Collinearità
+Punto medio,Arco (geometria)
+Rettangolo,Triangolo rettangolo
+Circonferenza,Sezione (geometria descrittiva)
+Similitudine (geometria),Sfera
+Raggio (geometria),Seno (matematica)
+Quadrilatero,Collinearità
+Bidimensionalità,Ennagono
+Circonferenza,Vertice (geometria)
+Corda (geometria),Angolo
+Simmetria,Parallelogramma
+Cilindro (geometria),Perpendicolarità
+Circonferenza,Asse di un segmento
+Perpendicolarità,Sistema di coordinate
+Asse di un segmento,Triangolo
+Dodecagono,Poliedro
+Parallelismo (geometria),Perpendicolarità
+Segmento,Vertice (geometria)
+Rombo (geometria),Perpendicolarità
+Parallelismo (geometria),Angolo
+Perpendicolarità,Bidimensionalità
+Punto medio,Piano (geometria)
+Tangente (geometria),Seno (matematica)
+Quadrilatero,Disuguaglianza triangolare
+Retta,Piano (geometria)
+Corda (geometria),Teorema di Pitagora
+Circonferenza,Seno (matematica)
+Corda (geometria),Seno (matematica)
+Ettagono,Raggio (geometria)
+Collinearità,Cono
+Segmento,Collinearità
+Circonferenza,Bidimensionalità
+Triangolo,Lunghezza di un arco
+Traslazione (geometria),Distanza (matematica)
+Perpendicolarità,Trapezio
+Disuguaglianza triangolare,Lunghezza di un arco
+Cilindro (geometria),Tangente (geometria)
+Angolo,Distanza (matematica)
+Asse di un segmento,Congruenza (geometria)
+Rotazione (matematica),Distanza (matematica)
+Rombo (geometria),Quadrato
+Teorema di Pitagora,Lunghezza di un arco
+Funzione trigonometrica,Corda (geometria)
+Cilindro (geometria),Raggio (geometria)
+Funzione trigonometrica inversa,Tangente (geometria)
+Cilindro (geometria),Poliedro
+Parallelismo (geometria),Tangente (geometria)
+Retta,Sistema di riferimento cartesiano
+Segmento,Poligono
+Geometria,Pendenza topografica
+Teorema di Pitagora,Terna pitagorica
+Geometria,Circonferenza
+Triangolo rettangolo,Terna pitagorica
+Piano (geometria),Bidimensionalità
+Angolo,Dodecagono
+Geometria,Sistema di coordinate
+Angolo,Parallelogramma
+Angolo,Aquilone (geometria)
+Spigolo,Pentagono
+Angolo,Perpendicolarità
+Punto (geometria),Rettangolo
+Raggio (geometria),Diametro
+Spigolo,Rombo (geometria)
+Poligono,Triangolo rettangolo
+Parallelogramma,Rombo (geometria)
+Retta,Funzione trigonometrica
+Distanza (matematica),Lunghezza di un arco
+Vertice (geometria),Rombo (geometria)
+Geometria,Angolo retto
+Funzione trigonometrica,Seno (matematica)
+Segmento,Funzione trigonometrica inversa
+Angolo,Triangolo equilatero
+Bidimensionalità,Angolo
+Parallelismo (geometria),Quadrilatero
+Cono,Perpendicolarità
+Collinearità,Angolo
+Arco (geometria),Punto medio
+Triangolo rettangolo,Rettangolo
+Sezione (geometria descrittiva),Circonferenza
+Sfera,Similitudine (geometria)
+Seno (matematica),Raggio (geometria)
+Collinearità,Quadrilatero
+Ennagono,Bidimensionalità
+Vertice (geometria),Circonferenza
+Angolo,Corda (geometria)
+Parallelogramma,Simmetria
+Perpendicolarità,Cilindro (geometria)
+Asse di un segmento,Circonferenza
+Sistema di coordinate,Perpendicolarità
+Triangolo,Asse di un segmento
+Poliedro,Dodecagono
+Perpendicolarità,Parallelismo (geometria)
+Vertice (geometria),Segmento
+Perpendicolarità,Rombo (geometria)
+Angolo,Parallelismo (geometria)
+Bidimensionalità,Perpendicolarità
+Piano (geometria),Punto medio

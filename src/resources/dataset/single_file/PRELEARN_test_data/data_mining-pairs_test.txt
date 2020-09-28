@@ -1,0 +1,99 @@
+Scarto interquartile,Mediana (statistica)
+Rete bayesiana,Funzione di densità di probabilità
+Data mining,Outlier
+K-medoids,Clustering
+K-means,Apprendimento automatico
+Macchine a vettori di supporto,Funzione di densità di probabilità
+Discesa del gradiente,Massimo e minimo di una funzione
+F1 score,Campionamento statistico
+Rete bayesiana,Distribuzione di probabilità a priori
+Dbscan,Clustering
+Clustering gerarchico,Clustering
+Precisione e recupero,Ipotesi nulla
+Dbscan,Analisi dei dati
+Albero di decisione,Classificazione statistica
+Foresta casuale,Bootstrap (statistica)
+Rete bayesiana,Funzione di verosimiglianza
+Data mining,Analisi della regressione
+Intervallo di confidenza,Campionamento statistico
+Test di verifica d'ipotesi,Campionamento statistico
+Retropropagazione dell'errore,Apprendimento automatico
+Test di verifica d'ipotesi,Popolazione statistica
+Significatività,Intervallo di confidenza
+Regole di associazione,Probabilità condizionata
+Test t,Intervallo di confidenza
+Campionamento casuale,Popolazione statistica
+Boosting,Apprendimento automatico
+Macchine a vettori di supporto,Classificazione statistica
+Clustering,Analisi dei dati
+Scarto interquartile,Variabilità
+Algoritmo apriori,Regole di associazione
+Rete bayesiana,Distribuzione condizionata
+Data mining,Test di verifica d'ipotesi
+K-means,Analisi dei dati
+Foresta casuale,Bagging
+Macchine a vettori di supporto,Apprendimento automatico
+Test di verifica d'ipotesi,Ipotesi nulla
+Receiver operating characteristic,Classificazione statistica
+Dbscan,Correlazione (statistica)
+Funzione di verosimiglianza,Distribuzione condizionata
+Distribuzione condizionata,Probabilità condizionata
+Test di verifica d'ipotesi,Scarto quadratico medio
+Retropropagazione dell'errore,Rete neurale artificiale
+Correlazione (statistica),Scarto quadratico medio
+Rete bayesiana,Probabilità condizionata
+Significatività,Popolazione statistica
+Test t,Campionamento statistico
+Foresta casuale,Probabilità condizionata
+Rete neurale artificiale,Classificazione statistica
+Teorema di Bayes,Distribuzione condizionata
+Boosting,Funzione di densità di probabilità
+Intervallo di confidenza,Distribuzione congiunta
+Distribuzione di probabilità a priori,Probabilità condizionata
+Boosting,Data mining
+Rete neurale feed-forward,Discesa del gradiente
+Data mining,Clustering gerarchico
+Clustering,Outlier
+Retropropagazione dell'errore,Rete neurale feed-forward
+Foresta casuale,Boosting
+Clustering,Information retrieval
+Foresta casuale,Scarto quadratico medio
+K-medoids,K-means
+Scarto interquartile,Outlier
+Funzione di verosimiglianza,Intervallo di confidenza
+Macchine a vettori di supporto,Outlier
+Retropropagazione dell'errore,Apprendimento ensemble
+Distribuzione congiunta,Distribuzione condizionata
+Test di verifica d'ipotesi,Teorema di Bayes
+Albero di decisione,Regole di associazione
+Foresta casuale,Sistema esperto
+Boosting,Macchine a vettori di supporto
+Rapporto segnale/rumore,Scarto quadratico medio
+Analisi delle componenti principali,Rapporto segnale/rumore
+Clustering,Rete neurale artificiale
+Analisi delle componenti principali,Rete neurale artificiale
+K-means,Data mining
+Mediana (statistica),Scarto interquartile
+Funzione di densità di probabilità,Rete bayesiana
+Outlier,Data mining
+Clustering,K-medoids
+Apprendimento automatico,K-means
+Funzione di densità di probabilità,Macchine a vettori di supporto
+Massimo e minimo di una funzione,Discesa del gradiente
+Campionamento statistico,F1 score
+Distribuzione di probabilità a priori,Rete bayesiana
+Clustering,Dbscan
+Clustering,Clustering gerarchico
+Ipotesi nulla,Precisione e recupero
+Distribuzione congiunta,Intervallo di confidenza
+Probabilità condizionata,Distribuzione di probabilità a priori
+Data mining,Boosting
+Discesa del gradiente,Rete neurale feed-forward
+Clustering gerarchico,Data mining
+Outlier,Clustering
+Rete neurale feed-forward,Retropropagazione dell'errore
+Boosting,Foresta casuale
+Information retrieval,Clustering
+Scarto quadratico medio,Foresta casuale
+K-means,K-medoids
+Outlier,Scarto interquartile
