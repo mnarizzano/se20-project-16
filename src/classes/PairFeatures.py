@@ -12,11 +12,11 @@ class PairFeatures:
             # generic check
             # TODO: something's wrong here: most of the values are 0 over the all dataset
             # sum([sum([self.pairFeatures.pairFeatures[a.id][b.id].LDA_KLDivergence for a in MyModel.dataset]) for b in MyModel.dataset])
-            self.link = None
-            self.jaccardSimilarity = None
-            self.referenceDistance = None
-            self.LDACrossEntropy = None
-            self.LDA_KLDivergence = None
+            self.link = 0
+            self.jaccardSimilarity = 0
+            self.referenceDistance = 0
+            self.LDACrossEntropy = 0
+            self.LDA_KLDivergence = 0
 
     def __init__(self):
         # set a matrix of PairFeats
@@ -48,7 +48,19 @@ class PairFeatures:
         self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].LDACrossEntropy = value
 
     def LDACrossEntropyLoaded(self):
-        return self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].LDACrossEntropy is not None
+        return (self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].LDACrossEntropy is not None and
+                sum([sum([self.pairFeatures[a.id][b.id].LDACrossEntropy for a in Model.dataset]) for b
+                     in Model.dataset]) > 0)
+
+    def RefDLoaded(self):
+        return (self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].referenceDistance is not None and
+                sum([sum([self.pairFeatures[a.id][b.id].referenceDistance for a in Model.dataset]) for b
+                     in Model.dataset]) > 0)
+
+    def jaccardLoaded(self):
+        return (self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].jaccardSimilarity is not None and
+                sum([sum([self.pairFeatures[a.id][b.id].jaccardSimilarity for a in Model.dataset]) for b
+                     in Model.dataset]) > 0)
 
     def setLDA_KLDivergence(self, conceptA, conceptB, value):
         self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].LDA_KLDivergence = value
@@ -65,3 +77,6 @@ class PairFeatures:
 
     def getLDA_KLDivergence(self, conceptA, conceptB):
         return self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].LDA_KLDivergence
+
+    def getLink(self, conceptA, conceptB):
+        return self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].link

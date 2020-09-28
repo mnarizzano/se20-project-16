@@ -10,8 +10,7 @@ from gensim import matutils, models
 import scipy.sparse
 from math import log2
 from gensim.models import Word2Vec
-
-
+import pickle
 
 class FeatureExtractor:
 
@@ -20,6 +19,10 @@ class FeatureExtractor:
 
     def __init__(self, pairFeatures):
         self.pairFeatures = pairFeatures
+
+    def cache(self):
+        Settings.logger.debug('Caching pairFeatures...')
+        pickle.dump(self.pairFeatures, open(Settings.pairFeaturesPickle, "wb+"))
 
     def extractSentences(self):
         loaded = (MyModel.dataset[len(MyModel.dataset)-1].features.annotatedSentences is not None) and \
@@ -161,37 +164,21 @@ class FeatureExtractor:
 
     # TODO: only calculate pairFeatures for same domain (to speed up execution) -> no more separation by domain
     def jaccardSimilarity(self):    # calculated over Nouns
-        Settings.logger.debug('Calculating Jaccard Similarity')
-        self.extractNounsVerbs()
-        for conceptA in MyModel.dataset:
-            for conceptB in MyModel.dataset:
-                if conceptB.domain == conceptA.domain:  # To speed up, not possible if don't have domains
-                    if len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))==0:
-                        js = 0
-                    else:
-                        js = len(conceptA.features.nounsSet.intersection(conceptB.features.nounsSet))/\
-                             len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))
-                    self.pairFeatures.setJaccardSimilarity(conceptA, conceptB, js)
-
-    def referenceDistance(self, conceptA, conceptB):  # using EQUAL weights
-        num1 = 0
-        num2 = 0
-        den1 = 0
-        den2 = 0
-        for concept in MyModel.dataset:
-            num1 += (self.pairFeatures.features[concept.id][conceptB.id].link *
-                        self.pairFeatures.features[conceptA.id][concept.id].link)
-            num2 += (self.pairFeatures.features[concept.id][conceptA.id].link *
-                        self.pairFeatures.features[conceptB.id][concept.id].link)
-            den1 += (self.pairFeatures.features[conceptA.id][concept.id].link)
-            den2 += (self.pairFeatures.features[conceptB.id][concept.id].link)
-        
-        if (den1 != 0 and den2 != 0):
-            dist = (num1/den1) - (num2/den2)
-            self.pairFeatures.setReferenceDistance(conceptA, conceptB, dist)
+        if not self.pairFeatures.jaccardLoaded():
+            Settings.logger.debug('Calculating Jaccard Similarity')
+            self.extractNounsVerbs()
+            for conceptA in MyModel.dataset:
+                for conceptB in MyModel.dataset:
+                    if conceptB.domain == conceptA.domain:  # To speed up, not possible if don't have domains
+                        if len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))==0:
+                            js = 0
+                        else:
+                            js = len(conceptA.features.nounsSet.intersection(conceptB.features.nounsSet))/\
+                                 len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))
+                        self.pairFeatures.setJaccardSimilarity(conceptA, conceptB, js)
+            self.cache()
         else:
-            # if den1 or den2 = 0, it means that A and B are no prerequisites
-            self.pairFeatures.setReferenceDistance(conceptA, conceptB, 0)
+            Settings.logger.debug('Skipping jaccard cause it was cached')
 
     def trainLSTMNet(self, inputs, outputs):
         # please note that this needs a wordembedding model in Settings.wordVecModelPath, you can download one as follows
@@ -203,18 +190,6 @@ class FeatureExtractor:
         # every kfold iteration in the parent we retrain this based on the parent trainset
         pass
 
-    # TODO: instead of theese call this_Feature_Extractor_instance.pairFeatures.get...  (eventually .getPairFeatures().get..)
-    def getRefDistance(self, conceptA, conceptB):
-        return self.pairFeatures.getRefDistance(conceptA, conceptB)
-
-    def getJaccardSim(self, conceptA, conceptB):
-        return self.pairFeatures.getJaccardSim(conceptA, conceptB)
-
-    def getLDACrossEntropy(self, conceptA, conceptB):
-        return self.pairFeatures.getLDACrossEntropy(conceptA, conceptB)
-
-    def getLDA_KLDivergence(self, conceptA, conceptB):
-        return self.pairFeatures.getLDA_KLDivergence(conceptA, conceptB)
 
     def loadWordEmbeddings(self):
         model = Word2Vec.load(Settings.glove_WIKI)  # glove model

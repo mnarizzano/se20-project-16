@@ -54,6 +54,7 @@ class Engine(Model):
         meta = MetaExtractor(self.pairFeatures)
         meta.annotateConcepts()
         meta.extractLinkConnections()
+        meta.referenceDistance()
         ### example for RefD calculation
         '''
         # call to RefD calculation (calculated between pairs, should move for:for: in FeatureExtractor and have single method)
@@ -188,33 +189,24 @@ class Engine(Model):
                         classRatio[int(Model.desiredGraph.getPrereq(conceptA, conceptB))] = 0
                     classRatio[int(Model.desiredGraph.getPrereq(conceptA, conceptB))] += 1 # increase this class counter
                     # TODO define above a simple dictionary containing features we want to consider and automatically map it here
-                    if int(Model.desiredGraph.getPrereq(conceptA, conceptB)) == Model.desiredGraph.isPrereq:
-                        prereqData.append([feature.getJaccardSim(conceptA, conceptB),
-                                         feature.getRefDistance(conceptA, conceptB),
-                                         feature.getLDACrossEntropy(conceptA, conceptB),
-                                         feature.getLDA_KLDivergence(conceptA, conceptB),
+                    feat = [self.pairFeatures.getJaccardSim(conceptA, conceptB),
+                                         self.pairFeatures.getLink(conceptA, conceptB),
+                                         self.pairFeatures.getRefDistance(conceptA, conceptB),
+                                         self.pairFeatures.getLDACrossEntropy(conceptA, conceptB),
+                                         self.pairFeatures.getLDA_KLDivergence(conceptA, conceptB),
                                          *conceptA.getFeatures().get_LDAVector(),   # spread operator: *['a', 'b'] = a, b
                                          *conceptB.getFeatures().get_LDAVector(),
                                          # int(Model.desiredGraph.getPrereq(conceptA, conceptB))    # this is cheating but the model is not giving 100% in this case. Classifier too much simple?
-                        ])
+                        ]
+                    # feat = [random.choice([0, 1])]  # only one, random features: should return performance = 50%
+                    # feat = [int(Model.desiredGraph.getPrereq(conceptA, conceptB))]   # truth oracle, should return performance = 100%
 
-                        # prereqData.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
-                        #prereqData.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
+                    if int(Model.desiredGraph.getPrereq(conceptA, conceptB)) == Model.desiredGraph.isPrereq:
+                        prereqData.append(feat)
                         prereqLabel.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
+
                     if int(Model.desiredGraph.getPrereq(conceptA, conceptB)) == Model.desiredGraph.notPrereq:
-
-                        notPrereqData.append([feature.getJaccardSim(conceptA, conceptB),
-                                                    feature.getRefDistance(conceptA, conceptB),
-                                                    feature.getLDACrossEntropy(conceptA, conceptB),
-                                                    feature.getLDA_KLDivergence(conceptA, conceptB),
-                                                    *conceptA.getFeatures().get_LDAVector(),
-                                                    # spread operator: *['a', 'b'] = a, b
-                                                    *conceptB.getFeatures().get_LDAVector(),
-                                                    # int(Model.desiredGraph.getPrereq(conceptA, conceptB))    # this is cheating but the model is not giving 100% in this case. Classifier too much simple?
-                                                    ])
-
-                        # notPrereqData.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
-                        # notPrereqData.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
+                        notPrereqData.append(feat)
                         notPrereqLabel.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
         if len(notPrereqLabel) + len(prereqLabel) != total:
             raise Exception("Not all labels are of prerequisition")
