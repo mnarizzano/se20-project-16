@@ -197,10 +197,12 @@ class Engine(Model):
                                          *conceptB.getFeatures().get_LDAVector(),
                                          # int(Model.desiredGraph.getPrereq(conceptA, conceptB))    # this is cheating but the model is not giving 100% in this case. Classifier too much simple?
                         ])
-                        # features.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
-                        # features.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
+
+                        # prereqData.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
+                        #prereqData.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
                         prereqLabel.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
                     if int(Model.desiredGraph.getPrereq(conceptA, conceptB)) == Model.desiredGraph.notPrereq:
+
                         notPrereqData.append([feature.getJaccardSim(conceptA, conceptB),
                                                     feature.getRefDistance(conceptA, conceptB),
                                                     feature.getLDACrossEntropy(conceptA, conceptB),
@@ -210,8 +212,9 @@ class Engine(Model):
                                                     *conceptB.getFeatures().get_LDAVector(),
                                                     # int(Model.desiredGraph.getPrereq(conceptA, conceptB))    # this is cheating but the model is not giving 100% in this case. Classifier too much simple?
                                                     ])
-                        # features.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
-                        # features.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
+
+                        # notPrereqData.append([random.choice([0, 1])])  # only one, random features: should return performance = 50%
+                        # notPrereqData.append([int(Model.desiredGraph.getPrereq(conceptA, conceptB))])   # truth oracle, should return performance = 100%
                         notPrereqLabel.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
         if len(notPrereqLabel) + len(prereqLabel) != total:
             raise Exception("Not all labels are of prerequisition")
