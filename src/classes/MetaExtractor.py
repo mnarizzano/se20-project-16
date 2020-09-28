@@ -33,6 +33,7 @@ class MetaExtractor:
             print("%s: %s" % (title, categories[title]))
 
     def annotateConcepts(self):
+        Settings.logger.debug("annotateConcepts")
         loaded = (Model.dataset[len(Model.dataset) - 1].meta.links is not None) and \
                  (Model.dataset[len(Model.dataset) - 1].meta.links != []) and \
                  (Model.dataset[len(Model.dataset) - 1].meta.categories is not None) and \
@@ -68,6 +69,7 @@ class MetaExtractor:
         pickle.dump(self.pairFeatures, open(Settings.pairFeaturesPickle, "wb+"))
 
     def extractLinkConnections(self):
+        Settings.logger.debug("extractLinkConnections")
         if not self.pairFeatures.linksLoaded():
             for conceptA in Model.dataset:
                 for conceptB in Model.dataset:
