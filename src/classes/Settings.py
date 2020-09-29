@@ -18,6 +18,10 @@ class Settings:
     # type of balancing algorithm
     resampleSmallerClass = False
 
+    # paths for gui
+    guidePage = '../resources/guide.html'
+    savedConfigurations = '../resources/saved.txt'
+
     # Caching
     useCache = True
 
