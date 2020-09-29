@@ -33,3 +33,19 @@ class Settings:
     logging.basicConfig(level=logLevel,
                         format='%(asctime)s - %(funcName)s - %(levelname)s - %(message)s')
     logger = logging.getLogger('myLogger')
+
+    # Checkboxes for feature selection
+    useRefD = True
+    useConceptLDA = True
+    useJaccard = True
+    useContainsLink = True
+    useLDACrossEntropy = True
+    useLDA_KLDivergence = True
+
+    # lemmatization settings
+    useNouns = True
+    useVerbs = False
+    useAdjectives = False
+
+    # set run mode
+    CrossDomain = True  # if False uses InDomain
