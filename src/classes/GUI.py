@@ -117,13 +117,17 @@ class StartPage(QWidget):
         self.startLeftDatasetLabel = Label('')
 
         self.startLeftLabel1 = Label('Inserire una nuova configurazione:')
-        self.startLeftLabel2 = Label('Parametro 1')
-        self.startLeftLabel3 = Label('Parametro 2')
-        self.startLeftLabel4 = Label('Parametro 3')
+        self.startLeftLabel2 = Label('Numero di neuroni:')
+        self.startLeftLabel3 = Label('Numero di layers della rete neurale:')
+        self.startLeftLabel4 = Label('Numero di topics LDA:')
+        self.startLeftLabel5 = Label('Numero di kfold splits:')
+        self.startLeftLabel6 = Label('Numero di epoche del training per layer:')
 
         self.startLeftLineEdit1 = LineEdit()
         self.startLeftLineEdit2 = LineEdit()
         self.startLeftLineEdit3 = LineEdit()
+        self.startLeftLineEdit4 = LineEdit()
+        self.startLeftLineEdit5 = LineEdit()
 
         startLeftLayout = QVBoxLayout()
         startLeftLayout.addWidget(self.startLeftFileButton)
@@ -135,6 +139,10 @@ class StartPage(QWidget):
         startLeftLayout.addWidget(self.startLeftLineEdit2)
         startLeftLayout.addWidget(self.startLeftLabel4)
         startLeftLayout.addWidget(self.startLeftLineEdit3)
+        startLeftLayout.addWidget(self.startLeftLabel5)
+        startLeftLayout.addWidget(self.startLeftLineEdit4)
+        startLeftLayout.addWidget(self.startLeftLabel6)
+        startLeftLayout.addWidget(self.startLeftLineEdit5)
         self.startLeftWidget.setLayout(startLeftLayout)
 
     def createStartRightWidget(self):
