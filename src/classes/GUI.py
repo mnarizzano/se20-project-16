@@ -21,8 +21,9 @@ class Window(QMainWindow):
         super().__init__()
 
         self.setWindowTitle('Prelearn')
-        self.resize(1000, 500)
+        self.resize(1000, 600)
 
+        self.createMenu()
         self.buildPages()
 
     def buildPages(self):
@@ -88,6 +89,7 @@ class Page(QStackedWidget):
         self.resultPage.resultRequest2.connect(lambda: self.setCurrentIndex(1))  # resultPage -> statisticPage
 
 class StartPage(QWidget):
+    counter = 0
     startRequest1 = pyqtSignal()
     startRequest2 = pyqtSignal()
     savedConfigurations = Settings.savedConfigurations
@@ -116,18 +118,60 @@ class StartPage(QWidget):
 
         self.startLeftDatasetLabel = Label('')
 
-        self.startLeftLabel1 = Label('Inserire una nuova configurazione:')
+        self.startLeftLabel1 = Label('Inserire i parametri del modello:')
         self.startLeftLabel2 = Label('Numero di neuroni:')
         self.startLeftLabel3 = Label('Numero di layers della rete neurale:')
-        self.startLeftLabel4 = Label('Numero di topics LDA:')
-        self.startLeftLabel5 = Label('Numero di kfold splits:')
-        self.startLeftLabel6 = Label('Numero di epoche del training per layer:')
+        self.startLeftLabel4 = Label('Numero di kfold splits:')
+        self.startLeftLabel5 = Label('Numero di epoche del training per layer:')
+        self.startLeftLabel6 = Label('Contains:')
 
         self.startLeftLineEdit1 = LineEdit()
         self.startLeftLineEdit2 = LineEdit()
         self.startLeftLineEdit3 = LineEdit()
         self.startLeftLineEdit4 = LineEdit()
         self.startLeftLineEdit5 = LineEdit()
+
+        self.startLeftLabel6 = Label('Selezionare le features per il modello:')
+        self.startLeftCheckBox1 = QCheckBox('Reference Distance')
+        self.startLeftCheckBox1.setCheckable(True)
+
+        self.startLeftCheckBox2 = QCheckBox('Jaccard Similarity')
+        self.startLeftCheckBox2.setCheckable(True)
+
+        self.startLeftCheckBox3 = QCheckBox('LDA Concept')
+        self.startLeftCheckBox3.setCheckable(True)
+
+        self.startLeftCheckBox4 = QCheckBox('LDA Cross Entropy')
+        self.startLeftCheckBox4.setCheckable(True)
+
+        self.startLeftCheckBox5 = QCheckBox('LDA KLDivergence')
+        self.startLeftCheckBox5.setCheckable(True)
+
+        self.startLeftCheckBox6 = QCheckBox('Link')
+        self.startLeftCheckBox6.setCheckable(True)
+
+        self.startLeftCheckBox7 = QCheckBox('Nouns')
+        self.startLeftCheckBox6.setCheckable(True)
+
+        self.startLeftCheckBox8 = QCheckBox('Verbs')
+        self.startLeftCheckBox6.setCheckable(True)
+
+        self.startLeftCheckBox9 = QCheckBox('Adjectives')
+        self.startLeftCheckBox6.setCheckable(True)
+
+        self.startLeftCheckBox10 = QCheckBox('Crossdomain')
+        self.startLeftCheckBox6.setCheckable(True)
+
+        self.startLeftCheckBox1.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox2.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox3.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox4.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox5.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox6.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox7.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox8.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox9.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox10.stateChanged.connect(self.setFeatures)
 
         startLeftLayout = QVBoxLayout()
         startLeftLayout.addWidget(self.startLeftFileButton)
@@ -143,6 +187,16 @@ class StartPage(QWidget):
         startLeftLayout.addWidget(self.startLeftLineEdit4)
         startLeftLayout.addWidget(self.startLeftLabel6)
         startLeftLayout.addWidget(self.startLeftLineEdit5)
+        startLeftLayout.addWidget(self.startLeftCheckBox1)
+        startLeftLayout.addWidget(self.startLeftCheckBox2)
+        startLeftLayout.addWidget(self.startLeftCheckBox3)
+        startLeftLayout.addWidget(self.startLeftCheckBox4)
+        startLeftLayout.addWidget(self.startLeftCheckBox5)
+        startLeftLayout.addWidget(self.startLeftCheckBox6)
+        startLeftLayout.addWidget(self.startLeftCheckBox7)
+        startLeftLayout.addWidget(self.startLeftCheckBox8)
+        startLeftLayout.addWidget(self.startLeftCheckBox9)
+        startLeftLayout.addWidget(self.startLeftCheckBox10)
         self.startLeftWidget.setLayout(startLeftLayout)
 
     def createStartRightWidget(self):
@@ -240,26 +294,73 @@ class StartPage(QWidget):
         if fileName:
             self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
 
-    def runModel(self):
-        # Parse files in Specified folder, optionally we can add input to modify Settings.resourcePath
-        p = Parser()
-        p.parse()
-        Settings.logger.info('Finished Parsing')
-        # Calculate Baseline Performance
-        
-        base = Baseline()
-        basePerformance = base.process()
-        
-        # Calculate Engine Performance
-        engine = Engine()
-        engine.process()
-        # plot statistics
-        engine.plot()
+    def setFeatures(self):
+        if self.startLeftCheckBox1.isChecked():
+            Settings.useRefD = True
+        else:
+            Settings.useRefD = False
+        if self.startLeftCheckBox2.isChecked():
+            Settings.useJaccard = True
+        else:
+            Settings.useJaccard = False
+        if self.startLeftCheckBox3.isChecked():
+            Settings.useConceptLDA = True
+        else:
+            Settings.useConceptLDA = False
+        if self.startLeftCheckBox4.isChecked():
+            Settings.useLDACrossEntropy = True
+        else:
+            Settings.useLDACrossEntropy = False
+        if self.startLeftCheckBox5.isChecked():
+            Settings.useLDA_KLDivergence = True
+        else:
+            Settings.useLDA_KLDivergence = False
+        if self.startLeftCheckBox6.isChecked():
+            Settings.useContainsLink = True
+        else:
+            Settings.useContainsLink = False
+        if self.startLeftCheckBox7.isChecked():
+            Settings.useNouns = True
+        else:
+            Settings.useNouns = False
+        if self.startLeftCheckBox8.isChecked():
+            Settings.useVerbs = True
+        else:
+            Settings.useVerbs = False
+        if self.startLeftCheckBox9.isChecked():
+            Settings.useAdjectives = True
+        else:
+            Settings.useAdjectives = False
+        if self.startLeftCheckBox10.isChecked():
+            Settings.CrossDomain = True
+        else:
+            Settings.CrossDomain = False
 
-        if Settings.useCache:
-            p.cache()
-            
-        self.startButton.setText('Vai ai risultati')
+    def runModel(self):
+        self.counter += 1
+        if self.counter == 1:
+            # Parse files in Specified folder, optionally we can add input to modify Settings.resourcePath
+            p = Parser()
+            p.parse()
+            p.parseTest()
+            Settings.logger.info('Finished Parsing')
+
+            # Calculate Baseline Performance
+            '''
+            base = Baseline()
+            basePerformance = base.process()
+            '''
+            # Calculate Engine Performance
+            engine = Engine()
+            self.result = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput
+            # plot statistics
+            engine.plot()
+            print('risultati:')
+            for element in result.values():
+                print(element)
+            if Settings.useCache:
+                p.cache()
+            self.startButton.setText('Vai ai risultati')
         self.startButton.clicked.connect(self.startRequest1)
 
 class StatisticPage(QWidget):
@@ -368,13 +469,15 @@ class ResultPage(QWidget):
 
         self.createResultLeftWidget()
         self.createResultRightWidget()
+        self.createResultShowWidget()
         self.createResultSaveWidget()
         self.createResultButtonWidget()
 
         resultPageLayout = QGridLayout()
         resultPageLayout.addWidget(self.resultLeftWidget, 0, 0)
-        resultPageLayout.addWidget(self.saveWidget, 1, 0)
-        resultPageLayout.addWidget(self.returnWidget, 2, 0)
+        resultPageLayout.addWidget(self.resultShowWidget, 1, 0)
+        resultPageLayout.addWidget(self.saveWidget, 2, 0)
+        resultPageLayout.addWidget(self.returnWidget, 3, 0)
         resultPageLayout.addWidget(self.resultRightWidget, 0, 1, 1, 1)
         self.setLayout(resultPageLayout)
 
@@ -412,6 +515,34 @@ class ResultPage(QWidget):
         resultRightLayout.addItem(self.resultHSpacer)
         self.resultRightWidget.setLayout(resultRightLayout)
 
+    def createResultShowWidget(self):
+        self.resultShowWidget = QWidget()
+
+        self.resultShowButton1 = QPushButton()
+        self.resultShowButton1.setText('Mostra risultati')
+        self.resultShowButton1.setFixedSize(100, 30)
+
+        self.resultShowButton2 = QPushButton()
+        self.resultShowButton2.setText('Salva risultati(txt)')
+        self.resultShowButton2.setFixedSize(100, 30)
+        
+        self.resultShowButton3 = QPushButton()
+        self.resultShowButton3.setText('Salva risultati(csv)')
+        self.resultShowButton3.setFixedSize(100, 30)
+
+        self.resultShowHSpacer = QSpacerItem(500, 0, QSizePolicy.Maximum, QSizePolicy.Maximum)
+
+        self.resultShowButton1.clicked.connect(self.showResult)
+        self.resultShowButton2.clicked.connect(self.saveResultTxt)
+        self.resultShowButton3.clicked.connect(self.saveResultCsv)
+
+        resultShowLayout = QHBoxLayout()
+        resultShowLayout.addWidget(self.resultShowButton1)
+        resultShowLayout.addWidget(self.resultShowButton2)
+        resultShowLayout.addWidget(self.resultShowButton3)
+        resultShowLayout.addItem(self.resultShowHSpacer)
+        self.resultShowWidget.setLayout(resultShowLayout)
+
     def createResultSaveWidget(self):
         self.saveWidget = QWidget()
 
@@ -424,16 +555,20 @@ class ResultPage(QWidget):
         self.saveNoButton = QPushButton()
         self.saveNoButton.setText('No')
         self.saveNoButton.setFixedSize(100, 30)
+
+        self.saveLabel2 = Label('')
+
         self.saveHSpacer = QSpacerItem(500, 0, QSizePolicy.Maximum, QSizePolicy.Maximum)
 
         self.saveYesButton.clicked.connect(self.saveConfiguration)
         self.saveNoButton.clicked.connect(self.disableSaveConfiguration)
 
         saveLayout = QGridLayout()
-        saveLayout.addWidget(self.saveLabel1, 0, 0, 0, 3)
+        saveLayout.addWidget(self.saveLabel1, 0, 0, 1, 3)
         saveLayout.addWidget(self.saveYesButton, 1, 0)
         saveLayout.addWidget(self.saveNoButton, 1, 1)
-        saveLayout.addItem(self.saveHSpacer, 1, 2)
+        saveLayout.addWidget(self.saveLabel2, 2, 0)
+        saveLayout.addItem(self.saveHSpacer, 3, 2)
         self.saveWidget.setLayout(saveLayout)
 
     def createResultButtonWidget(self):
@@ -464,14 +599,23 @@ class ResultPage(QWidget):
 
         self.showDialog.show()
 
-    def saveResult(self):
-        resultDialog = QFileDialog(
-            None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+    def saveResultTxt(self):
+        resultDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName = QFileDialog.getSaveFileName(
             self, "Salva i risultati", "", "Text Files (*.txt)")
-        file = open(fileName[0], 'w')
-        file.write()  # TODO: insert result of the model
-        file.close()
+        if not fileName[0] == "":
+            file = open(fileName[0], 'w')
+            file.write()  # TODO: insert result of the model
+            file.close()
+    
+    def saveResultCsv(self):
+        resultDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+        fileName = QFileDialog.getSaveFileName(
+            self, "Salva i risultati", "", "CSV Files (*.csv)")
+        if not fileName[0] == "":
+            file = open(fileName[0], 'w')
+            file.write()  # TODO: insert result of the model
+            file.close()
 
     def saveConfiguration(self):
         saveDate = datetime.datetime.now()
@@ -480,17 +624,17 @@ class ResultPage(QWidget):
         file.write(str(saveDate.year) + '-' + str(saveDate.month) +
                    '-' + str(saveDate.day) + ' ' + str(saveDate.hour) +
                    ':' + str(saveDate.minute) + ':' + str(saveDate.second) + '\t')
-        file.write('(' + 'Accuracy' + ',' + 'valore' + '),' +
-                   '(' + 'Precision' + ',' + 'valore' + '),' +
-                   '(' + 'Fscore' + ',' + 'valore' + '),' +
-                   '(' + 'Recall' + ',' + 'valore' + ')\t') #TODO: substitute valore con output of nn
+        file.write('(' + 'Accuracy' + ',' + str(self.parent.result['accuracy']) + '),' +
+                   '(' + 'Precision' + ',' + str(self.parent.result['precision']) + '),' +
+                   '(' + 'Fscore' + ',' + str(self.parent.result['f1']) + '),' +
+                   '(' + 'Recall' + ',' + str(self.parent.result['recall']) + ')\t')
         file.write('(' + self.parent.startLeftLabel2.text() + ',' + self.parent.startLeftLineEdit1.text() + '),' +
                    '(' + self.parent.startLeftLabel3.text() + ',' + self.parent.startLeftLineEdit2.text() + '),' +
                    '(' + self.parent.startLeftLabel4.text() + ',' + self.parent.startLeftLineEdit3.text() + ')\n')
         file.close()  
 
-        def disableSaveConfiguration(self):
-            self.saveWidget.setDisabled(True)
+    def disableSaveConfiguration(self):
+        self.saveWidget.setDisabled(True)
 
 
 class Label(QLabel):
