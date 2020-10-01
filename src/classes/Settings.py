@@ -16,7 +16,7 @@ class Settings:
     generateOutput = True
 
     # type of balancing algorithm
-    resampleSmallerClass = False
+    resampleSmallerClass = True
 
     # paths for gui
     guidePage = '../resources/guide.html'
@@ -52,4 +52,4 @@ class Settings:
     useAdjectives = False
 
     # set run mode
-    CrossDomain = True  # if False uses InDomain
+    CrossDomain = True  # if False trains on all domains

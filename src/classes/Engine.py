@@ -20,6 +20,7 @@ from sklearn.model_selection import cross_validate
 from sklearn.model_selection import KFold
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.model_selection import LeaveOneGroupOut
 from sklearn.metrics import accuracy_score
 from Parser import Parser
 
@@ -36,6 +37,7 @@ class Engine(Model):
 
 
     def process(self):
+        '''
         # initialize and pass my PairFeatures to the FeatureExtractor
         feature = FeatureExtractor(self.pairFeatures)
         # begin processing of single Features
@@ -56,19 +58,11 @@ class Engine(Model):
         meta.annotateConcepts()
         meta.extractLinkConnections()
         meta.referenceDistance()
-        ### example for RefD calculation
-        '''
-        # call to RefD calculation (calculated between pairs, should move for:for: in FeatureExtractor and have single method)
-        # feature.refDistance() which calculates them all and then getter as feature.getRefDistance(ConceptA, ConceptB)
-        for conceptA in Model.dataset:
-            for conceptB in Model.dataset:
-                if conceptA.title == 'Significatività' and conceptB.title == 'Outlier':     # wikipedia pages for test
-                    feature.referenceDistance(conceptA, conceptB)
-        '''
+
         ## processing of raw features
         feature.jaccardSimilarity()
         feature.LDACrossEntropy()
-
+        '''
         # obtain input and output from desiredGraphMatrix, PairFeatures and Model.dataset (for single ones)
         encoder = LabelEncoder()
         result_set = self.classifierFormatter()
@@ -93,6 +87,7 @@ class Engine(Model):
         Settings.logger.info("Starting Network training...")
         Settings.logger.debug("Number of features = Input Size = " + str(result_set['input_size']))
         modelOutput = result_set['output_size']
+        groups = result_set['groups']
         activationFunction = 'softmax'
         lossFunction = 'categorical_crossentropy'
         if modelOutput == 2:
@@ -119,16 +114,25 @@ class Engine(Model):
         estimator = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
         estimator._estimator_type = "classifier"
 
-        # kfold = KFold(n_splits=10, shuffle=True)
-        # StratifiedKFold tries to balance set classes between Folds, 7 is a random number not set to random just for reproducibility
-        # kfold = StratifiedKFold(n_splits=2, shuffle=True, random_state=7)
-        numberOfSplits = 3
-        kfold = StratifiedShuffleSplit(n_splits=numberOfSplits, test_size=1/numberOfSplits)
-        for train, test in kfold.split(X, encoded_Y):
-            Settings.logger.debug('train -  {}   |   test -  {}'.format(
-            np.bincount(encoded_Y[train]), np.bincount(encoded_Y[test])))
-        #results = cross_val_score(estimator, X, dummy_y, n_jobs=-1, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
-        #print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
+        if not Settings.CrossDomain:    # train on all domains->use stratifiedKFold
+            Settings.logger.debug('In-domain cross-validation')
+            # kfold = KFold(n_splits=10, shuffle=True)
+            # StratifiedKFold tries to balance set classes between Folds, 7 is a random number not set to random just for reproducibility
+            # kfold = StratifiedKFold(n_splits=2, shuffle=True, random_state=7)
+            numberOfSplits = 2
+            kfold = StratifiedShuffleSplit(n_splits=numberOfSplits, test_size=1/numberOfSplits)
+            for train, test in kfold.split(X, encoded_Y):
+                Settings.logger.debug('train -  {}   |   test -  {}'.format(
+                np.bincount(encoded_Y[train]), np.bincount(encoded_Y[test])))
+            #results = cross_val_score(estimator, X, dummy_y, n_jobs=-1, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
+            #print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
+        else: # Use LeaveOneGroupOut KFold:
+            Settings.logger.debug('Cross-domain cross-validation')
+            kfold = LeaveOneGroupOut()
+            # StratifiedShuffleSplit(n_splits=numberOfSplits, test_size=1/numberOfSplits)
+            for train, test in kfold.split(X, encoded_Y, groups):
+                Settings.logger.debug('train -  {}   |   test -  {}'.format(
+                np.bincount(encoded_Y[train]), np.bincount(encoded_Y[test])))
 
         scoring = ['accuracy', 'f1_macro', 'f1_micro', 'average_precision', 'balanced_accuracy', 'precision_macro', 'recall_macro'] # difference between macro and not macro? f1 === f-score?
         scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold, fit_params={'class_weight': result_set['class_weights']})
@@ -158,19 +162,43 @@ class Engine(Model):
             #print("accuracy as seen from model.evaluate: " + str(model.score(X_test, y_test)))          # if KerasClassifier wrapper
             i += 1
 
-        # train on whole dataset
-        model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
-        Settings.logger.debug('Started training...')
-        model.fit(X, encoded_Y)
         output = {}
         Settings.logger.debug('Started prediction...')
-        for domain in self.parser.test:
-            output[domain] = []
-            for pair in self.parser.test[domain]:
-                fromConcept = Model.dataset[Model.dataset.index(pair[0])]
-                toConcept = Model.dataset[Model.dataset.index(pair[1])]
-                result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept)])) > 0.5).astype('int32')]
-                output[domain].append(result)
+        if not Settings.CrossDomain:    # use stratifiedKFold
+            # train on whole dataset
+            model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+            Settings.logger.debug('Started In-Domain training...')
+            model.fit(X, encoded_Y)
+            Settings.logger.debug('Started In-Domain prediction...')
+            for domain in self.parser.test:
+                output[domain] = []
+                for pair in self.parser.test[domain]:
+                    fromConcept = Model.dataset[Model.dataset.index(pair[0])]
+                    toConcept = Model.dataset[Model.dataset.index(pair[1])]
+                    result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept)])) > 0.5).astype('int32')]
+                    output[domain].append(result)
+        else:
+            #cycle a domain
+            for domain in self.parser.test:
+                # build dataset with all domains except the one we wanna predict
+                featuresSet = []
+                labelSet = []
+                for i in range(len(X)):
+                    if groups[i] != domain:
+                        featuresSet.append(X[i])
+                        labelSet.append(encoded_Y[i])
+                model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+                Settings.logger.debug('Started cross-domain training...')
+                model.fit(featuresSet, labelSet)
+                Settings.logger.debug('Started cross-domain prediction...')
+                output[domain] = []
+                # predict all pairs in this domain
+                for pair in self.parser.test[domain]:
+                    fromConcept = Model.dataset[Model.dataset.index(pair[0])]
+                    toConcept = Model.dataset[Model.dataset.index(pair[1])]
+                    result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept)])) > 0.5).astype('int32')]
+                    output[domain].append(result)
+
         Settings.logger.debug('Found ' + str(sum([sum([pair[2] for pair in output[domain]]) for domain in output])) +
                                              ' prereqs in a ' + str(sum([len([pair[2] for pair in output[domain]]) for domain in output])) + ' long testSet')
         return ({'accuracy': scores['test_accuracy'].mean(), 'recall': scores['test_recall_macro'].mean(),
@@ -187,58 +215,69 @@ class Engine(Model):
     def classifierFormatter(self):    # resample = True changes results: why? shouldn't wheights account for unbalanced classes?!?
         Settings.logger.debug('Beginning dataset formatting')
         # check all concept pairs and return their features and their desired prerequisite label
-        prereqData = []
-        notPrereqData = []
-        prereqLabel = []
-        notPrereqLabel = []
+
+        prereqData = {domain: [] for domain in Model.desiredGraph.domains}
+        notPrereqData = {domain: [] for domain in Model.desiredGraph.domains}
+        prereqLabel = {domain: [] for domain in Model.desiredGraph.domains}
+        notPrereqLabel = {domain: [] for domain in Model.desiredGraph.domains}
         total = 0
         classRatio = {}
-        for conceptA in Model.dataset:
-            for conceptB in Model.dataset:
-                # Only consider known relations since % of unknown is > 90% and biases the system to always output "UNKNOWN"
-                if Model.desiredGraph.getPrereq(conceptA, conceptB) != Model.desiredGraph.unknown:  # spends a lot of time here, linked list would be better
-                    total = total+1
-                    # counter: counts every class occurrencies, creates new class if it hasn't yet encountered it
-                    if not classRatio.__contains__(int(Model.desiredGraph.getPrereq(conceptA, conceptB))):
-                        classRatio[int(Model.desiredGraph.getPrereq(conceptA, conceptB))] = 0
-                    classRatio[int(Model.desiredGraph.getPrereq(conceptA, conceptB))] += 1 # increase this class counter
-                    # TODO define above a simple dictionary containing features we want to consider and automatically map it here
-                    feat = self.getFeatures(conceptA, conceptB)
-                    # feat = [random.choice([0, 1])]  # only one, random features: should return performance = 50%
-                    # feat = [int(Model.desiredGraph.getPrereq(conceptA, conceptB))]   # truth oracle, should return performance = 100%
+        for prereq in Model.desiredGraph.getPrereqs():
+            for postreq in Model.desiredGraph.getPostreqs(prereq):
+                for domain in Model.desiredGraph.getDomains(prereq, postreq):
+                    label = Model.desiredGraph.getPrereq(prereq, postreq, domain)
+                    # Only consider known relations since % of unknown is > 90% and biases the system to always output "UNKNOWN"
+                    if label != Model.desiredGraph.unknown:  # spends a lot of time here, linked list would be better
+                        total = total+1
+                        # counter: counts every class occurrencies, creates new class if it hasn't yet encountered it
+                        if not classRatio.__contains__(label):
+                            classRatio[label] = 0
+                        classRatio[label] += 1 # increase this class counter
+                        prereqConcept = Model.dataset[Model.dataset.index(prereq)]
+                        postreqConcept = Model.dataset[Model.dataset.index(postreq)]
+                        feat = self.getFeatures(prereqConcept, postreqConcept, domain)
+                        # feat = [random.choice([0, 1])]  # only one, random features: should return performance = 50%
+                        # feat = [int(Model.desiredGraph.getPrereq(conceptA, conceptB))]   # truth oracle, should return performance = 100%
 
-                    if int(Model.desiredGraph.getPrereq(conceptA, conceptB)) == Model.desiredGraph.isPrereq:
-                        prereqData.append(feat)
-                        prereqLabel.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
+                        if label == Model.desiredGraph.isPrereq:
+                            prereqData[domain].append(feat)
+                            prereqLabel[domain].append(label)
 
-                    if int(Model.desiredGraph.getPrereq(conceptA, conceptB)) == Model.desiredGraph.notPrereq:
-                        notPrereqData.append(feat)
-                        notPrereqLabel.append(int(Model.desiredGraph.getPrereq(conceptA, conceptB)))
-        if len(notPrereqLabel) + len(prereqLabel) != total:
+                        if label == Model.desiredGraph.notPrereq:
+                            notPrereqData[domain].append(feat)
+                            notPrereqLabel[domain].append(label)
+        totalNotPrereq = sum([len(notPrereqLabel[key]) for key in notPrereqLabel])
+        totalPrereq = sum([len(prereqLabel[key]) for key in prereqLabel])
+        if totalNotPrereq + totalPrereq != total:
             raise Exception("Not all labels are of prerequisition")
-        if abs(classRatio[0] - classRatio[1]) != abs(len(notPrereqLabel) - len(prereqLabel)):
+        if abs(classRatio[0] - classRatio[1]) != abs(totalNotPrereq - totalPrereq):
             raise Exception("Something wrong in classes count")
         # classRatio has same value as GraphMatrix.getStatistics()
-        minorData = notPrereqData if len(notPrereqLabel) - len(prereqLabel) < 0 else prereqData
-        biggerData = prereqData if len(notPrereqLabel) - len(prereqLabel) < 0 else notPrereqData
+        minorData = notPrereqData if totalNotPrereq - totalPrereq < 0 else prereqData
+        biggerData = prereqData if totalNotPrereq - totalPrereq < 0 else notPrereqData
 
-        minorLabel = notPrereqLabel if len(notPrereqLabel) - len(prereqLabel) < 0 else prereqLabel
-        biggerLabel = prereqLabel if len(notPrereqLabel) - len(prereqLabel) < 0 else notPrereqLabel
+        minorLabel = notPrereqLabel if totalNotPrereq - totalPrereq < 0 else prereqLabel
+        biggerLabel = prereqLabel if totalNotPrereq - totalPrereq < 0 else notPrereqLabel
         pickedIndex = []
         if Settings.resampleSmallerClass:
-            while abs(len(minorLabel)-len(biggerLabel)) > 0:
-                randomItem = random.choice(range(len(minorLabel)))
-                if not pickedIndex.__contains__(randomItem):
-                    pickedIndex.append(randomItem)
-                    minorLabel.append(minorLabel[randomItem])
-                    minorData.append(minorData[randomItem])
+            while abs(sum([len(notPrereqLabel[key]) for key in notPrereqLabel]) - sum([len(prereqLabel[key]) for key in prereqLabel])) > 0:
+                randomDomain = random.choice([*minorLabel.keys()])
+                randomIndex = random.choice(range(len(minorLabel[randomDomain])))
+                pickedIndex.append(randomDomain + '-' + str(randomIndex))
+                minorLabel[randomDomain].append(minorLabel[randomDomain][randomIndex])
+                minorData[randomDomain].append(minorData[randomDomain][randomIndex])
             Settings.logger.debug("resampled a total of " + str(len(pickedIndex)) + " concepts")
         else:
-            while abs(len(minorLabel) - len(biggerLabel)) > 0:
-                randomItem = random.choice(range(len(biggerLabel)))
-                pickedIndex.append(randomItem)
-                biggerLabel.pop(randomItem)
-                biggerData.pop(randomItem)
+            while abs(sum([len(notPrereqLabel[key]) for key in notPrereqLabel]) - sum([len(prereqLabel[key]) for key in prereqLabel])) > 0:
+                randomDomain = random.choice([*biggerLabel.keys()])
+                randomIndex = random.choice(range(len(biggerLabel[randomDomain])))
+                pickedIndex.append(randomDomain + '-' + str(randomIndex))
+                Settings.logger.debug(randomDomain + '-' + str(randomIndex))
+                biggerLabel[randomDomain].pop(randomIndex)
+                biggerData[randomDomain].pop(randomIndex)
+                if len(biggerLabel[randomDomain]) == 0:
+                    biggerLabel.pop(randomDomain)
+                    biggerData.pop(randomDomain)
             Settings.logger.debug("dropped a total of " + str(len(pickedIndex)) + " concepts")
 
         if len(pickedIndex) != abs(classRatio[0] - classRatio[1]):
@@ -251,18 +290,33 @@ class Engine(Model):
 
         #weights = {0: 1, 1: classRatio[0] / classRatio[1]}  # ratio between classes
         #weights = {0: classRatio[1], 1: classRatio[0]}      # opposite ratio: in the end ratios are the same as above
-        weights = {0: 1/len(prereqLabel), 1: 1/len(notPrereqLabel)}  # inverse ratio: in the end ratios are the same as above
+        weights = {0: 1/sum([len(prereqLabel[key]) for key in prereqLabel]), 1: 1/sum([len(notPrereqLabel[key]) for key in notPrereqLabel])}  # inverse ratio: in the end ratios are the same as above
         #weights = {0: 1, 1: 1}  # should behave as if no weights were specified
 
+        features = []
+        labels = []
+        groups = []
+        domain2int = {}
+        i = 1
+        for domain in prereqData.keys():
+            domain2int[domain] = i
+            i = i+1
+        for domain in prereqData.keys():
+            features = features + [*prereqData[domain]]
+            labels = labels + [*prereqLabel[domain]]
+            groups = groups + [*([domain] * (len(prereqLabel[domain])))]
 
-        features = [*prereqData, *notPrereqData]
-        labels = [*prereqLabel, *notPrereqLabel]
+        for domain in notPrereqLabel.keys():
+            features = features + [*notPrereqData[domain]]
+            labels = labels + [*notPrereqLabel[domain]]
+            groups = groups + [*([domain] * (len(notPrereqLabel[domain])))]
+
         Settings.logger.debug('Finished dataset formatting')
         # since output class from estimator is array_encoded of the label it has a dimension === to the number of different clases
         return {'features': features, "desired": labels, "input_size": len(features[0]),
-                "output_size": number_of_classes, 'class_weights': weights}
+                "output_size": number_of_classes, 'class_weights': weights, 'groups': groups}
 
-    def getFeatures(self, conceptA, conceptB):
+    def getFeatures(self, conceptA, conceptB, domain):
         return [
             self.pairFeatures.getJaccardSim(conceptA, conceptB),
             self.pairFeatures.getLink(conceptA, conceptB),

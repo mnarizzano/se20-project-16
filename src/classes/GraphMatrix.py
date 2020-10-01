@@ -6,9 +6,13 @@ class GraphMatrix:
     unknown = -1
     isPrereq = 1
     notPrereq = 0
-    def __init__(self):
+    domains = {}
+
+    def __init__(self, domains):
         # -1 if prereq not present (in dataset), 0 if prereq explicitly 0 (in dataset), 1 if prereq
-        self.matrix = [[self.unknown for i in range(len(Model.dataset))] for j in range(len(Model.dataset))]
+        #self.matrix = [[{k: self.unknown for k in domains} for i in range(len(Model.dataset))] for j in range(len(Model.dataset))]
+        self.matrix = {}
+        self.domains = domains
         self.numberOfPrereqs = 0
         self.numberOfNonPrereqs = 0
         self.unknownPrereqs = 0
@@ -17,25 +21,26 @@ class GraphMatrix:
     def getStatistics(self):
         return [self.numberOfPrereqs, self.numberOfNonPrereqs, self.unknownPrereqs]
 
-    def addPrereq(self, conceptA, conceptB, value):
-        # adds A->B, NOTE that rows are prerequisites while columns are "postrequisites"
-        row = Model.dataset.index(conceptA)
-        col = Model.dataset.index(conceptB)
-        if self.matrix[row][col] == self.unknown:   # some prerequisites might be duplicated in the 'pairs' files
-            self.matrix[row][col] = value
+    def addPrereq(self, conceptA, conceptB, value, domain):
+        if not self.matrix.__contains__(conceptA):
+            self.matrix[conceptA] = {}
+        if not self.matrix[conceptA].__contains__(conceptB):
+            self.matrix[conceptA][conceptB] = {}
+
+        if not self.matrix[conceptA][conceptB].__contains__(domain):
             if int(value) == 0:
                 self.numberOfNonPrereqs += 1
             elif int(value) == 1:
                 self.numberOfPrereqs += 1
+            self.matrix[conceptA][conceptB][domain] = int(value)
             self.unknownPrereqs = len(Model.dataset) ** 2 - self.numberOfNonPrereqs - self.numberOfPrereqs
         else:
-            if value != self.matrix[row][col]:
+            if int(value) != self.matrix[conceptA][conceptB][domain]:
                 Settings.logger.error("Pairs prerequisite relation is inconsistent!!")
-                # TODO: uncomment this (commented to continue tests)
-                # raise Exception("Dataset inconsistent, found different annotation for  '" + conceptA + ', ' + conceptB + "'")
+                raise Exception("Dataset inconsistent, found different annotation for  '" + conceptA + ', ' + conceptB + "'")
             else:
-                Settings.logger.info('Skipping pairs prerequisite "' + conceptA + ', ' + conceptB +
-                                 '" cause already added')
+                Settings.logger.debug(
+                    "Dataset warning: found duplicated annotation for  '" + conceptA + ', ' + conceptB + "' in '"+domain+"'")
 
     def plotGraph(self):
         for row in range(len(self.matrix[:][0])):
@@ -43,6 +48,15 @@ class GraphMatrix:
             for col in range(len(self.matrix[0][:])):
                 row2string = row2string + str(self.matrix[row][col]) + " "
             Settings.logger.debug(row2string + "\n")
+
+    def getPrereqs(self):
+        return [prereq for prereq in self.matrix]
+
+    def getPostreqs(self, prereq):
+        return [postreq for postreq in self.matrix[prereq]]
+
+    def getDomains(self, prereq, postreq):
+        return [domain for domain in self.matrix[prereq][postreq]]
 
     def plotPrereqs(self):
         Settings.logger.debug(
@@ -53,15 +67,12 @@ class GraphMatrix:
             "Total NonPrereqs: " + str(self.numberOfNonPrereqs) + ", " + str(self.numberOfNonPrereqs*100 / len(Model.dataset)**2) + "%")
         Settings.logger.debug(
             "Total Unknowns: " + str(self.unknownPrereqs) + ", " + str(self.unknownPrereqs*100 / len(Model.dataset)**2) + "%")
-        for row in range(len(self.matrix[:][0])):
-            for col in range(len(self.matrix[0][:])):
-                if self.matrix[row][col] != -1:
-                    Settings.logger.debug("[" + Model.dataset[row].domain + "]" + Model.dataset[row].title + ", " +
-                                          "[" + Model.dataset[col].domain + "]" + Model.dataset[col].title + ", " +
-                                          str(self.matrix[row][col]))
+        for prereq in self.getPrereqs():
+            for postreq in self.getPostreqs(prereq):
+                for domain in Model.desiredGraph.getDomains(prereq, postreq):
+                    Settings.logger.debug("[" + domain + "]" + Model.dataset[Model.dataset.index(prereq)].title + ", " +
+                                          Model.dataset[Model.dataset.index(postreq)].title + ", " +
+                                          str(self.matrix[prereq][postreq][domain]))
 
-    def getPrereq(self, conceptA, conceptB):
-        # adds A->B, NOTE that rows are prerequisites while columns are "postrequisites"
-        row = Model.dataset.index(conceptA.title)
-        col = Model.dataset.index(conceptB.title)
-        return self.matrix[row][col]
+    def getPrereq(self, conceptA, conceptB, domain):
+        return self.matrix[conceptA][conceptB][domain]

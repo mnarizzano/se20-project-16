@@ -70,7 +70,11 @@ class Parser(object):
             with open(self.pairsPickle, 'rb') as file:
                 Model.desiredGraph = pickle.load(file)
         else:
-            Model.desiredGraph = GraphMatrix()
+            domains = []
+            for entry in self.listDirectory(Settings.datasetPath):
+                if entry.is_file() and entry.name.__contains__('pairs'):
+                    domains.append(entry.name.split('-')[0])
+            Model.desiredGraph = GraphMatrix(domains)
             numberOfEntries = 0
             for entry in self.listDirectory(Settings.datasetPath):
                 if entry.is_file() and entry.name.__contains__('pairs'):
@@ -146,5 +150,5 @@ class Parser(object):
             prereq = line.strip('\n')
             if len(prereq) > 1:
                 prereq = prereq.split(',')
-                Model.desiredGraph.addPrereq(prereq[0], prereq[1], prereq[2])
+                Model.desiredGraph.addPrereq(prereq[0], prereq[1], prereq[2], entry.name.split('-')[0])
         return numberOfEntries
