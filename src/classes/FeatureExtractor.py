@@ -190,6 +190,15 @@ class FeatureExtractor:
         # every kfold iteration in the parent we retrain this based on the parent trainset
         pass
 
+    def containsTitle(self):
+        if not self.pairFeatures.containsTitleLoaded():
+            Settings.logger.debug('Calculating Contains Title')
+            for conceptA in MyModel.dataset:
+                for conceptB in MyModel.dataset:
+                    self.pairFeatures.setContainsTitle(conceptA, conceptB, conceptB.content.count(conceptA.title))
+            self.cache()
+        else:
+            Settings.logger.debug('Skipping contains title cause it was cached')
 
     def loadWordEmbeddings(self):
         model = Word2Vec.load(Settings.glove_WIKI)  # glove model

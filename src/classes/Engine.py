@@ -37,7 +37,6 @@ class Engine(Model):
 
 
     def process(self):
-        '''
         # initialize and pass my PairFeatures to the FeatureExtractor
         feature = FeatureExtractor(self.pairFeatures)
         # begin processing of single Features
@@ -49,6 +48,7 @@ class Engine(Model):
                               ", Annotation Elapsed time: " + str(elapsed_time))
         feature.extractNounsVerbs()
         feature.LDA()   # TODO: let LDA call extractNounsVerbs?
+        feature.containsTitle()
 
         # begin processing of pair Features
 
@@ -62,7 +62,7 @@ class Engine(Model):
         ## processing of raw features
         feature.jaccardSimilarity()
         feature.LDACrossEntropy()
-        '''
+
         # obtain input and output from desiredGraphMatrix, PairFeatures and Model.dataset (for single ones)
         encoder = LabelEncoder()
         result_set = self.classifierFormatter()
@@ -101,9 +101,10 @@ class Engine(Model):
         def neural_network():
             # create model
             model = Sequential()
-            model.add(Dense(20, input_dim=result_set['input_size'], activation='relu'))
-            # TODO: might add drop layer to mitigate overfitting
-            model.add(Dense(20, activation='relu'))
+            model.add(Dense(Settings.neurons, input_dim=result_set['input_size'], activation='relu'))
+            for i in range(int(Settings.layers)):
+                # TODO: might add drop layer to mitigate overfitting
+                model.add(Dense(int(Settings.neurons), activation='relu'))
             model.add(Dense(modelOutput, activation=activationFunction))  # 3 if accepted output is isPrereq/notPrereq/unknown
             # Compile model
             # whats the impact of metrics or loss when this gets managed from KerasClassifier?
@@ -111,7 +112,7 @@ class Engine(Model):
             return model
 
         # classWeight = {0: 1, 1: 2}    # penalize errors on class 0 more than on class 1 since class 0 is half the number of samples of those of class 1
-        estimator = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+        estimator = KerasClassifier(build_fn=neural_network, epochs=int(Settings.epoch), batch_size=5, verbose=0)
         estimator._estimator_type = "classifier"
 
         if not Settings.CrossDomain:    # train on all domains->use stratifiedKFold
@@ -119,8 +120,7 @@ class Engine(Model):
             # kfold = KFold(n_splits=10, shuffle=True)
             # StratifiedKFold tries to balance set classes between Folds, 7 is a random number not set to random just for reproducibility
             # kfold = StratifiedKFold(n_splits=2, shuffle=True, random_state=7)
-            numberOfSplits = 2
-            kfold = StratifiedShuffleSplit(n_splits=numberOfSplits, test_size=1/numberOfSplits)
+            kfold = StratifiedShuffleSplit(n_splits=int(Settings.kfoldSplits), test_size=1/int(Settings.kfoldSplits))
             for train, test in kfold.split(X, encoded_Y):
                 Settings.logger.debug('train -  {}   |   test -  {}'.format(
                 np.bincount(encoded_Y[train]), np.bincount(encoded_Y[test])))
@@ -129,21 +129,23 @@ class Engine(Model):
         else: # Use LeaveOneGroupOut KFold:
             Settings.logger.debug('Cross-domain cross-validation')
             kfold = LeaveOneGroupOut()
-            # StratifiedShuffleSplit(n_splits=numberOfSplits, test_size=1/numberOfSplits)
-            for train, test in kfold.split(X, encoded_Y, groups):
+            # StratifiedShuffleSplit(n_splits=int(Settings.kfoldSplits), test_size=1/int(Settings.kfoldSplits))
+            for train, test in kfold.split(X, encoded_Y, groups=groups):
                 Settings.logger.debug('train -  {}   |   test -  {}'.format(
                 np.bincount(encoded_Y[train]), np.bincount(encoded_Y[test])))
 
         scoring = ['accuracy', 'f1_macro', 'f1_micro', 'average_precision', 'balanced_accuracy', 'precision_macro', 'recall_macro'] # difference between macro and not macro? f1 === f-score?
-        scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold, fit_params={'class_weight': result_set['class_weights']})
+        scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold, groups=groups, fit_params={'class_weight': result_set['class_weights']})
         #scores = cross_validate(neural_network(), X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,
-        #                        fit_params={'class_weight': result_set['class_weights'], 'epochs':20, 'batch_size':5, 'verbose':0})
+        #                        fit_params={'class_weight': result_set['class_weights'], 'epochs':int(Settings.epoch), 'batch_size':5, 'verbose':0})
         Settings.logger.debug(str(scores))
         Settings.logger.debug("Accuracy: %0.2f (+/- %0.2f)" % (scores['test_accuracy'].mean(), scores['test_accuracy'].std() * 2))
         Settings.logger.debug("Recall: %0.2f (+/- %0.2f)" % (scores['test_recall_macro'].mean(), scores['test_recall_macro'].std() * 2))
         Settings.logger.debug("Precision: %0.2f (+/- %0.2f)" % (scores['test_average_precision'].mean(), scores['test_average_precision'].std() * 2))
         Settings.logger.debug("F1: %0.2f (+/- %0.2f)" % (scores['test_f1_macro'].mean(), scores['test_f1_macro'].std() * 2))
 
+        '''
+        # Manual CV to enter in the loop and extract some insight
         i = 1
         for train_index, test_index in kfold.split(X, encoded_Y):
             X_train = X[train_index]
@@ -152,21 +154,22 @@ class Engine(Model):
             y_test = encoded_Y[test_index]
 
             model = neural_network()
-            #model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+            #model = KerasClassifier(build_fn=neural_network, epochs=int(Settings.epoch), batch_size=5, verbose=0)
             #model._estimator_type = "classifier"
 
             # Train the model
-            model.fit(X_train, y_train, epochs=20, batch_size=5)  # Training the model
+            model.fit(X_train, y_train, epochs=int(Settings.epoch), batch_size=5)  # Training the model
             print(f"Accuracy for the fold no. {i} on the test set: {accuracy_score(y_test,(model.predict(X_test) > 0.5).astype('int32'))}")
             print("accuracy as seen from model.evaluate: " + str(model.evaluate(X_test, y_test)[1]))  # if plain simple keras sequential model
             #print("accuracy as seen from model.evaluate: " + str(model.score(X_test, y_test)))          # if KerasClassifier wrapper
             i += 1
+        '''
 
         output = {}
         Settings.logger.debug('Started prediction...')
         if not Settings.CrossDomain:    # use stratifiedKFold
             # train on whole dataset
-            model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+            model = KerasClassifier(build_fn=neural_network, epochs=int(Settings.epoch), batch_size=5, verbose=0)
             Settings.logger.debug('Started In-Domain training...')
             model.fit(X, encoded_Y)
             Settings.logger.debug('Started In-Domain prediction...')
@@ -175,7 +178,7 @@ class Engine(Model):
                 for pair in self.parser.test[domain]:
                     fromConcept = Model.dataset[Model.dataset.index(pair[0])]
                     toConcept = Model.dataset[Model.dataset.index(pair[1])]
-                    result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept)])) > 0.5).astype('int32')]
+                    result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept, 'none')])) > 0.5).astype('int32')]
                     output[domain].append(result)
         else:
             #cycle a domain
@@ -187,16 +190,16 @@ class Engine(Model):
                     if groups[i] != domain:
                         featuresSet.append(X[i])
                         labelSet.append(encoded_Y[i])
-                model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+                model = KerasClassifier(build_fn=neural_network, epochs=int(Settings.epoch), batch_size=5, verbose=0)
                 Settings.logger.debug('Started cross-domain training...')
-                model.fit(featuresSet, labelSet)
+                model.fit(np.array(featuresSet), np.array(labelSet))
                 Settings.logger.debug('Started cross-domain prediction...')
                 output[domain] = []
                 # predict all pairs in this domain
                 for pair in self.parser.test[domain]:
                     fromConcept = Model.dataset[Model.dataset.index(pair[0])]
                     toConcept = Model.dataset[Model.dataset.index(pair[1])]
-                    result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept)])) > 0.5).astype('int32')]
+                    result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept, 'dominio')])) > 0.5).astype('int32')]
                     output[domain].append(result)
 
         Settings.logger.debug('Found ' + str(sum([sum([pair[2] for pair in output[domain]]) for domain in output])) +
@@ -317,13 +320,25 @@ class Engine(Model):
                 "output_size": number_of_classes, 'class_weights': weights, 'groups': groups}
 
     def getFeatures(self, conceptA, conceptB, domain):
-        return [
-            self.pairFeatures.getJaccardSim(conceptA, conceptB),
-            self.pairFeatures.getLink(conceptA, conceptB),
-            self.pairFeatures.getRefDistance(conceptA, conceptB),
-            self.pairFeatures.getLDACrossEntropy(conceptA, conceptB),
-            self.pairFeatures.getLDA_KLDivergence(conceptA, conceptB),
-            *conceptA.getFeatures().get_LDAVector(),  # spread operator: *['a', 'b'] = a, b
-            *conceptB.getFeatures().get_LDAVector(),
-            # int(Model.desiredGraph.getPrereq(conceptA, conceptB))    # this is cheating but the model is not giving 100% in this case. Classifier too much simple?
-         ]
+        features = []
+        if Settings.useRefD:
+            features.append(self.pairFeatures.getRefDistance(conceptA, conceptB))
+            features.append(self.pairFeatures.getRefDistance(conceptB, conceptA))
+        if Settings.useConceptLDA:
+            features = features + conceptA.getFeatures().get_LDAVector()  # spread operator: *['a', 'b'] = a, b
+        if Settings.useJaccard:
+            features.append(self.pairFeatures.getJaccardSim(conceptA, conceptB))
+            features.append(self.pairFeatures.getJaccardSim(conceptB, conceptA))
+        if Settings.useContainsLink:
+            features.append(self.pairFeatures.getLink(conceptA, conceptB))
+            features.append(self.pairFeatures.getLink(conceptB, conceptA))
+        if Settings.useLDACrossEntropy:
+            features.append(self.pairFeatures.getLDACrossEntropy(conceptA, conceptB))
+            features.append(self.pairFeatures.getLDACrossEntropy(conceptB, conceptA))
+        if Settings.useLDA_KLDivergence:
+            features.append(self.pairFeatures.getLDA_KLDivergence(conceptA, conceptB))
+            features.append(self.pairFeatures.getLDA_KLDivergence(conceptB, conceptA))
+        if Settings.contains:
+            features.append(self.pairFeatures.getContainsTitle(conceptA, conceptB))
+            features.append(self.pairFeatures.getContainsTitle(conceptB, conceptA))
+        return features

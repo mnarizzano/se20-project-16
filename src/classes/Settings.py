@@ -25,9 +25,6 @@ class Settings:
     # Caching
     useCache = True
 
-    # Udpipe
-    udpipeModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'
-
     # Word-Embedding model path
     wordVecModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'
 
@@ -39,10 +36,10 @@ class Settings:
     logger = logging.getLogger('myLogger')
 
     # Inserted value for NN
-    neurons = 0
-    layers = 0
-    kfoldSplits = 0
-    epoch = 0
+    neurons = 20
+    layers = 1
+    kfoldSplits = 3
+    epoch = 15
 
     # Checkboxes for feature selection
     useRefD = True

@@ -10,9 +10,9 @@ class PairFeatures:
     class PairFeats:
         def __init__(self):
             # generic check
-            # TODO: something's wrong here: most of the values are 0 over the all dataset
             # sum([sum([self.pairFeatures.pairFeatures[a.id][b.id].LDA_KLDivergence for a in MyModel.dataset]) for b in MyModel.dataset])
             self.link = 0
+            self.containsTitle = 0
             self.jaccardSimilarity = 0
             self.referenceDistance = 0
             self.LDACrossEntropy = 0
@@ -57,6 +57,12 @@ class PairFeatures:
                 sum([sum([self.pairFeatures[a.id][b.id].referenceDistance for a in Model.dataset]) for b
                      in Model.dataset]) > 0)
 
+    def containsTitleLoaded(self):
+        return ('containsTitle' in self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].__dict__.keys() and
+                self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].containsTitle is not None and
+                sum([sum([self.pairFeatures[a.id][b.id].containsTitle for a in Model.dataset]) for b
+                     in Model.dataset]) > 0)
+
     def jaccardLoaded(self):
         return (self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].jaccardSimilarity is not None and
                 sum([sum([self.pairFeatures[a.id][b.id].jaccardSimilarity for a in Model.dataset]) for b
@@ -64,6 +70,9 @@ class PairFeatures:
 
     def setLDA_KLDivergence(self, conceptA, conceptB, value):
         self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].LDA_KLDivergence = value
+
+    def setContainsTitle(self, conceptA, conceptB, value):
+        self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].containsTitle = value
 
     # GETTERS
     def getRefDistance(self, conceptA, conceptB):
@@ -80,3 +89,6 @@ class PairFeatures:
 
     def getLink(self, conceptA, conceptB):
         return self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].link
+
+    def getContainsTitle(self, conceptA, conceptB):
+        return self.pairFeatures[self.keyOf(conceptA)][self.keyOf(conceptB)].containsTitle
