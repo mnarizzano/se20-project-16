@@ -88,10 +88,14 @@ class Page(QStackedWidget):
         self.resultPage.resultRequest1.connect(lambda: self.setCurrentIndex(0))  # resultPage -> startPage
         self.resultPage.resultRequest2.connect(lambda: self.setCurrentIndex(1))  # resultPage -> statisticPage
 
+        self.startPage.updateResult.connect(lambda: self.resultPage.updateResult())
+
 class StartPage(QWidget):
     counter = 0
+    modelResult = {}
     startRequest1 = pyqtSignal()
     startRequest2 = pyqtSignal()
+    updateResult = pyqtSignal()
     savedConfigurations = Settings.savedConfigurations
 
     def __init__(self):
@@ -123,13 +127,11 @@ class StartPage(QWidget):
         self.startLeftLabel3 = Label('Numero di layers della rete neurale:')
         self.startLeftLabel4 = Label('Numero di kfold splits:')
         self.startLeftLabel5 = Label('Numero di epoche del training per layer:')
-        self.startLeftLabel6 = Label('Contains:')
 
         self.startLeftLineEdit1 = LineEdit()
         self.startLeftLineEdit2 = LineEdit()
         self.startLeftLineEdit3 = LineEdit()
         self.startLeftLineEdit4 = LineEdit()
-        self.startLeftLineEdit5 = LineEdit()
 
         self.startLeftLabel6 = Label('Selezionare le features per il modello:')
         self.startLeftCheckBox1 = QCheckBox('Reference Distance')
@@ -151,27 +153,19 @@ class StartPage(QWidget):
         self.startLeftCheckBox6.setCheckable(True)
 
         self.startLeftCheckBox7 = QCheckBox('Nouns')
-        self.startLeftCheckBox6.setCheckable(True)
+        self.startLeftCheckBox7.setCheckable(True)
 
         self.startLeftCheckBox8 = QCheckBox('Verbs')
-        self.startLeftCheckBox6.setCheckable(True)
+        self.startLeftCheckBox8.setCheckable(True)
 
         self.startLeftCheckBox9 = QCheckBox('Adjectives')
-        self.startLeftCheckBox6.setCheckable(True)
+        self.startLeftCheckBox9.setCheckable(True)
 
         self.startLeftCheckBox10 = QCheckBox('Crossdomain')
-        self.startLeftCheckBox6.setCheckable(True)
+        self.startLeftCheckBox10.setCheckable(True)
 
-        self.startLeftCheckBox1.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox2.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox3.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox4.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox5.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox6.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox7.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox8.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox9.stateChanged.connect(self.setFeatures)
-        self.startLeftCheckBox10.stateChanged.connect(self.setFeatures)
+        self.startLeftCheckBox11 = QCheckBox('Contains')
+        self.startLeftCheckBox11.setCheckable(True)
 
         startLeftLayout = QVBoxLayout()
         startLeftLayout.addWidget(self.startLeftFileButton)
@@ -186,7 +180,6 @@ class StartPage(QWidget):
         startLeftLayout.addWidget(self.startLeftLabel5)
         startLeftLayout.addWidget(self.startLeftLineEdit4)
         startLeftLayout.addWidget(self.startLeftLabel6)
-        startLeftLayout.addWidget(self.startLeftLineEdit5)
         startLeftLayout.addWidget(self.startLeftCheckBox1)
         startLeftLayout.addWidget(self.startLeftCheckBox2)
         startLeftLayout.addWidget(self.startLeftCheckBox3)
@@ -268,8 +261,11 @@ class StartPage(QWidget):
                 startRightCheckBoxItem.setCheckState(Qt.Unchecked)
                 self.startTable.setItem(row, 0, startRightCheckBoxItem)
                 self.startTable.setItem(row, 1, QTableWidgetItem(fields[row][0]))
+                self.startTable.item(row, 1).setFlags(Qt.ItemIsEditable)
                 self.startTable.setItem(row, 2, QTableWidgetItem(fields[row][1]))
+                self.startTable.item(row, 2).setFlags(Qt.ItemIsEditable)
                 self.startTable.setItem(row, 3, QTableWidgetItem(fields[row][2]))
+                self.startTable.item(row, 3).setFlags(Qt.ItemIsEditable)
             file.close()
 
         self.startTable.itemClicked.connect(self.selectConfiguration)
@@ -286,6 +282,7 @@ class StartPage(QWidget):
             self.startLeftLineEdit1.setText(values[0])
             self.startLeftLineEdit2.setText(values[1])
             self.startLeftLineEdit3.setText(values[2])
+            self.startLeftLineEdit4.setText(values[3])
 
     def loadDataset(self):
         fileDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
@@ -293,48 +290,6 @@ class StartPage(QWidget):
             self, "Scegliere il dataset", "", "Text Files (*.txt);;CSV Files (*.csv)")
         if fileName:
             self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
-
-    def setFeatures(self):
-        if self.startLeftCheckBox1.isChecked():
-            Settings.useRefD = True
-        else:
-            Settings.useRefD = False
-        if self.startLeftCheckBox2.isChecked():
-            Settings.useJaccard = True
-        else:
-            Settings.useJaccard = False
-        if self.startLeftCheckBox3.isChecked():
-            Settings.useConceptLDA = True
-        else:
-            Settings.useConceptLDA = False
-        if self.startLeftCheckBox4.isChecked():
-            Settings.useLDACrossEntropy = True
-        else:
-            Settings.useLDACrossEntropy = False
-        if self.startLeftCheckBox5.isChecked():
-            Settings.useLDA_KLDivergence = True
-        else:
-            Settings.useLDA_KLDivergence = False
-        if self.startLeftCheckBox6.isChecked():
-            Settings.useContainsLink = True
-        else:
-            Settings.useContainsLink = False
-        if self.startLeftCheckBox7.isChecked():
-            Settings.useNouns = True
-        else:
-            Settings.useNouns = False
-        if self.startLeftCheckBox8.isChecked():
-            Settings.useVerbs = True
-        else:
-            Settings.useVerbs = False
-        if self.startLeftCheckBox9.isChecked():
-            Settings.useAdjectives = True
-        else:
-            Settings.useAdjectives = False
-        if self.startLeftCheckBox10.isChecked():
-            Settings.CrossDomain = True
-        else:
-            Settings.CrossDomain = False
 
     def runModel(self):
         self.counter += 1
@@ -350,18 +305,73 @@ class StartPage(QWidget):
             base = Baseline()
             basePerformance = base.process()
             '''
-            # Calculate Engine Performance
+            # Calculate Engine Performance            
             engine = Engine()
-            self.result = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput
+            if self.startLeftLineEdit1.text():
+                Settings.neurons = float(self.startLeftLineEdit1.text())
+            if self.startLeftLineEdit2.text():
+                Settings.layers = float(self.startLeftLineEdit2.text())
+            if self.startLeftLineEdit3.text():
+                Settings.kfoldSplits = float(self.startLineEdit3.text())
+            if self.startLeftLineEdit4.text():
+                Settings.epoch = float(self.startLeftLineEdit4.text())
+            if self.startLeftCheckBox1.isChecked():
+                Settings.useRefD = True
+            else:
+                Settings.useRefD = False
+            if self.startLeftCheckBox2.isChecked():
+                Settings.useJaccard = True
+            else:
+                Settings.useJaccard = False
+            if self.startLeftCheckBox3.isChecked():
+                Settings.useConceptLDA = True
+            else:
+                Settings.useConceptLDA = False
+            if self.startLeftCheckBox4.isChecked():
+                Settings.useLDACrossEntropy = True
+            else:
+                Settings.useLDACrossEntropy = False
+            if self.startLeftCheckBox5.isChecked():
+                Settings.useLDA_KLDivergence = True
+            else:
+                Settings.useLDA_KLDivergence = False
+            if self.startLeftCheckBox6.isChecked():
+                Settings.useContainsLink = True
+            else:
+                Settings.useContainsLink = False
+            if self.startLeftCheckBox7.isChecked():
+                Settings.useNouns = True
+            else:
+                Settings.useNouns = False
+            if self.startLeftCheckBox8.isChecked():
+                Settings.useVerbs = True
+            else:
+                Settings.useVerbs = False
+            if self.startLeftCheckBox9.isChecked():
+                Settings.useAdjectives = True
+            else:
+                Settings.useAdjectives = False
+            if self.startLeftCheckBox10.isChecked():
+                Settings.CrossDomain = True
+            else:
+                Settings.CrossDomain = False
+            if self.startLeftCheckBox11.isChecked():
+                Settings.contains = True
+            else:
+                Settings.contains = False 
+            self.modelResult = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput
             # plot statistics
             engine.plot()
             print('risultati:')
-            for element in result.values():
+            for element in self.modelResult.values():
                 print(element)
             if Settings.useCache:
                 p.cache()
-            self.startButton.setText('Vai ai risultati')
+            self.startButton.clicked.connect(self.updateResult)
+            self.startButton.setText('Vai ai risultati')    
+        
         self.startButton.clicked.connect(self.startRequest1)
+
 
 class StatisticPage(QWidget):
     statisticRequest1 = pyqtSignal()
@@ -391,10 +401,10 @@ class StatisticPage(QWidget):
             for line in file:
                 fields = (line.split('\t'))
                 values = re.findall('[0-9]+', fields[1])
-                accuracy[fields[0]] = int(values[0])
-                precision[fields[0]] = int(values[1])
-                fscore[fields[0]] = int(values[2])
-                recall[fields[0]] = int(values[3])
+                accuracy[fields[0]] = float(values[0])
+                precision[fields[0]] = float(values[1])
+                fscore[fields[0]] = float(values[2])
+                recall[fields[0]] = float(values[3])
             file.close()
         self.graphWidget = QWidget()
 
@@ -483,7 +493,7 @@ class ResultPage(QWidget):
 
     def createResultLeftWidget(self):
         self.resultLeftWidget = QWidget()
-
+        
         self.resultLeftLabel1 = Label('Risultato del calcolo sul modello configurato:')
         self.resultLeftLabel2 = Label('Accuracy: ')
         self.resultLeftLabel3 = Label('Precision: ')
@@ -592,6 +602,12 @@ class ResultPage(QWidget):
         returnLayout.addWidget(self.statisticReturnButton)
         self.returnWidget.setLayout(returnLayout)
 
+    def updateResult(self):
+        self.resultLeftLabel2.setText('Accuracy: ' + str(self.parent.modelResult['accuracy']))
+        self.resultLeftLabel3.setText('Precision: ' + str(self.parent.modelResult['precision']))
+        self.resultLeftLabel4.setText('Fscore: ' + str(self.parent.modelResult['f1']))
+        self.resultLeftLabel5.setText('Recall: ' + str(self.parent.modelResult['recall']))
+
     def showResult(self):  # TODO: open new window with results (like guide)
         self.showDialog = QDialog()
         self.showDialog.resize(400, 400)
@@ -624,13 +640,15 @@ class ResultPage(QWidget):
         file.write(str(saveDate.year) + '-' + str(saveDate.month) +
                    '-' + str(saveDate.day) + ' ' + str(saveDate.hour) +
                    ':' + str(saveDate.minute) + ':' + str(saveDate.second) + '\t')
-        file.write('(' + 'Accuracy' + ',' + str(self.parent.result['accuracy']) + '),' +
-                   '(' + 'Precision' + ',' + str(self.parent.result['precision']) + '),' +
-                   '(' + 'Fscore' + ',' + str(self.parent.result['f1']) + '),' +
-                   '(' + 'Recall' + ',' + str(self.parent.result['recall']) + ')\t')
+        file.write('(' + 'Accuracy' + ',' + str(self.parent.modelResult['accuracy']) + '),' +
+                   '(' + 'Precision' + ',' + str(self.parent.modelResult['precision']) + '),' +
+                   '(' + 'Fscore' + ',' + str(self.parent.modelResult['f1']) + '),' +
+                   '(' + 'Recall' + ',' + str(self.parent.modelResult['recall']) + ')\t')
         file.write('(' + self.parent.startLeftLabel2.text() + ',' + self.parent.startLeftLineEdit1.text() + '),' +
                    '(' + self.parent.startLeftLabel3.text() + ',' + self.parent.startLeftLineEdit2.text() + '),' +
-                   '(' + self.parent.startLeftLabel4.text() + ',' + self.parent.startLeftLineEdit3.text() + ')\n')
+                   '(' + self.parent.startLeftLabel4.text() + ',' + self.parent.startLeftLineEdit3.text() + '),' +
+                   '(' + self.parent.startLeftLabel5.text() + ',' + self.parent.startLeftLineEdit4.text() + '),' +
+                   '(' + self.parent.startLeftLabel6.text() + ',' + self.parent.startLeftLineEdit5.text() + ')\n')
         file.close()  
 
     def disableSaveConfiguration(self):
