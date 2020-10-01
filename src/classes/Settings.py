@@ -13,7 +13,7 @@ class Settings:
     pairsPickle = resourcePath + 'cached/prereqPairs.pickle'
 
     # type of run
-    generateOutput = True
+    generateOutput = False
 
     # type of balancing algorithm
     resampleSmallerClass = False
@@ -38,6 +38,12 @@ class Settings:
                         format='%(asctime)s - %(funcName)s - %(levelname)s - %(message)s')
     logger = logging.getLogger('myLogger')
 
+    # Inserted value for NN
+    neurons = 0
+    layers = 0
+    kfoldSplits = 0
+    epoch = 0
+
     # Checkboxes for feature selection
     useRefD = True
     useConceptLDA = True
@@ -45,6 +51,7 @@ class Settings:
     useContainsLink = True
     useLDACrossEntropy = True
     useLDA_KLDivergence = True
+    contains = True
 
     # lemmatization settings
     useNouns = True
