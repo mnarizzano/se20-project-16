@@ -119,64 +119,62 @@ class Engine(Model):
         estimator = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
         estimator._estimator_type = "classifier"
 
-        if not Settings.generateOutput: # split train dataset for Cross-validation run
-            # kfold = KFold(n_splits=10, shuffle=True)
-            # StratifiedKFold tries to balance set classes between Folds, 7 is a random number not set to random just for reproducibility
-            # kfold = StratifiedKFold(n_splits=2, shuffle=True, random_state=7)
-            numberOfSplits = 3
-            kfold = StratifiedShuffleSplit(n_splits=numberOfSplits, test_size=1/numberOfSplits)
-            for train, test in kfold.split(X, encoded_Y):
-                Settings.logger.debug('train -  {}   |   test -  {}'.format(
-                np.bincount(encoded_Y[train]), np.bincount(encoded_Y[test])))
-            #results = cross_val_score(estimator, X, dummy_y, n_jobs=-1, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
-            #print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
+        # kfold = KFold(n_splits=10, shuffle=True)
+        # StratifiedKFold tries to balance set classes between Folds, 7 is a random number not set to random just for reproducibility
+        # kfold = StratifiedKFold(n_splits=2, shuffle=True, random_state=7)
+        numberOfSplits = 3
+        kfold = StratifiedShuffleSplit(n_splits=numberOfSplits, test_size=1/numberOfSplits)
+        for train, test in kfold.split(X, encoded_Y):
+            Settings.logger.debug('train -  {}   |   test -  {}'.format(
+            np.bincount(encoded_Y[train]), np.bincount(encoded_Y[test])))
+        #results = cross_val_score(estimator, X, dummy_y, n_jobs=-1, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
+        #print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
 
-            scoring = ['accuracy', 'f1_macro', 'f1_micro', 'average_precision', 'balanced_accuracy', 'precision_macro', 'recall_macro'] # difference between macro and not macro? f1 === f-score?
-            scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold, fit_params={'class_weight': result_set['class_weights']})
-            #scores = cross_validate(neural_network(), X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,
-            #                        fit_params={'class_weight': result_set['class_weights'], 'epochs':20, 'batch_size':5, 'verbose':0})
-            Settings.logger.debug(str(scores))
-            Settings.logger.debug("Accuracy: %0.2f (+/- %0.2f)" % (scores['test_accuracy'].mean(), scores['test_accuracy'].std() * 2))
-            Settings.logger.debug("Recall: %0.2f (+/- %0.2f)" % (scores['test_recall_macro'].mean(), scores['test_recall_macro'].std() * 2))
-            Settings.logger.debug("Precision: %0.2f (+/- %0.2f)" % (scores['test_average_precision'].mean(), scores['test_average_precision'].std() * 2))
-            Settings.logger.debug("F1: %0.2f (+/- %0.2f)" % (scores['test_f1_macro'].mean(), scores['test_f1_macro'].std() * 2))
+        scoring = ['accuracy', 'f1_macro', 'f1_micro', 'average_precision', 'balanced_accuracy', 'precision_macro', 'recall_macro'] # difference between macro and not macro? f1 === f-score?
+        scores = cross_validate(estimator, X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold, fit_params={'class_weight': result_set['class_weights']})
+        #scores = cross_validate(neural_network(), X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,
+        #                        fit_params={'class_weight': result_set['class_weights'], 'epochs':20, 'batch_size':5, 'verbose':0})
+        Settings.logger.debug(str(scores))
+        Settings.logger.debug("Accuracy: %0.2f (+/- %0.2f)" % (scores['test_accuracy'].mean(), scores['test_accuracy'].std() * 2))
+        Settings.logger.debug("Recall: %0.2f (+/- %0.2f)" % (scores['test_recall_macro'].mean(), scores['test_recall_macro'].std() * 2))
+        Settings.logger.debug("Precision: %0.2f (+/- %0.2f)" % (scores['test_average_precision'].mean(), scores['test_average_precision'].std() * 2))
+        Settings.logger.debug("F1: %0.2f (+/- %0.2f)" % (scores['test_f1_macro'].mean(), scores['test_f1_macro'].std() * 2))
 
-            i = 1
-            for train_index, test_index in kfold.split(X, encoded_Y):
-                X_train = X[train_index]
-                X_test = X[test_index]
-                y_train = encoded_Y[train_index]
-                y_test = encoded_Y[test_index]
+        i = 1
+        for train_index, test_index in kfold.split(X, encoded_Y):
+            X_train = X[train_index]
+            X_test = X[test_index]
+            y_train = encoded_Y[train_index]
+            y_test = encoded_Y[test_index]
 
-                model = neural_network()
-                #model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
-                #model._estimator_type = "classifier"
+            model = neural_network()
+            #model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+            #model._estimator_type = "classifier"
 
-                # Train the model
-                model.fit(X_train, y_train, epochs=20, batch_size=5)  # Training the model
-                print(f"Accuracy for the fold no. {i} on the test set: {accuracy_score(y_test,(model.predict(X_test) > 0.5).astype('int32'))}")
-                print("accuracy as seen from model.evaluate: " + str(model.evaluate(X_test, y_test)[1]))  # if plain simple keras sequential model
-                #print("accuracy as seen from model.evaluate: " + str(model.score(X_test, y_test)))          # if KerasClassifier wrapper
-                i += 1
+            # Train the model
+            model.fit(X_train, y_train, epochs=20, batch_size=5)  # Training the model
+            print(f"Accuracy for the fold no. {i} on the test set: {accuracy_score(y_test,(model.predict(X_test) > 0.5).astype('int32'))}")
+            print("accuracy as seen from model.evaluate: " + str(model.evaluate(X_test, y_test)[1]))  # if plain simple keras sequential model
+            #print("accuracy as seen from model.evaluate: " + str(model.score(X_test, y_test)))          # if KerasClassifier wrapper
+            i += 1
 
-            return ({'accuracy': scores['test_accuracy'].mean(), 'recall': scores['test_recall_macro'].mean(),
-                     'precision': scores['test_average_precision'].mean(), 'f1': scores['test_f1_macro'].mean()})
-        else:   # we're using the network to predict labels, not cross-validate, get predictions for test set
-            model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
-            Settings.logger.debug('Started training...')
-            model.fit(X, encoded_Y)
-            output = {}
-            Settings.logger.debug('Started prediction...')
-            for domain in self.parser.test:
-                output[domain] = []
-                for pair in self.parser.test[domain]:
-                    fromConcept = Model.dataset[Model.dataset.index(pair[0])]
-                    toConcept = Model.dataset[Model.dataset.index(pair[1])]
-                    result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept)])) > 0.5).astype('int32')]
-                    output[domain].append(result)
-            Settings.logger.debug('Found ' + str(sum([sum([pair[2] for pair in output[domain]]) for domain in output])) +
-                                                 ' prereqs in a ' + str(sum([len([pair[2] for pair in output[domain]]) for domain in output])) + ' long testSet')
-            return result
+        # train on whole dataset
+        model = KerasClassifier(build_fn=neural_network, epochs=20, batch_size=5, verbose=0)
+        Settings.logger.debug('Started training...')
+        model.fit(X, encoded_Y)
+        output = {}
+        Settings.logger.debug('Started prediction...')
+        for domain in self.parser.test:
+            output[domain] = []
+            for pair in self.parser.test[domain]:
+                fromConcept = Model.dataset[Model.dataset.index(pair[0])]
+                toConcept = Model.dataset[Model.dataset.index(pair[1])]
+                result = [fromConcept.title, toConcept.title, (model.predict(np.array([self.getFeatures(fromConcept, toConcept)])) > 0.5).astype('int32')]
+                output[domain].append(result)
+        Settings.logger.debug('Found ' + str(sum([sum([pair[2] for pair in output[domain]]) for domain in output])) +
+                                             ' prereqs in a ' + str(sum([len([pair[2] for pair in output[domain]]) for domain in output])) + ' long testSet')
+        return ({'accuracy': scores['test_accuracy'].mean(), 'recall': scores['test_recall_macro'].mean(),
+                     'precision': scores['test_average_precision'].mean(), 'f1': scores['test_f1_macro'].mean(), 'result': output})
 
     def plot(self):
         # TODO: trigger GUI.plot() here to plot results
