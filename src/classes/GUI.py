@@ -8,7 +8,7 @@ from PyQt5.Qt import QFont, Qt
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QLabel, QLineEdit, QCheckBox, QTableWidget,
                              QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QTableWidgetItem, QSpacerItem,
                              QSizePolicy, QFileDialog, QStackedWidget, QHeaderView, QMenuBar, QAction, QDialog,
-                             QTextBrowser)
+                             QTextBrowser, QTextEdit)
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtCore import pyqtSignal
 from Parser import Parser
@@ -89,6 +89,7 @@ class Page(QStackedWidget):
         self.resultPage.resultRequest2.connect(lambda: self.setCurrentIndex(1))  # resultPage -> statisticPage
 
         self.startPage.updateResult.connect(lambda: self.resultPage.updateResult())
+        #self.resultPage.updateTable.connect(lambda: self.startPage.createTableWidget())
 
 class StartPage(QWidget):
     counter = 0
@@ -179,7 +180,6 @@ class StartPage(QWidget):
         startLeftLayout.addWidget(self.startLeftLineEdit3)
         startLeftLayout.addWidget(self.startLeftLabel5)
         startLeftLayout.addWidget(self.startLeftLineEdit4)
-        startLeftLayout.addWidget(self.startLeftLabel6)
         startLeftLayout.addWidget(self.startLeftCheckBox1)
         startLeftLayout.addWidget(self.startLeftCheckBox2)
         startLeftLayout.addWidget(self.startLeftCheckBox3)
@@ -360,11 +360,6 @@ class StartPage(QWidget):
             else:
                 Settings.contains = False 
             self.modelResult = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput
-            # plot statistics
-            engine.plot()
-            print('risultati:')
-            for element in self.modelResult.values():
-                print(element)
             if Settings.useCache:
                 p.cache()
             self.startButton.clicked.connect(self.updateResult)
@@ -400,11 +395,11 @@ class StatisticPage(QWidget):
             file = open(self.parent.savedConfigurations, 'r')
             for line in file:
                 fields = (line.split('\t'))
-                values = re.findall('[0-9]+', fields[1])
-                accuracy[fields[0]] = float(values[0])
-                precision[fields[0]] = float(values[1])
-                fscore[fields[0]] = float(values[2])
-                recall[fields[0]] = float(values[3])
+                values = fields[1].split(')')
+                accuracy[fields[0]] = float(values[0].split(',')[-1])
+                precision[fields[0]] = float(values[1].split(',')[-1])
+                fscore[fields[0]] = float(values[2].split(',')[-1])
+                recall[fields[0]] = float(values[3].split(',')[-1])
             file.close()
         self.graphWidget = QWidget()
 
@@ -464,13 +459,14 @@ class Graph(FigureCanvas):
     def plot(self, x, y):
         ax = self.figure.add_subplot(111)
         ax.bar(x, y, color='blue', width=0.2)
-        ax.set_ylim(0, 100)
+        ax.set_ylim(0, 1)
         self.draw()
 
 
 class ResultPage(QWidget):
     resultRequest1 = pyqtSignal()
     resultRequest2 = pyqtSignal()
+    updateTable = pyqtSignal()
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -478,17 +474,17 @@ class ResultPage(QWidget):
         self.parent = parent
 
         self.createResultLeftWidget()
-        self.createResultRightWidget()
+        #self.createResultRightWidget()
         self.createResultShowWidget()
         self.createResultSaveWidget()
         self.createResultButtonWidget()
 
         resultPageLayout = QGridLayout()
         resultPageLayout.addWidget(self.resultLeftWidget, 0, 0)
-        resultPageLayout.addWidget(self.resultShowWidget, 1, 0)
-        resultPageLayout.addWidget(self.saveWidget, 2, 0)
-        resultPageLayout.addWidget(self.returnWidget, 3, 0)
-        resultPageLayout.addWidget(self.resultRightWidget, 0, 1, 1, 1)
+        resultPageLayout.addWidget(self.resultShowWidget, 0, 1, 1, 1)
+        resultPageLayout.addWidget(self.saveWidget, 1, 0)
+        resultPageLayout.addWidget(self.returnWidget, 2, 0)
+        #resultPageLayout.addWidget(self.resultRightWidget, 0, 1, 1, 1)
         self.setLayout(resultPageLayout)
 
     def createResultLeftWidget(self):
@@ -507,7 +503,7 @@ class ResultPage(QWidget):
         resultLeftLayout.addWidget(self.resultLeftLabel4)
         resultLeftLayout.addWidget(self.resultLeftLabel5)
         self.resultLeftWidget.setLayout(resultLeftLayout)
-
+    '''
     def createResultRightWidget(self):
         self.resultRightWidget = QWidget()
 
@@ -524,7 +520,7 @@ class ResultPage(QWidget):
         resultRightLayout.addWidget(self.resultRightLabel3)
         resultRightLayout.addItem(self.resultHSpacer)
         self.resultRightWidget.setLayout(resultRightLayout)
-
+    '''
     def createResultShowWidget(self):
         self.resultShowWidget = QWidget()
 
@@ -571,6 +567,7 @@ class ResultPage(QWidget):
         self.saveHSpacer = QSpacerItem(500, 0, QSizePolicy.Maximum, QSizePolicy.Maximum)
 
         self.saveYesButton.clicked.connect(self.saveConfiguration)
+        #self.saveYesButton.clicked.connect(self.updateTable)
         self.saveNoButton.clicked.connect(self.disableSaveConfiguration)
 
         saveLayout = QGridLayout()
@@ -613,6 +610,21 @@ class ResultPage(QWidget):
         self.showDialog.resize(400, 400)
         self.showDialog.setWindowTitle('Risultati')
 
+        self.showWidget = QWidget()
+        self.showText = QTextEdit()
+
+        for domain in self.parent.modelResult['result'].values():
+            for element in domain:
+                self.showText.append(element[0] + ',' + element[1] + ',' + str(element[2]) + '\n')
+
+        showLayout = QVBoxLayout()
+        showLayout.addWidget(self.showText)
+        self.showWidget.setLayout(showLayout)
+
+        showDialogLayout = QVBoxLayout()
+        showDialogLayout.addWidget(self.showWidget)
+        self.showDialog.setLayout(showDialogLayout)
+
         self.showDialog.show()
 
     def saveResultTxt(self):
@@ -621,7 +633,9 @@ class ResultPage(QWidget):
             self, "Salva i risultati", "", "Text Files (*.txt)")
         if not fileName[0] == "":
             file = open(fileName[0], 'w')
-            file.write()  # TODO: insert result of the model
+            for domain in self.parent.modelResult['result'].values():
+                for element in domain:
+                    file.write(element[0] + ',' + element[1] + ',' + str(element[2]) + '\n')  # TODO: insert result of the model
             file.close()
     
     def saveResultCsv(self):
@@ -630,7 +644,9 @@ class ResultPage(QWidget):
             self, "Salva i risultati", "", "CSV Files (*.csv)")
         if not fileName[0] == "":
             file = open(fileName[0], 'w')
-            file.write()  # TODO: insert result of the model
+            for domain in self.parent.modelResult['result'].values():
+                for element in domain:
+                    file.write(element[0] + ',' + element[1] + ',' + str(element[2]) + '\n')  # TODO: insert result of the model
             file.close()
 
     def saveConfiguration(self):
@@ -647,9 +663,9 @@ class ResultPage(QWidget):
         file.write('(' + self.parent.startLeftLabel2.text() + ',' + self.parent.startLeftLineEdit1.text() + '),' +
                    '(' + self.parent.startLeftLabel3.text() + ',' + self.parent.startLeftLineEdit2.text() + '),' +
                    '(' + self.parent.startLeftLabel4.text() + ',' + self.parent.startLeftLineEdit3.text() + '),' +
-                   '(' + self.parent.startLeftLabel5.text() + ',' + self.parent.startLeftLineEdit4.text() + '),' +
-                   '(' + self.parent.startLeftLabel6.text() + ',' + self.parent.startLeftLineEdit5.text() + ')\n')
-        file.close()  
+                   '(' + self.parent.startLeftLabel5.text() + ',' + self.parent.startLeftLineEdit4.text() + ')\n')
+        file.close()
+        self.parent.startTable.update()
 
     def disableSaveConfiguration(self):
         self.saveWidget.setDisabled(True)
@@ -675,7 +691,7 @@ class LineEdit(QLineEdit):
 def main():
     app = QApplication(sys.argv)
     win = Window()
-    # win.showMaximized() : to have screen window
+    win.showMaximized()  # to have screen window
     win.show()
 
     sys.exit(app.exec_())

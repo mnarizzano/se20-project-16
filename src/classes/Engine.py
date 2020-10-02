@@ -37,6 +37,7 @@ class Engine(Model):
 
 
     def process(self):
+        
         # initialize and pass my PairFeatures to the FeatureExtractor
         feature = FeatureExtractor(self.pairFeatures)
         # begin processing of single Features
@@ -62,7 +63,7 @@ class Engine(Model):
         ## processing of raw features
         feature.jaccardSimilarity()
         feature.LDACrossEntropy()
-
+        
         # obtain input and output from desiredGraphMatrix, PairFeatures and Model.dataset (for single ones)
         encoder = LabelEncoder()
         result_set = self.classifierFormatter()
