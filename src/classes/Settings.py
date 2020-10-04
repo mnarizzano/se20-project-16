@@ -7,8 +7,6 @@ class Settings:
     datasetPath = resourcePath + 'dataset/single_file/PRELEARN_training_data'
     testsetPath = resourcePath + 'dataset/single_file/PRELEARN_test_data'   # set this to None to skip prediction
     #datasetPath = resourcePath + 'dataset/split_files/sample'
-    Models = resourcePath + 'Model/'
-    glove_WIKI = Models + 'Glove/glove_WIKI'
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
     pairFeaturesPickle = resourcePath + 'cached/pairsFeatures.pickle'
     pairsPickle = resourcePath + 'cached/prereqPairs.pickle'
@@ -27,7 +25,10 @@ class Settings:
     useCache = True
 
     # Word-Embedding model path
-    wordVecModelPath = '../resources/Model/italian-isdt-ud-2.5-191206.udpipe'
+    Models = resourcePath + 'Model/'
+    glove_WIKI = Models + 'Glove/glove_WIKI'
+    # Udpipe model for lemmatization
+    udpipeModelPath = Models + 'italian-isdt-ud-2.5-191206.udpipe'
 
     # Logging
     logger = None
@@ -63,5 +64,8 @@ class Settings:
     CrossDomain = False  # if False trains on all domains
 
     # chose which type of CV run
-    manualCV = False
-    crossValidateCV = False  # ie using scikit method cross_validate
+    manualCV = True
+    crossValidateCV = True  # ie using scikit method cross_validate
+
+    # chose if run predictions or CV only
+    getPredictions = False

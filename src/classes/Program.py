@@ -15,27 +15,30 @@ if __name__ == '__main__':
     base = Baseline()
     basePerformance = base.process()
     '''
-
-    for mode in [True, False]:
-        for featTypes in [True, False]:
-            Settings.CrossDomain = mode
-            Settings.useRefD = featTypes
-            # Calculate Engine Performance
-            engine = Engine()
-            result = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput'
-            if Settings.CrossDomain:
-                fileName = Settings.resultFolder + 'cross/'
-            else:
-                fileName = Settings.resultFolder + 'in/'
-            if Settings.useRefD:
-                fileName = fileName + 'meta/'
-            else:
-                fileName = fileName + 'raw/'
-            for domain in result['result'].keys():
-                file = open(fileName + str(domain), 'w')
-                for element in result['result'][domain]:
-                    file.write(str(element[2]) + '\n')
-                file.close()
+    if Settings.getPredictions:
+        for mode in [True, False]:
+            for featTypes in [True, False]:
+                Settings.CrossDomain = mode
+                Settings.useRefD = featTypes
+                # Calculate Engine Performance
+                engine = Engine()
+                result = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput'
+                if Settings.CrossDomain:
+                    fileName = Settings.resultFolder + 'cross/'
+                else:
+                    fileName = Settings.resultFolder + 'in/'
+                if Settings.useRefD:
+                    fileName = fileName + 'meta/'
+                else:
+                    fileName = fileName + 'raw/'
+                for domain in result['result'].keys():
+                    file = open(fileName + str(domain), 'w')
+                    for element in result['result'][domain]:
+                        file.write(str(element[2]) + '\n')
+                    file.close()
+    else:
+        engine = Engine()
+        result = engine.process()  # might be cv results or testSet predictions, depending on Settings.generateOutput'
     k = 'debug breakpoint'
 
     if Settings.useCache:
