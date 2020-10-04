@@ -4,3 +4,7 @@
 src/resources/cached/concepts.pickle
 
 src/resources/Model/Glove/glove_WIKI.syn0.npy
+
+src/resources/old/results/
+
+src/resources/old/cached/

@@ -635,7 +635,7 @@ class ResultPage(QWidget):
             file = open(fileName[0], 'w')
             for domain in self.parent.modelResult['result'].values():
                 for element in domain:
-                    file.write(element[0] + ',' + element[1] + ',' + str(element[2]) + '\n')  # TODO: insert result of the model
+                    file.write(element[0] + ',' + element[1] + ',' + str(element[2]) + '\n')
             file.close()
     
     def saveResultCsv(self):

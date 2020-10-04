@@ -3,6 +3,7 @@ import logging
 class Settings:
     # Paths
     resourcePath = '../resources/'
+    resultFolder = resourcePath + 'results/'
     datasetPath = resourcePath + 'dataset/single_file/PRELEARN_training_data'
     testsetPath = resourcePath + 'dataset/single_file/PRELEARN_test_data'   # set this to None to skip prediction
     #datasetPath = resourcePath + 'dataset/split_files/sample'
@@ -62,5 +63,5 @@ class Settings:
     CrossDomain = False  # if False trains on all domains
 
     # chose which type of CV run
-    manualCV = True
-    crossValidateCV = True  # ie using scikit method cross_validate
+    manualCV = False
+    crossValidateCV = False  # ie using scikit method cross_validate

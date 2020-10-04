@@ -275,7 +275,7 @@ class Engine(Model):
                     fromConcept = Model.dataset[Model.dataset.index(pair[0])]
                     toConcept = Model.dataset[Model.dataset.index(pair[1])]
                     result = [fromConcept.title, toConcept.title, (self.classifier.predict(
-                        np.array([self.getFeatures(fromConcept, toConcept, 'none')])) > 0.5).astype('int32')]
+                        np.array([self.getFeatures(fromConcept, toConcept, 'none')])) > 0.5).astype('int32')[0][0]]
                     self.output[domain].append(result)
             self.network = None
             self.classifier = None
@@ -290,7 +290,7 @@ class Engine(Model):
                         featuresSet.append(self.inputs[i])
                         labelSet.append(self.labels[i])
                 Settings.logger.debug('Started cross-domain training for domain ' + domain)
-                Settings.logger.debug('Taining on ' + len(featuresSet) + ' samples')
+                Settings.logger.debug('Taining on ' + str(len(featuresSet)) + ' samples')
                 self.buildNetwork()
                 self.classifier.fit(np.array(featuresSet), np.array(labelSet), class_weight=self.weights)
                 Settings.logger.debug('Started cross-domain prediction...')
@@ -299,12 +299,12 @@ class Engine(Model):
                 for pair in self.parser.test[domain]:
                     fromConcept = Model.dataset[Model.dataset.index(pair[0])]
                     toConcept = Model.dataset[Model.dataset.index(pair[1])]
-                    self.output[domain].append(
+                    self.output[domain].append([
                         fromConcept.title,
                         toConcept.title,
                         (self.classifier.predict(
                             np.array([self.getFeatures(fromConcept, toConcept, '')])) > 0.5).astype('int32')[0][0]
-                    )
+                    ])
                 self.network = None
                 self.classifier = None
         Settings.logger.debug('Found ' + str(sum([sum([pair[2] for pair in self.output[domain]]) for domain in self.output])) +
