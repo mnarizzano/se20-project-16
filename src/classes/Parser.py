@@ -19,6 +19,8 @@ class Parser(object):
         if os.path.exists(path):
             return os.scandir(path)
 
+    def getTestStatistics(self):
+        pass
 
     def cache(self):    # TODO: maybe add caching of desiredMatrix (it's not really needed)
         # TODO: add check if cached directory exist and eventually create it

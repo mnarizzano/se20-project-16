@@ -50,14 +50,13 @@ class FeatureExtractor:
             self.parser.cache()
 
     def LDA(self):
-        numberOfTopics = 10  # TODO: either read from Settings or Configuration(and have Engine write to it->easier for configuration), or pass to method from engine
         if (not hasattr(MyModel.dataset[-1].features, 'ldaVector')) or (MyModel.dataset[-1].features.ldaVector == []):
-            Settings.logger.debug('Starting LDA Calculation with ' + str(numberOfTopics) + ' topics')
+            Settings.logger.debug('Starting LDA Calculation with ' + str(Settings.numberOfTopics) + ' topics')
             start_time = time.time()
             vectorizer = CountVectorizer()
             corpus = [[noun['lemma']for noun in concept.features.nounsList]for concept in MyModel.dataset] # TODO already calculated in nounsPlain
             data = vectorizer.fit_transform([' '.join(concept) for concept in corpus]) # TODO: play with stop-words: Ita e/o TF-ID (parole comuni a tutti i concetti non portano informazione per quel singolo concetto)
-            # TODO: move dtm to another location
+            # move dtm to another location?
             self.dtm = pd.DataFrame(data.toarray(), columns=vectorizer.get_feature_names())
             # print(dtm.shape) # is #of concepts x #of different words in corpus
             self.dtm.index = [concept.title for concept in MyModel.dataset]
@@ -66,17 +65,17 @@ class FeatureExtractor:
             sparse_count = scipy.sparse.csr_matrix(tdm)
             corpus = matutils.Sparse2Corpus(sparse_count)
             id2word = dict((v, k) for k, v in vectorizer.vocabulary_.items())
-            lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=numberOfTopics, passes=15)  # TODO: play with these numbers
+            lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=Settings.numberOfTopics, passes=15)  # TODO: play with these numbers
             corpus_transformed = lda[corpus]
             ldaVectors = dict(list(zip(self.dtm.index, [a for a in corpus_transformed])))
             # ldaVectors = {'concept.title':[topicNumber, probability of concept belonging to topicNumber]}
-            # topicNumber is an int in range [0, numberofTopics)
+            # topicNumber is an int in range [0, Settings.numberofTopics)
             # probability is a float in range [0, 1]
             for concept in MyModel.dataset: # Note: dataset and ldaVectors have same order, might speed up going by index instead of dictionary(dictionary is safer)
                 if sum([p[1] for p in ldaVectors[concept.title]]) < 0.1:
                     Settings.logger.error("Error something wrong in topic modeling: Concept '" +  concept.title + "' is not assigned to any topic")
-                leftOutProbability = (1-sum([p[1] for p in ldaVectors[concept.title]]))/(numberOfTopics-len(ldaVectors[concept.title]))
-                concept.features.ldaVector = [leftOutProbability]*numberOfTopics    # TODO: qwertyuiop WARNING pseudo-randomly assigned LDA confidence for concepts not explicitly in LDA output
+                leftOutProbability = (1-sum([p[1] for p in ldaVectors[concept.title]]))/(Settings.numberOfTopics-len(ldaVectors[concept.title]))
+                concept.features.ldaVector = [leftOutProbability]*Settings.numberOfTopics    # TODO: qwertyuiop WARNING pseudo-randomly assigned LDA confidence for concepts not explicitly in LDA output
                 for ldaComponent in ldaVectors[concept.title]:
                     concept.features.ldaVector[ldaComponent[0]] = ldaComponent[1]
             elapsed_time = time.time() - start_time

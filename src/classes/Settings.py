@@ -4,7 +4,7 @@ class Settings:
     # Paths
     resourcePath = '../resources/'
     datasetPath = resourcePath + 'dataset/single_file/PRELEARN_training_data'
-    testsetPath = resourcePath + 'dataset/single_file/PRELEARN_test_data'
+    testsetPath = resourcePath + 'dataset/single_file/PRELEARN_test_data'   # set this to None to skip prediction
     #datasetPath = resourcePath + 'dataset/split_files/sample'
     Models = resourcePath + 'Model/'
     glove_WIKI = Models + 'Glove/glove_WIKI'
@@ -38,8 +38,11 @@ class Settings:
     # Inserted value for NN
     neurons = 20
     layers = 1
-    kfoldSplits = 3
-    epoch = 15
+    kfoldSplits = 5
+    epoch = 20
+
+    # LDA
+    numberOfTopics = 10
 
     # Checkboxes for feature selection
     useRefD = True
@@ -56,4 +59,8 @@ class Settings:
     useAdjectives = False
 
     # set run mode
-    CrossDomain = True  # if False trains on all domains
+    CrossDomain = False  # if False trains on all domains
+
+    # chose which type of CV run
+    manualCV = True
+    crossValidateCV = False  # ie using scikit method cross_validate
