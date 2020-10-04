@@ -13,6 +13,8 @@ class Features:
         self.verbsPlain = []
         self.ldaVector = []
         self.LDAEntropy = 0
+        self.totalIncomingLinks = 0
+        self.totalOutgoingLinks = 0
 
     def get_numberOfSentences(self):
         return len(self.sentences)

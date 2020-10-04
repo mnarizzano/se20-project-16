@@ -441,6 +441,10 @@ class Engine(Model):
         if Settings.useRefD:
             features.append(self.pairFeatures.getRefDistance(conceptA, conceptB))
             features.append(self.pairFeatures.getRefDistance(conceptB, conceptA))
+            features.append(conceptA.features.totalIncomingLinks)
+            features.append(conceptA.features.totalOutgoingLinks)
+            features.append(conceptB.features.totalIncomingLinks)
+            features.append(conceptB.features.totalOutgoingLinks)
         if Settings.useConceptLDA:
             features = features + conceptA.getFeatures().get_LDAVector()  # spread operator: *['a', 'b'] = a, b
         if Settings.useJaccard:
