@@ -1,7 +1,7 @@
 import wikipediaapi
 from Settings import Settings
 from Model import Model
-
+import numpy as np
 
 class PairFeatures:
 
@@ -54,8 +54,8 @@ class PairFeatures:
 
     def RefDLoaded(self):
         return (self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].referenceDistance is not None and
-                sum([sum([self.pairFeatures[a.id][b.id].referenceDistance for a in Model.dataset]) for b
-                     in Model.dataset]) > 0)
+                np.array([[self.pairFeatures[a.id][b.id].referenceDistance for a in Model.dataset] for b
+                in Model.dataset]).std() > 0)
 
     def containsTitleLoaded(self):
         return ('containsTitle' in self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].__dict__.keys() and

@@ -38,9 +38,9 @@ class Settings:
     logger = logging.getLogger('myLogger')
 
     # Inserted value for NN
-    neurons = 20
+    neurons = 25
     layers = 1
-    kfoldSplits = 5
+    kfoldSplits = 2
     epoch = 20
 
     # LDA
@@ -64,8 +64,8 @@ class Settings:
     CrossDomain = False  # if False trains on all domains
 
     # chose which type of CV run
-    manualCV = True
-    crossValidateCV = True  # ie using scikit method cross_validate
+    manualCV = False
+    crossValidateCV = False  # ie using scikit method cross_validate
 
     # chose if run predictions or CV only
-    getPredictions = False
+    getPredictions = True

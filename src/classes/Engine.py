@@ -137,7 +137,7 @@ class Engine(Model):
     def autoCV(self):
         self.buildNetwork()
         # TODO: understand differences between these scoring variants
-        # macro: calculates indipendently for each class and then average
+        # macro: calculates independently for each class and then average
         # micro: will calculates metrics sample by sample (not clustering by class) -> this is the 1 we want
         # accuracy is global: total % of correctly predicted labels
         # balanced_accuracy is % of correct per class, then averaged together

@@ -1,3 +1,5 @@
+from tensorflow.python.keras.layers import Dense, LSTM
+from tensorflow.python.keras.models import Sequential
 from ufal.udpipe import Model, Pipeline, ProcessingError
 from Parser import Parser
 from Model import Model as MyModel
@@ -180,14 +182,16 @@ class FeatureExtractor:
             Settings.logger.debug('Skipping jaccard cause it was cached')
 
     def trainLSTMNet(self, inputs, outputs):
-        # please note that this needs a wordembedding model in Settings.wordVecModelPath, you can download one as follows
-        # fasttext.util.download_model('it', if_exists='ignore')
-
         # using Glove model from isti.cnr
         model = self.loadWordEmbeddings()
-        # inputs and outputs belongs to the training set for the actual training of the classifier (the parent one, not this)
-        # every kfold iteration in the parent we retrain this based on the parent trainset
-        pass
+        def build_lstm():
+            model = Sequential()
+            model.add(LSTM(50, activation='relu', input_shape=(10, 200), return_sequences=False))
+            model.add(Dense(1), activation='sigmoid')
+            model.compile(optimizer='adam', loss='binary_crossentropy')
+
+        # return trained lstm for this round
+        return lstm
 
     def containsTitle(self):
         if not self.pairFeatures.containsTitleLoaded():
