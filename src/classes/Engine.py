@@ -12,7 +12,7 @@ import pickle
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from keras.models import Sequential
-from keras.metrics import FalseNegatives, TrueNegatives, FalsePositives, TruePositives, Precision, Recall
+from keras.metrics import FalseNegatives, TrueNegatives, FalsePositives, TruePositives, Precision, Recall, Accuracy
 from keras.layers import Dense
 from keras.wrappers.scikit_learn import KerasClassifier
 from keras.utils import np_utils
@@ -137,8 +137,13 @@ class Engine(Model):
     def autoCV(self):
         self.buildNetwork()
         # TODO: understand differences between these scoring variants
-        scoring = ['accuracy', 'f1_macro', 'f1_micro', 'average_precision', 'balanced_accuracy', 'precision_macro',
-                   'recall_macro']  # difference between macro and not macro? f1 === f-score?
+        # macro: calculates indipendently for each class and then average
+        # micro: will calculates metrics sample by sample (not clustering by class) -> this is the 1 we want
+        # accuracy is global: total % of correctly predicted labels
+        # balanced_accuracy is % of correct per class, then averaged together
+        # Precision refers to precision at a particular decision threshold. For example, if you count any model output less than 0.5 as negative, and greater than 0.5 as positive. But sometimes (especially if your classes are not balanced, or if you want to favor precision over recall or vice versa), you may want to vary this threshold. Average precision gives you average precision at all such possible thresholds, which is also similar to the area under the precision-recall curve. It is a useful metric to compare how well models are ordering the predictions, without considering any specific decision threshold.
+        scoring = ['accuracy', 'balanced_accuracy', 'f1_macro', 'f1_micro', 'average_precision', 'precision_micro',
+                   'recall_micro']  # difference between macro and not macro? f1 === f-score?
         if not Settings.CrossDomain:    # train on all domains->use stratifiedKFold
             Settings.logger.debug('In-domain cross-validation')
             # kfold = KFold(n_splits=10, shuffle=True)
@@ -174,14 +179,14 @@ class Engine(Model):
 
         Settings.logger.debug('cross_validate CV performances: ' + str(scores))
         Settings.logger.debug("Accuracy: %0.2f (+/- %0.2f)" % (scores['test_accuracy'].mean(), scores['test_accuracy'].std() * 2))
-        Settings.logger.debug("Recall: %0.2f (+/- %0.2f)" % (scores['test_recall_macro'].mean(), scores['test_recall_macro'].std() * 2))
-        Settings.logger.debug("Precision: %0.2f (+/- %0.2f)" % (scores['test_average_precision'].mean(), scores['test_average_precision'].std() * 2))
-        Settings.logger.debug("F1: %0.2f (+/- %0.2f)" % (scores['test_f1_macro'].mean(), scores['test_f1_macro'].std() * 2))
+        Settings.logger.debug("Recall: %0.2f (+/- %0.2f)" % (scores['test_recall_micro'].mean(), scores['test_recall_micro'].std() * 2))
+        Settings.logger.debug("Precision: %0.2f (+/- %0.2f)" % (scores['test_precision_micro'].mean(), scores['test_precision_micro'].std() * 2))
+        Settings.logger.debug("F1: %0.2f (+/- %0.2f)" % (scores['test_f1_micro'].mean(), scores['test_f1_micro'].std() * 2))
 
         self.accuracy = {'mean': scores['test_accuracy'].mean(), 'std': scores['test_accuracy'].std() * 2}
-        self.recall = {'mean': scores['test_recall_macro'].mean(), 'std': scores['test_recall_macro'].std() * 2}
-        self.precision = {'mean': scores['test_average_precision'].mean(), 'std': scores['test_average_precision'].std() * 2}
-        self.fscore = {'mean': scores['test_f1_macro'].mean(), 'std': scores['test_f1_macro'].std() * 2}
+        self.recall = {'mean': scores['test_recall_micro'].mean(), 'std': scores['test_recall_micro'].std() * 2}
+        self.precision = {'mean': scores['test_precision_micro'].mean(), 'std': scores['test_precision_micro'].std() * 2}
+        self.fscore = {'mean': scores['test_f1_micro'].mean(), 'std': scores['test_f1_micro'].std() * 2}
         # destroy trained model to avoid interfering with other CV or prediction
         self.network = None
         self.classifier = None
@@ -219,17 +224,41 @@ class Engine(Model):
             # Train the model
             # model.fit(X_train, y_train, epochs=int(Settings.epoch), batch_size=5)  # if simple sequential model
             self.buildNetwork()
-            self.classifier.fit(X_train, y_train, class_weight=self.weights)
+            fitResults = self.classifier.fit(X_train, y_train, class_weight=self.weights)
+            evaluationResults = self.classifier.predict(X_test)
             #print(f"Accuracy for the fold no. {i} on the test set: {accuracy_score(y_test,(self.classifier.predict(X_test) > 0.5).astype('int32'))}")
             #print("accuracy as seen from model.evaluate: " + str(model.evaluate(X_test, y_test)[1]))  # if plain simple keras sequential model
             #print("accuracy as seen from model.evaluate: " + str(self.classifier.score(X_test, y_test)))          # if KerasClassifier wrapper
-            self.accuracy.append(self.classifier.score(X_test, y_test))
+            m = Accuracy()
+            m.update_state(y_test, evaluationResults)
+            self.accuracy.append(float(m.result()))
+            m = Precision()
+            m.update_state(y_test, evaluationResults)
+            self.precision.append(float(m.result()))
+            m = Recall()
+            m.update_state(y_test, evaluationResults)
+            self.recall.append(float(m.result()))
+            self.fscore.append(2 * (self.precision[-1] * self.recall[-1]) / (self.precision[-1] + self.recall[-1]))
             i += 1
             self.network = None
             self.classifier = None
         # destroy trained model to avoid interfering with other CV or prediction
         self.network = None
         self.classifier = None
+        self.precision = {'mean': np.array(self.precision).mean(), 'std': np.array(self.precision).std()}
+        self.accuracy = {'mean': np.array(self.accuracy).mean(), 'std': np.array(self.accuracy).std()}
+        self.recall = {'mean': np.array(self.recall).mean(), 'std': np.array(self.recall).std()}
+        self.fscore = {'mean': np.array(self.fscore).mean(), 'std': np.array(self.fscore).std()}
+        Settings.logger.debug('MANUAL CV performances: ')
+        Settings.logger.debug(
+            "Accuracy: %0.2f (+/- %0.2f)" % (self.accuracy['mean'], self.accuracy['std'] * 2))
+        Settings.logger.debug(
+            "Recall: %0.2f (+/- %0.2f)" % (self.recall['mean'], self.recall['std'] * 2))
+        Settings.logger.debug("Precision: %0.2f (+/- %0.2f)" % (
+        self.precision['mean'], self.precision['std'] * 2))
+        Settings.logger.debug(
+            "F1: %0.2f (+/- %0.2f)" % (self.fscore['mean'], self.fscore['std'] * 2))
+
 
     def predict(self):
         self.output = {}

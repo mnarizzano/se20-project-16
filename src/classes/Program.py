@@ -20,7 +20,7 @@ if __name__ == '__main__':
     engine = Engine()
     result = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput
     # plot statistics
-    engine.plot()
+    k = 'debug breakpoint'
 
     if Settings.useCache:
         p.cache()

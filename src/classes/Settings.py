@@ -63,4 +63,4 @@ class Settings:
 
     # chose which type of CV run
     manualCV = True
-    crossValidateCV = False  # ie using scikit method cross_validate
+    crossValidateCV = True  # ie using scikit method cross_validate
