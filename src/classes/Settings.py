@@ -64,7 +64,7 @@ class Settings:
     CrossDomain = False  # if False trains on all domains
 
     # chose which type of CV run
-    manualCV = False
+    manualCV = True
     crossValidateCV = False  # ie using scikit method cross_validate
 
     # chose if run predictions or CV only

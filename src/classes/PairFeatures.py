@@ -33,9 +33,13 @@ class PairFeatures:
 
     def linksLoaded(self):
         # Probably std() is a better check than sum() (if they're all the same value, even if |= 0, they're still useless)
-        return (self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].link is not None and
+        loadedRefD = (self.pairFeatures[Model.dataset[-1].id][Model.dataset[-1].id].link is not None and
                 sum([sum([self.pairFeatures[a.id][b.id].link for a in Model.dataset]) for b
                      in Model.dataset]) > 0)
+        loadedTotalInLinks = ('totalIncomingLinks' in Model.dataset[-1].features.__dict__.keys() and
+                Model.dataset[-1].features.totalIncomingLinks is not None and
+                sum([concept.features.totalIncomingLinks for concept in Model.dataset]) > 0)
+        return loadedRefD and loadedTotalInLinks
 
     def setJaccardSimilarity(self, conceptA, conceptB, js):
         # (jaccardSimilarity is symmetric)
