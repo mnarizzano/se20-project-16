@@ -71,6 +71,8 @@ class MetaExtractor:
     def extractLinkConnections(self):
         Settings.logger.debug("extractLinkConnections")
         if not self.pairFeatures.linksLoaded():
+            for concept in Model.dataset:
+                concept.features.totalIncomingLinks = 0
             for conceptA in Model.dataset:
                 conceptA.features.totalOutgoingLinks = len(conceptA.meta.links.keys())
                 for conceptB in Model.dataset:

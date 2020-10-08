@@ -314,14 +314,19 @@ class Engine(Model):
         self.network = None
         self.classifier = None
 
-    def process(self):
+    def process(self, notifyProgress=None):
+
+        # def notifyProgress(stepName, stepProgress = None)
         self.calculateFeatures()
         self.encodeInputOutputs()
         if Settings.crossValidateCV:
+            notifyProgress(stepName='Auto CrossValidation')
             self.autoCV()
         if Settings.manualCV:
+            notifyProgress(stepName='Manual CrossValidation')
             self.manualCV()
         if Settings.testsetPath is not None:
+            notifyProgress(stepName='Prediction')
             self.predict()
         if Settings.manualCV or Settings.crossValidateCV:
             return {'accuracy': self.accuracy['mean'], 'recall': self.recall['mean'],
