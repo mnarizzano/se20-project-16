@@ -4,11 +4,11 @@ import os.path
 import re
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from PyQt5.Qt import QFont, Qt
+from PyQt5.Qt import QFont, Qt, QSize
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QLabel, QLineEdit, QCheckBox, QTableWidget,
                              QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QTableWidgetItem, QSpacerItem,
                              QSizePolicy, QFileDialog, QStackedWidget, QHeaderView, QMenuBar, QAction, QDialog,
-                             QTextBrowser, QTextEdit)
+                             QTextBrowser, QTextEdit, QScrollBar, QScrollArea)
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtCore import pyqtSignal
 from Parser import Parser
@@ -104,12 +104,10 @@ class StartPage(QWidget):
 
         self.createStartLeftWidget()
         self.createStartRightWidget()
-        self.createStartButtonWidget()
 
         startPageLayout = QGridLayout()
         startPageLayout.addWidget(self.startLeftWidget, 0, 0, 1, 0)
         startPageLayout.addWidget(self.startRightWidget, 0, 1, 3, 2)
-        startPageLayout.addWidget(self.startButtonWidget, 1, 0, 2, 0)
         self.setLayout(startPageLayout)
 
     def createStartLeftWidget(self):
@@ -168,6 +166,13 @@ class StartPage(QWidget):
         self.startLeftCheckBox11 = QCheckBox('Contains')
         self.startLeftCheckBox11.setCheckable(True)
 
+        self.startLeftButton = QPushButton(self)
+        self.startLeftButton.setText('Calcolo modello')
+        self.startLeftButton.setFixedSize(200, 30)
+        self.startLeftButton.clicked.connect(self.runModel)
+
+        self.verticalSpacer = QSpacerItem(0, 100, QSizePolicy.Ignored, QSizePolicy.Ignored)
+
         startLeftLayout = QVBoxLayout()
         startLeftLayout.addWidget(self.startLeftFileButton)
         startLeftLayout.addWidget(self.startLeftDatasetLabel)
@@ -190,6 +195,9 @@ class StartPage(QWidget):
         startLeftLayout.addWidget(self.startLeftCheckBox8)
         startLeftLayout.addWidget(self.startLeftCheckBox9)
         startLeftLayout.addWidget(self.startLeftCheckBox10)
+        startLeftLayout.addWidget(self.startLeftCheckBox11)
+        startLeftLayout.addItem(self.verticalSpacer)
+        startLeftLayout.addWidget(self.startLeftButton)
         self.startLeftWidget.setLayout(startLeftLayout)
 
     def createStartRightWidget(self):
@@ -216,22 +224,8 @@ class StartPage(QWidget):
         startRightLayout.addWidget(self.startTable, 1, 0, 1, 4)
         self.startRightWidget.setLayout(startRightLayout)
 
-    def createStartButtonWidget(self):
-        self.startButtonWidget = QWidget()
-
-        self.startButton = QPushButton(self)
-        self.startButton.setText('Calcolo modello')
-        self.startButton.setFixedSize(200, 30)
-        self.startButton.clicked.connect(self.runModel)
-
-        self.verticalSpacer = QSpacerItem(0, 500, QSizePolicy.Ignored, QSizePolicy.Ignored)
-
-        buttonLayout = QVBoxLayout()
-        buttonLayout.addItem(self.verticalSpacer)
-        buttonLayout.addWidget(self.startButton)
-        self.startButtonWidget.setLayout(buttonLayout)
-
     def createTableWidget(self):
+
         if os.path.exists(self.savedConfigurations):
             file = open(self.savedConfigurations, 'r')
             fileLength = len(file.readlines())
@@ -240,34 +234,49 @@ class StartPage(QWidget):
             file.close()
         else:
             self.rows = 0
-        self.columns = 4
+        self.columns = 22
         self.startTable = QTableWidget(self.rows, self.columns)
-        self.startTable.setHorizontalHeaderLabels(['', 'Data', 'Performance', 'Parametri'])
-        self.startTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        self.startTable.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
-        self.startTable.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
-        self.startTable.setColumnWidth(0, 30)
-        self.startTable.setGeometry(300, 300, 250, 250)
+        self.startTable.setHorizontalHeaderLabels(['','Date','Name','Accuracy','Precision','F-Score','Recall',
+                                                    'Neurons','Layers','KfoldSplits','Epoch','RefD','JaccardSim',
+                                                    'LDA Concept','LDA CrossEntropy','LDA KLD','Link','Nouns','Verbs',
+                                                    'Adj','Crossdomain','Contains'])
+        for i in range(0, 22):
+            self.startTable.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeToContents)
+        self.startTable.setGeometry(300, 300, 1000, 700)
         self.startTable.setDisabled(True)
         if os.path.exists(self.savedConfigurations):
             file = open(self.savedConfigurations, 'r')
-            fields = []
-            for line in file:
-                element = line.split('\t')
-                fields.append(element)
-            for row in range(0, len(fields)):
+            fileLines = file.readlines()
+            for row in range(0, len(fileLines)):
+                fields = fileLines[row].split('\t')
+                performances = fields[2].split(')')
+                parameters = fields[3].split(')')
                 startRightCheckBoxItem = QTableWidgetItem(row)
                 startRightCheckBoxItem.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
                 startRightCheckBoxItem.setCheckState(Qt.Unchecked)
                 self.startTable.setItem(row, 0, startRightCheckBoxItem)
-                self.startTable.setItem(row, 1, QTableWidgetItem(fields[row][0]))
-                self.startTable.item(row, 1).setFlags(Qt.ItemIsEditable)
-                self.startTable.setItem(row, 2, QTableWidgetItem(fields[row][1]))
-                self.startTable.item(row, 2).setFlags(Qt.ItemIsEditable)
-                self.startTable.setItem(row, 3, QTableWidgetItem(fields[row][2]))
-                self.startTable.item(row, 3).setFlags(Qt.ItemIsEditable)
+                self.startTable.setItem(row, 1, QTableWidgetItem(fields[0]))
+                self.startTable.setItem(row, 2, QTableWidgetItem(fields[1]))
+                self.startTable.setItem(row, 3, QTableWidgetItem(performances[0].split(',')[-1]))
+                self.startTable.setItem(row, 4, QTableWidgetItem(performances[1].split(',')[-1]))                
+                self.startTable.setItem(row, 5, QTableWidgetItem(performances[2].split(',')[-1]))
+                self.startTable.setItem(row, 6, QTableWidgetItem(performances[3].split(',')[-1]))
+                self.startTable.setItem(row, 7, QTableWidgetItem(parameters[0].split(',')[-1]))
+                self.startTable.setItem(row, 8, QTableWidgetItem(parameters[1].split(',')[-1]))
+                self.startTable.setItem(row, 9, QTableWidgetItem(parameters[2].split(',')[-1]))
+                self.startTable.setItem(row, 10, QTableWidgetItem(parameters[3].split(',')[-1]))
+                self.startTable.setItem(row, 11, QTableWidgetItem(parameters[4].split(',')[-1]))
+                self.startTable.setItem(row, 12, QTableWidgetItem(parameters[5].split(',')[-1]))
+                self.startTable.setItem(row, 13, QTableWidgetItem(parameters[6].split(',')[-1]))
+                self.startTable.setItem(row, 14, QTableWidgetItem(parameters[7].split(',')[-1]))
+                self.startTable.setItem(row, 15, QTableWidgetItem(parameters[8].split(',')[-1]))
+                self.startTable.setItem(row, 16, QTableWidgetItem(parameters[9].split(',')[-1]))
+                self.startTable.setItem(row, 17, QTableWidgetItem(parameters[10].split(',')[-1]))
+                self.startTable.setItem(row, 18, QTableWidgetItem(parameters[11].split(',')[-1]))
+                self.startTable.setItem(row, 19, QTableWidgetItem(parameters[12].split(',')[-1]))
+                self.startTable.setItem(row, 20, QTableWidgetItem(parameters[13].split(',')[-1]))
+                self.startTable.setItem(row, 21, QTableWidgetItem(parameters[14].split(',')[-1]))
             file.close()
-
         self.startTable.itemClicked.connect(self.selectConfiguration)
 
     def enableTable(self):
@@ -278,11 +287,32 @@ class StartPage(QWidget):
 
     def selectConfiguration(self, item):
         if item.checkState() == Qt.Checked:
-            values = re.findall('[0-9]+', self.startTable.item(item.row(), 3).text())
-            self.startLeftLineEdit1.setText(values[0])
-            self.startLeftLineEdit2.setText(values[1])
-            self.startLeftLineEdit3.setText(values[2])
-            self.startLeftLineEdit4.setText(values[3])
+            self.startLeftLineEdit1.setText(self.startTable.item(item.row(), 7).text())
+            self.startLeftLineEdit2.setText(self.startTable.item(item.row(), 8).text())
+            self.startLeftLineEdit3.setText(self.startTable.item(item.row(), 9).text())
+            self.startLeftLineEdit4.setText(self.startTable.item(item.row(), 10).text())
+            if self.startTable.item(item.row(), 11).text() == 'True':
+                self.startLeftCheckBox1.setCheckState(2)
+            if self.startTable.item(item.row(), 12).text() == 'True':
+                self.startLeftCheckBox2.setCheckState(2)
+            if self.startTable.item(item.row(), 13).text() == 'True':
+                self.startLeftCheckBox3.setCheckState(2)
+            if self.startTable.item(item.row(), 14).text() == 'True':
+                self.startLeftCheckBox4.setCheckState(2)
+            if self.startTable.item(item.row(), 15).text() == 'True':
+                self.startLeftCheckBox5.setCheckState(2)
+            if self.startTable.item(item.row(), 16).text() == 'True':
+                self.startLeftCheckBox6.setCheckState(2)
+            if self.startTable.item(item.row(), 17).text() == 'True':
+                self.startLeftCheckBox7.setCheckState(2)
+            if self.startTable.item(item.row(), 18).text() == 'True':
+                self.startLeftCheckBox8.setCheckState(2)
+            if self.startTable.item(item.row(), 19).text() == 'True':
+                self.startLeftCheckBox9.setCheckState(2)
+            if self.startTable.item(item.row(), 20).text() == 'True':
+                self.startLeftCheckBox10.setCheckState(2)
+            if self.startTable.item(item.row(), 21).text() == 'True':
+                self.startLeftCheckBox11.setCheckState(2)
 
     def loadDataset(self):
         fileDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
@@ -299,20 +329,14 @@ class StartPage(QWidget):
             p.parse()
             p.parseTest()
             Settings.logger.info('Finished Parsing')
-
-            # Calculate Baseline Performance
-            '''
-            base = Baseline()
-            basePerformance = base.process()
-            '''
-            # Calculate Engine Performance            
+            # Calculate Engine performances            
             engine = Engine()
             if self.startLeftLineEdit1.text():
                 Settings.neurons = float(self.startLeftLineEdit1.text())
             if self.startLeftLineEdit2.text():
                 Settings.layers = float(self.startLeftLineEdit2.text())
             if self.startLeftLineEdit3.text():
-                Settings.kfoldSplits = float(self.startLineEdit3.text())
+                Settings.kfoldSplits = float(self.startLeftLineEdit3.text())
             if self.startLeftLineEdit4.text():
                 Settings.epoch = float(self.startLeftLineEdit4.text())
             if self.startLeftCheckBox1.isChecked():
@@ -362,10 +386,10 @@ class StartPage(QWidget):
             self.modelResult = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput
             if Settings.useCache:
                 p.cache()
-            self.startButton.clicked.connect(self.updateResult)
-            self.startButton.setText('Vai ai risultati')    
+            self.startLeftButton.clicked.connect(self.updateResult)
+            self.startLeftButton.setText('Vai ai risultati')    
         
-        self.startButton.clicked.connect(self.startRequest1)
+        self.startLeftButton.clicked.connect(self.startRequest1)
 
 
 class StatisticPage(QWidget):
@@ -395,7 +419,7 @@ class StatisticPage(QWidget):
             file = open(self.parent.savedConfigurations, 'r')
             for line in file:
                 fields = (line.split('\t'))
-                values = fields[1].split(')')
+                values = fields[2].split(')')
                 accuracy[fields[0]] = float(values[0].split(',')[-1])
                 precision[fields[0]] = float(values[1].split(',')[-1])
                 fscore[fields[0]] = float(values[2].split(',')[-1])
@@ -474,7 +498,6 @@ class ResultPage(QWidget):
         self.parent = parent
 
         self.createResultLeftWidget()
-        #self.createResultRightWidget()
         self.createResultShowWidget()
         self.createResultSaveWidget()
         self.createResultButtonWidget()
@@ -484,7 +507,6 @@ class ResultPage(QWidget):
         resultPageLayout.addWidget(self.resultShowWidget, 0, 1, 1, 1)
         resultPageLayout.addWidget(self.saveWidget, 1, 0)
         resultPageLayout.addWidget(self.returnWidget, 2, 0)
-        #resultPageLayout.addWidget(self.resultRightWidget, 0, 1, 1, 1)
         self.setLayout(resultPageLayout)
 
     def createResultLeftWidget(self):
@@ -503,24 +525,7 @@ class ResultPage(QWidget):
         resultLeftLayout.addWidget(self.resultLeftLabel4)
         resultLeftLayout.addWidget(self.resultLeftLabel5)
         self.resultLeftWidget.setLayout(resultLeftLayout)
-    '''
-    def createResultRightWidget(self):
-        self.resultRightWidget = QWidget()
 
-        self.resultRightLabel1 = Label('Dataset:')
-        self.resultRightLabel2 = Label('Numero voci: ')
-        self.resultRightLabel3 = Label('Numero domini: ')
-        self.resultRightLabel4 = Label('Numero parole: ')
-        self.resultHSpacer = QSpacerItem(400, 0, QSizePolicy.Maximum, QSizePolicy.Maximum)
-        #TODO: add list of statistics
-
-        resultRightLayout = QVBoxLayout()
-        resultRightLayout.addWidget(self.resultRightLabel1)
-        resultRightLayout.addWidget(self.resultRightLabel2)
-        resultRightLayout.addWidget(self.resultRightLabel3)
-        resultRightLayout.addItem(self.resultHSpacer)
-        self.resultRightWidget.setLayout(resultRightLayout)
-    '''
     def createResultShowWidget(self):
         self.resultShowWidget = QWidget()
 
@@ -554,6 +559,11 @@ class ResultPage(QWidget):
 
         self.saveLabel1 = Label('Vuoi salvare la configurazione?')
         
+        self.saveLabel2 = Label('Nome:')
+
+        self.saveLineEdit = QLineEdit()    
+        self.saveLineEdit.setFixedSize(100, 20)
+
         self.saveYesButton = QPushButton()
         self.saveYesButton.setText('Si')
         self.saveYesButton.setFixedSize(100, 30)
@@ -561,8 +571,6 @@ class ResultPage(QWidget):
         self.saveNoButton = QPushButton()
         self.saveNoButton.setText('No')
         self.saveNoButton.setFixedSize(100, 30)
-
-        self.saveLabel2 = Label('')
 
         self.saveHSpacer = QSpacerItem(500, 0, QSizePolicy.Maximum, QSizePolicy.Maximum)
 
@@ -572,9 +580,10 @@ class ResultPage(QWidget):
 
         saveLayout = QGridLayout()
         saveLayout.addWidget(self.saveLabel1, 0, 0, 1, 3)
-        saveLayout.addWidget(self.saveYesButton, 1, 0)
-        saveLayout.addWidget(self.saveNoButton, 1, 1)
-        saveLayout.addWidget(self.saveLabel2, 2, 0)
+        saveLayout.addWidget(self.saveLabel2, 1, 0)
+        saveLayout.addWidget(self.saveLineEdit, 1, 1)
+        saveLayout.addWidget(self.saveYesButton, 2, 0)
+        saveLayout.addWidget(self.saveNoButton, 2, 1)
         saveLayout.addItem(self.saveHSpacer, 3, 2)
         self.saveWidget.setLayout(saveLayout)
 
@@ -600,12 +609,12 @@ class ResultPage(QWidget):
         self.returnWidget.setLayout(returnLayout)
 
     def updateResult(self):
-        self.resultLeftLabel2.setText('Accuracy: ' + str(self.parent.modelResult['accuracy']))
-        self.resultLeftLabel3.setText('Precision: ' + str(self.parent.modelResult['precision']))
-        self.resultLeftLabel4.setText('Fscore: ' + str(self.parent.modelResult['f1']))
-        self.resultLeftLabel5.setText('Recall: ' + str(self.parent.modelResult['recall']))
+        self.resultLeftLabel2.setText('Accuracy: ' + str(round(self.parent.modelResult['accuracy'],3)))
+        self.resultLeftLabel3.setText('Precision: ' + str(round(self.parent.modelResult['precision'],3)))
+        self.resultLeftLabel4.setText('Fscore: ' + str(round(self.parent.modelResult['f1'],3)))
+        self.resultLeftLabel5.setText('Recall: ' + str(round(self.parent.modelResult['recall'],3)))
 
-    def showResult(self):  # TODO: open new window with results (like guide)
+    def showResult(self):
         self.showDialog = QDialog()
         self.showDialog.resize(400, 400)
         self.showDialog.setWindowTitle('Risultati')
@@ -646,24 +655,85 @@ class ResultPage(QWidget):
             file = open(fileName[0], 'w')
             for domain in self.parent.modelResult['result'].values():
                 for element in domain:
-                    file.write(element[0] + ',' + element[1] + ',' + str(element[2]) + '\n')  # TODO: insert result of the model
+                    file.write(element[0] + ',' + element[1] + ',' + str(element[2]) + '\n')
             file.close()
 
     def saveConfiguration(self):
         saveDate = datetime.datetime.now()
-        # data conf, performance(label,valore), parametri(label,valore)
         file = open(self.parent.savedConfigurations, 'a')
         file.write(str(saveDate.year) + '-' + str(saveDate.month) +
                    '-' + str(saveDate.day) + ' ' + str(saveDate.hour) +
                    ':' + str(saveDate.minute) + ':' + str(saveDate.second) + '\t')
-        file.write('(' + 'Accuracy' + ',' + str(self.parent.modelResult['accuracy']) + '),' +
-                   '(' + 'Precision' + ',' + str(self.parent.modelResult['precision']) + '),' +
-                   '(' + 'Fscore' + ',' + str(self.parent.modelResult['f1']) + '),' +
-                   '(' + 'Recall' + ',' + str(self.parent.modelResult['recall']) + ')\t')
+        if not self.saveLineEdit.text() == "":
+            file.write(self.saveLineEdit.text() + '\t')
+        else:
+            file.write('default ' + str(saveDate.year) + '-' + str(saveDate.month) +
+                       '-' + str(saveDate.day) + ' ' + str(saveDate.hour) +
+                       ':' + str(saveDate.minute) + ':' + str(saveDate.second) + '\t')
+        file.write('(' + 'Accuracy' + ',' + str(round(self.parent.modelResult['accuracy'],3)) + '),' +
+                   '(' + 'Precision' + ',' + str(round(self.parent.modelResult['precision'],3)) + '),' +
+                   '(' + 'Fscore' + ',' + str(round(self.parent.modelResult['f1'],3)) + '),' +
+                   '(' + 'Recall' + ',' + str(round(self.parent.modelResult['recall'],3)) + ')\t')
         file.write('(' + self.parent.startLeftLabel2.text() + ',' + self.parent.startLeftLineEdit1.text() + '),' +
                    '(' + self.parent.startLeftLabel3.text() + ',' + self.parent.startLeftLineEdit2.text() + '),' +
                    '(' + self.parent.startLeftLabel4.text() + ',' + self.parent.startLeftLineEdit3.text() + '),' +
-                   '(' + self.parent.startLeftLabel5.text() + ',' + self.parent.startLeftLineEdit4.text() + ')\n')
+                   '(' + self.parent.startLeftLabel5.text() + ',' + self.parent.startLeftLineEdit4.text() + '),' +
+                   '(' + self.parent.startLeftCheckBox1.text() + ',')
+        if self.parent.startLeftCheckBox1.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox2.text() + ',')
+        if self.parent.startLeftCheckBox2.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox3.text() + ',')
+        if self.parent.startLeftCheckBox3.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox4.text() + ',')
+        if self.parent.startLeftCheckBox4.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox5.text() + ',')
+        if self.parent.startLeftCheckBox5.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox6.text() + ',')
+        if self.parent.startLeftCheckBox6.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox7.text() + ',')
+        if self.parent.startLeftCheckBox7.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox8.text() + ',')
+        if self.parent.startLeftCheckBox8.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox9.text() + ',')
+        if self.parent.startLeftCheckBox9.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox10.text() + ',')
+        if self.parent.startLeftCheckBox10.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write('),(' + self.parent.startLeftCheckBox11.text() + ',')
+        if self.parent.startLeftCheckBox11.isChecked():
+            file.write('True')
+        else:
+            file.write('False')
+        file.write(')\n')
         file.close()
         self.parent.startTable.update()
 
