@@ -41,6 +41,8 @@ class Engine(Model):
     precision = None
     fscore = None
     network = None
+    totalPredictions = 0
+    probabilities = {}
 
     def __init__(self):
         if os.path.exists(Settings.pairFeaturesPickle):
@@ -219,6 +221,7 @@ class Engine(Model):
             X_test = self.inputs[test_index]
             y_train = self.labels[train_index]
             y_test = self.labels[test_index]
+            test_domains = np.array(self.groups)[test_index]
             #model = self.network()
 
             # Train the model
@@ -226,9 +229,19 @@ class Engine(Model):
             self.buildNetwork()
             fitResults = self.classifier.fit(X_train, y_train, class_weight=self.weights)
             evaluationResults = self.classifier.predict(X_test)
+            evaluationProbabilities = self.classifier.predict_proba(X_test)
             #print(f"Accuracy for the fold no. {i} on the test set: {accuracy_score(y_test,(self.classifier.predict(X_test) > 0.5).astype('int32'))}")
             #print("accuracy as seen from model.evaluate: " + str(model.evaluate(X_test, y_test)[1]))  # if plain simple keras sequential model
             #print("accuracy as seen from model.evaluate: " + str(self.classifier.score(X_test, y_test)))          # if KerasClassifier wrapper
+            for i in range(len(evaluationResults)-1):
+                if y_test[i] == evaluationResults[i][0]: # prediction is correct
+                    prob = round(evaluationProbabilities[i][y_test[i]], 2)    # take the i-th probability of the predicted class (i.e the bigger one between the 2 probs for i-th prediction)
+                    if not prob in self.probabilities:
+                        self.probabilities[prob] = 0
+                    self.probabilities[prob] = self.probabilities[prob] + 1
+            self.totalPredictions = self.totalPredictions + len(evaluationResults)
+
+            # Calculate performances for this CV run
             m = Accuracy()
             m.update_state(y_test, evaluationResults)
             self.accuracy.append(float(m.result()))
@@ -242,7 +255,15 @@ class Engine(Model):
             i += 1
             self.network = None
             self.classifier = None
+
+            # Calculate per domain performances:
+
         # destroy trained model to avoid interfering with other CV or prediction
+        for i in range(50, 101):    # fill missing probabilities
+            if not (0+i/100) in self.probabilities:
+                self.probabilities[0+i/100] = 0
+        self.probabilities = [{a: self.probabilities[a]} for a in sorted(self.probabilities.keys())]
+        # sum([self.probabilities[k] for k in self.probabilities.keys()])/self.totalPredictions should trace precision
         self.network = None
         self.classifier = None
         self.precision = {'mean': np.array(self.precision).mean(), 'std': np.array(self.precision).std()}
@@ -317,6 +338,10 @@ class Engine(Model):
     def process(self, notifyProgress=None):
 
         # def notifyProgress(stepName, stepProgress = None)
+        if notifyProgress == None:
+            def temp(stepName, stepProgress = None):
+                pass
+            notifyProgress = temp
         self.calculateFeatures()
         self.encodeInputOutputs()
         if Settings.crossValidateCV:
@@ -330,7 +355,8 @@ class Engine(Model):
             self.predict()
         if Settings.manualCV or Settings.crossValidateCV:
             return {'accuracy': self.accuracy['mean'], 'recall': self.recall['mean'],
-                     'precision': self.precision['mean'], 'f1': self.fscore['mean'], 'result': self.output}
+                     'precision': self.precision['mean'], 'f1': self.fscore['mean'], 'result': self.output,
+                    'probabilities': self.probabilities, 'totalCVPredictions': self.totalPredictions}
         else:
             return {'result': self.output}
 

@@ -68,4 +68,4 @@ class Settings:
     crossValidateCV = False  # ie using scikit method cross_validate
 
     # chose if run predictions or CV only
-    getPredictions = True
+    getPredictions = False
