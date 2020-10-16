@@ -69,3 +69,4 @@ class Settings:
 
     # chose if run predictions or CV only
     getPredictions = False
+    fullRun = True

@@ -42,13 +42,18 @@ class Engine(Model):
     fscore = None
     network = None
     totalPredictions = 0
-    probabilities = {}
+    correctProbabilities = {}
+    wrongProbabilities = {}
 
     def __init__(self):
         if os.path.exists(Settings.pairFeaturesPickle):
             with open(Settings.pairFeaturesPickle, 'rb') as file:
                 self.pairFeatures = pickle.load(file)
-        else: self.pairFeatures = PairFeatures()
+        else:
+            self.pairFeatures = PairFeatures()
+        for i in range(50, 101):    # initialize probabilities
+            self.correctProbabilities[str(0+i/100)] = 0
+            self.wrongProbabilities[str(0+i/100)] = 0
 
 
     def calculateFeatures(self):
@@ -236,9 +241,11 @@ class Engine(Model):
             for i in range(len(evaluationResults)-1):
                 if y_test[i] == evaluationResults[i][0]: # prediction is correct
                     prob = round(evaluationProbabilities[i][y_test[i]], 2)    # take the i-th probability of the predicted class (i.e the bigger one between the 2 probs for i-th prediction)
-                    if not prob in self.probabilities:
-                        self.probabilities[prob] = 0
-                    self.probabilities[prob] = self.probabilities[prob] + 1
+                    self.correctProbabilities[str(prob)] = self.correctProbabilities[str(prob)] + 1
+                else:
+                    prob = round(evaluationProbabilities[i][int(not y_test[i])],
+                                 2)  # take the i-th probability of the predicted class (i.e the bigger one between the 2 probs for i-th prediction)
+                    self.wrongProbabilities[str(prob)] = self.wrongProbabilities[str(prob)] + 1
             self.totalPredictions = self.totalPredictions + len(evaluationResults)
 
             # Calculate performances for this CV run
@@ -259,11 +266,7 @@ class Engine(Model):
             # Calculate per domain performances:
 
         # destroy trained model to avoid interfering with other CV or prediction
-        for i in range(50, 101):    # fill missing probabilities
-            if not (0+i/100) in self.probabilities:
-                self.probabilities[0+i/100] = 0
-        self.probabilities = [{a: self.probabilities[a]} for a in sorted(self.probabilities.keys())]
-        # sum([self.probabilities[k] for k in self.probabilities.keys()])/self.totalPredictions should trace precision
+        # sum([self.correctProbabilities[k] for k in self.correctProbabilities.keys()])/self.totalPredictions should trace precision
         self.network = None
         self.classifier = None
         self.precision = {'mean': np.array(self.precision).mean(), 'std': np.array(self.precision).std()}
@@ -356,7 +359,7 @@ class Engine(Model):
         if Settings.manualCV or Settings.crossValidateCV:
             return {'accuracy': self.accuracy['mean'], 'recall': self.recall['mean'],
                      'precision': self.precision['mean'], 'f1': self.fscore['mean'], 'result': self.output,
-                    'probabilities': self.probabilities, 'totalCVPredictions': self.totalPredictions}
+                    'correctProbabilities': self.correctProbabilities, 'wrongProbabilities': self.wrongProbabilities}
         else:
             return {'result': self.output}
 

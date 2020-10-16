@@ -15,7 +15,7 @@ if __name__ == '__main__':
     base = Baseline()
     basePerformance = base.process()
     '''
-    if Settings.getPredictions:
+    if Settings.fullRun:
         for mode in [True, False]:
             for featTypes in [True, False]:
                 Settings.CrossDomain = mode
@@ -23,18 +23,34 @@ if __name__ == '__main__':
                 # Calculate Engine Performance
                 engine = Engine()
                 result = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput'
-                if Settings.CrossDomain:
-                    fileName = Settings.resultFolder + 'cross/'
-                else:
-                    fileName = Settings.resultFolder + 'in/'
-                if Settings.useRefD:
-                    fileName = fileName + 'meta/'
-                else:
-                    fileName = fileName + 'raw/'
-                for domain in result['result'].keys():
-                    file = open(fileName + str(domain), 'w')
-                    for element in result['result'][domain]:
-                        file.write(str(element[2]) + '\n')
+                if Settings.getPredictions:
+                    if Settings.CrossDomain:
+                        fileName = Settings.resultFolder + 'cross/'
+                    else:
+                        fileName = Settings.resultFolder + 'in/'
+                    if Settings.useRefD:
+                        fileName = fileName + 'meta/'
+                    else:
+                        fileName = fileName + 'raw/'
+                    for domain in result['result'].keys():
+                        file = open(fileName + str(domain), 'w')
+                        for element in result['result'][domain]:
+                            file.write(str(element[2]) + '\n')
+                        file.close()
+                if Settings.manualCV:   # engine returned probabilities distributions, write them to file
+                    if Settings.CrossDomain:
+                        fileName = Settings.resultFolder + 'CV/cross_'
+                    else:
+                        fileName = Settings.resultFolder + 'CV/in_'
+                    if Settings.useRefD:
+                        fileName = fileName + 'meta_'
+                    else:
+                        fileName = fileName + 'raw_'
+                    file = open(fileName + 'probabilities', 'w')
+                    for probability in result['correctProbabilities'].keys():
+                        file.write(str(probability) + ', ' +
+                                   str(result['correctProbabilities'][probability]) + ', ' +
+                                   str(result['wrongProbabilities'][probability]) + '\n')
                     file.close()
     else:
         engine = Engine()
