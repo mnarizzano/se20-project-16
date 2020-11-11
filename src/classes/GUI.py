@@ -93,8 +93,10 @@ class StartPage(QWidget):
         self.createStartRightWidget()
 
         startPageLayout = QGridLayout()
-        startPageLayout.addWidget(self.startLeftWidget, 0, 0, 1, 0)
-        startPageLayout.addWidget(self.startRightWidget, 0, 1, 3, 2)
+        # self.startLeftWidget.setStyleSheet("background-color: rgb(255,0,0); margin:5px; border:1px solid rgb(0, 255, 0); ")
+        startPageLayout.addWidget(self.startRightWidget, 0, 5, -1, 10)
+        startPageLayout.addWidget(self.startLeftWidget, 0, 0, -1, 5)
+
         self.setLayout(startPageLayout)
 
     def createStartLeftWidget(self):
@@ -175,6 +177,7 @@ class StartPage(QWidget):
 
         startLeftLayout = QVBoxLayout()
         startLeftLayout.addWidget(self.guideButton)
+        #
         startLeftLayout.addWidget(self.startLeftFileButton)
         startLeftLayout.addWidget(self.startLeftDatasetLabel)
         startLeftLayout.addWidget(self.startLeftLabel1)
@@ -197,10 +200,22 @@ class StartPage(QWidget):
         startLeftLayout.addWidget(self.startLeftCheckBox9)
         startLeftLayout.addWidget(self.startLeftCheckBox10)
         startLeftLayout.addWidget(self.startLeftCheckBox11)
+        #
         startLeftLayout.addItem(self.verticalSpacer)
         startLeftLayout.addWidget(self.startLeftButton1)
         startLeftLayout.addWidget(self.startLeftButton2)
-        self.startLeftWidget.setLayout(startLeftLayout)
+
+        vBoxContainer = QWidget()
+        vBoxContainer.setLayout(startLeftLayout)
+
+        scrollArea = QScrollArea()
+        scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scrollArea.setWidgetResizable(True)
+        scrollArea.setWidget(vBoxContainer)
+        self.startLeftWidget = scrollArea
+
+
 
     def createStartRightWidget(self):
         self.startRightWidget = QWidget()
@@ -332,7 +347,7 @@ class StartPage(QWidget):
         p.parse()
         p.parseTest()
         Settings.logger.info('Finished Parsing')
-        # Calculate Engine performances            
+        # Calculate Engine performances
         engine = Engine.Engine()
         if self.startLeftLineEdit1.text():
             Settings.neurons = float(self.startLeftLineEdit1.text())
@@ -386,7 +401,7 @@ class StartPage(QWidget):
             Settings.contains = True
         else:
             Settings.contains = False 
-        self.modelResult = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput
+        self.modelResult = engine.process(self.startLeftButton1) # might be cv results or testSet predictions, depending on Settings.generateOutput
         if Settings.useCache:
             p.cache()
         self.startLeftButton2.setDisabled(False)
@@ -797,7 +812,8 @@ class LineEdit(QLineEdit):
 def main():
     app = QApplication(sys.argv)
     win = Window()
-    win.showMaximized()  # to have screen window
+    #win.showFullScreen()
+    # win.showMaximized()  # to have screen window
     win.show()
 
     sys.exit(app.exec_())
