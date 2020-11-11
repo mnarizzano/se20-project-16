@@ -338,24 +338,32 @@ class Engine(Model):
         self.network = None
         self.classifier = None
 
-    def process(self, notifyProgress=None):
-
+    def process(self, widget=None):
         # def notifyProgress(stepName, stepProgress = None)
-        if notifyProgress == None:
+        if widget == None:
             def temp(stepName, stepProgress = None):
                 pass
-            notifyProgress = temp
+            widget = temp
+        widget.setText('Calculating features')
+        widget.update()
         self.calculateFeatures()
+        widget.setText('Encoding dataset')
+        widget.update()
         self.encodeInputOutputs()
         if Settings.crossValidateCV:
-            notifyProgress(stepName='Auto CrossValidation')
+            widget.setText('Cross Validating')
+            widget.update()
             self.autoCV()
         if Settings.manualCV:
-            notifyProgress(stepName='Manual CrossValidation')
+            widget.setText('Cross Validating')
+            widget.update()
             self.manualCV()
         if Settings.testsetPath is not None:
-            notifyProgress(stepName='Prediction')
+            widget.setText('Evaluating Requested pairs')
+            widget.update()
             self.predict()
+        widget.setText('Run again')
+        widget.update()
         if Settings.manualCV or Settings.crossValidateCV:
             return {'accuracy': self.accuracy['mean'], 'recall': self.recall['mean'],
                      'precision': self.precision['mean'], 'f1': self.fscore['mean'], 'result': self.output,

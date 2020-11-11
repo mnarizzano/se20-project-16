@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QLabel, QLineEd
                              QSizePolicy, QFileDialog, QStackedWidget, QHeaderView, QMenuBar, QAction, QDialog,
                              QTextBrowser, QTextEdit, QScrollBar, QScrollArea)
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QThread
 from Parser import Parser
 import Engine
 from Model import Model
@@ -400,11 +400,10 @@ class StartPage(QWidget):
         if self.startLeftCheckBox11.isChecked():
             Settings.contains = True
         else:
-            Settings.contains = False 
-        self.modelResult = engine.process(self.startLeftButton1) # might be cv results or testSet predictions, depending on Settings.generateOutput
-        if Settings.useCache:
-            p.cache()
-        self.startLeftButton2.setDisabled(False)
+            Settings.contains = False
+        self.worker = MainBackgroundThread(engine, self, p)
+        self.worker.start()
+        #self.modelResult = engine.process(self.startLeftButton1) # might be cv results or testSet predictions, depending on Settings.generateOutput
 
 
 class StatisticPage(QWidget):
@@ -808,6 +807,21 @@ class LineEdit(QLineEdit):
         self.setAlignment(Qt.AlignRight)
         self.setMaxLength(8)
         self.setFixedSize(100, 20)
+
+class MainBackgroundThread(QThread):
+    def __init__(self, engine, startPage, parser):
+        QThread.__init__(self)
+        self.engine = engine
+        self.startPage = startPage
+        self.parser = parser
+    def run(self):
+        previousTableState = self.startPage.startTable.isEnabled()
+        self.startPage.startTable.setDisabled(True)
+        self.startPage.modelResult = self.engine.process(self.startPage.startLeftButton1)
+        self.startPage.startTable.setDisabled(not previousTableState)
+        if Settings.useCache:
+            self.parser.cache()
+        self.startPage.startLeftButton2.setDisabled(False)
 
 def main():
     app = QApplication(sys.argv)
