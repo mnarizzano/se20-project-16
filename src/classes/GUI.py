@@ -16,6 +16,7 @@ import Engine
 from Model import Model
 from Settings import Settings
 
+processingThread = None
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -401,8 +402,9 @@ class StartPage(QWidget):
             Settings.contains = True
         else:
             Settings.contains = False
-        self.worker = MainBackgroundThread(engine, self, p)
-        self.worker.start()
+        global processingThread
+        processingThread = MainBackgroundThread(engine, self, p)
+        processingThread.start()
         #self.modelResult = engine.process(self.startLeftButton1) # might be cv results or testSet predictions, depending on Settings.generateOutput
 
 
@@ -817,6 +819,7 @@ class MainBackgroundThread(QThread):
     def run(self):
         previousTableState = self.startPage.startTable.isEnabled()
         self.startPage.startTable.setDisabled(True)
+        # self.startPage.startLeftWidget.setDisabled(True)
         self.startPage.modelResult = self.engine.process(self.startPage.startLeftButton1)
         self.startPage.startTable.setDisabled(not previousTableState)
         if Settings.useCache:
@@ -829,8 +832,12 @@ def main():
     #win.showFullScreen()
     # win.showMaximized()  # to have screen window
     win.show()
-
-    sys.exit(app.exec_())
+    def runApp():
+        exitCode = app.exec_()
+        global processingThread
+        processingThread.exit()
+        return exitCode
+    sys.exit(runApp())
 
 
 if __name__ == '__main__':
