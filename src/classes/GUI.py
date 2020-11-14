@@ -469,19 +469,19 @@ class StatisticPage(QWidget):
 
         self.accuracyLabel = Label('Accuracy:')
         self.accuracyGraph = Graph()
-        self.accuracyGraph.plot(accuracy.keys(), accuracy.values())
+        self.accuracyGraph.plot(accuracy.keys(), accuracy.values(), 'value of Accuracy')
 
         self.precisionLabel = Label('Precision:')
-        self.precisionGraph = Graph(self, width=5, height=4)
-        self.precisionGraph.plot(precision.keys(), precision.values())
+        self.precisionGraph = Graph()
+        self.precisionGraph.plot(precision.keys(), precision.values(), 'value of Precision')
 
         self.fscoreLabel = Label('FScore:')
-        self.fscoreGraph = Graph(self, width=5, height=4)
-        self.fscoreGraph.plot(fscore.keys(), fscore.values())
+        self.fscoreGraph = Graph()
+        self.fscoreGraph.plot(fscore.keys(), fscore.values(), 'value of Fscore')
 
         self.recallLabel = Label('Recall:')
-        self.recallGraph = Graph(self, width=5, height=4)
-        self.recallGraph.plot(recall.keys(), recall.values())
+        self.recallGraph = Graph()
+        self.recallGraph.plot(recall.keys(), recall.values(), 'value of Recall')
 
         graphWidgetLayout = QGridLayout()
         graphWidgetLayout.addWidget(self.accuracyLabel, 0, 0)
@@ -514,16 +514,18 @@ class StatisticPage(QWidget):
 
 
 class Graph(FigureCanvas):
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
+    def __init__(self, parent=None, width=5, height=4, dpi=75):
         fig = Figure(figsize=(width, height), dpi=dpi)
 
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
 
-    def plot(self, x, y):
+    def plot(self, x, y, ylabel):
         ax = self.figure.add_subplot(111)
         ax.bar(x, y, color='blue', width=0.2)
         ax.set_ylim(0, 1)
+        ax.set_xlabel('Configurations title')
+        ax.set_ylabel(ylabel)
         self.draw()
 
 
@@ -617,7 +619,6 @@ class ResultPage(QWidget):
 
         self.saveYesButton.clicked.connect(self.saveConfiguration)
         self.saveYesButton.clicked.connect(self.updateTable)
-        self.saveYesButton.clicked.connect(self.updateGraph)
         self.saveNoButton.clicked.connect(self.disableSaveConfiguration)
 
         saveLayout = QGridLayout()
