@@ -38,7 +38,7 @@ class Guide(QDialog):
         super().__init__()
 
         self.resize(400, 400)
-        self.setWindowTitle('Guida')
+        self.setWindowTitle('Guide')
 
         self.createGuideWidget()
 
@@ -78,7 +78,6 @@ class Page(QStackedWidget):
         self.resultPage.resultRequest2.connect(lambda: self.setCurrentIndex(1))  # resultPage -> statisticPage
 
         self.startPage.updateResult.connect(lambda: self.resultPage.updateResult())
-        
 
 class StartPage(QWidget):
     modelResult = {}
@@ -104,31 +103,31 @@ class StartPage(QWidget):
         self.startLeftWidget = QWidget()
 
         self.guideButton = QPushButton()
-        self.guideButton.setText('Guida')
+        self.guideButton.setText('Guide')
         self.guideButton.setCheckable(True)
         self.guideButton.setFixedSize(100, 30)
         self.guideButton.clicked.connect(self.openGuideDialog)
 
         self.startLeftFileButton = QPushButton()
-        self.startLeftFileButton.setText('Premi per caricare il dataset')
+        self.startLeftFileButton.setText('Push to load the dataset')
         self.startLeftFileButton.setCheckable(True)
         self.startLeftFileButton.setFixedSize(200, 30)
         self.startLeftFileButton.clicked.connect(self.loadDataset)
 
         self.startLeftDatasetLabel = Label('')
 
-        self.startLeftLabel1 = Label('Inserire i parametri del modello:')
-        self.startLeftLabel2 = Label('Numero di neuroni:')
-        self.startLeftLabel3 = Label('Numero di layers della rete neurale:')
-        self.startLeftLabel4 = Label('Numero di kfold splits:')
-        self.startLeftLabel5 = Label('Numero di epoche del training per layer:')
+        self.startLeftLabel1 = Label('Insert the parameters to configure the model:')
+        self.startLeftLabel2 = Label('Neurons:')
+        self.startLeftLabel3 = Label('Neural Network Layers:')
+        self.startLeftLabel4 = Label('Kfold splits:')
+        self.startLeftLabel5 = Label('Training epochs per layer:')
 
         self.startLeftLineEdit1 = LineEdit()
         self.startLeftLineEdit2 = LineEdit()
         self.startLeftLineEdit3 = LineEdit()
         self.startLeftLineEdit4 = LineEdit()
 
-        self.startLeftLabel6 = Label('Selezionare le features per il modello:')
+        self.startLeftLabel6 = Label('Select the features for the model:')
         self.startLeftCheckBox1 = QCheckBox('Reference Distance')
         self.startLeftCheckBox1.setCheckable(True)
 
@@ -163,12 +162,12 @@ class StartPage(QWidget):
         self.startLeftCheckBox11.setCheckable(True)
 
         self.startLeftButton1 = QPushButton()
-        self.startLeftButton1.setText('Calcolo modello')
+        self.startLeftButton1.setText('Run configuration')
         self.startLeftButton1.setFixedSize(200, 30)
         self.startLeftButton1.clicked.connect(self.runModel)
 
         self.startLeftButton2 = QPushButton()
-        self.startLeftButton2.setText('Vai ai risultati')
+        self.startLeftButton2.setText('Results')
         self.startLeftButton2.setFixedSize(200, 30)
         self.startLeftButton2.setDisabled(True)
         self.startLeftButton2.clicked.connect(self.updateResult)
@@ -221,7 +220,7 @@ class StartPage(QWidget):
     def createStartRightWidget(self):
         self.startRightWidget = QWidget()
 
-        self.startRightLabel1 = Label('Caricare una configurazione precedente?')
+        self.startRightLabel1 = Label('Load a previous configuration?')
 
         self.startRightCheckBox = QCheckBox()
         self.startRightCheckBox.setCheckable(True)
@@ -229,7 +228,7 @@ class StartPage(QWidget):
         self.startRightCheckBox.stateChanged.connect(self.enableTable)
 
         self.startRightButton = QPushButton()
-        self.startRightButton.setText('Statistiche delle configurazioni')
+        self.startRightButton.setText('Statistics')
         self.startRightButton.setFixedSize(200, 30)
         self.startRightButton.clicked.connect(self.startRequest2)
 
@@ -304,32 +303,57 @@ class StartPage(QWidget):
 
     def selectConfiguration(self, item):
         if item.checkState() == Qt.Checked:
-            self.startLeftLineEdit1.setText(self.startTable.item(item.row(), 7).text())
-            self.startLeftLineEdit2.setText(self.startTable.item(item.row(), 8).text())
-            self.startLeftLineEdit3.setText(self.startTable.item(item.row(), 9).text())
-            self.startLeftLineEdit4.setText(self.startTable.item(item.row(), 10).text())
-            if self.startTable.item(item.row(), 11).text() == 'True':
-                self.startLeftCheckBox1.setCheckState(2)
-            if self.startTable.item(item.row(), 12).text() == 'True':
-                self.startLeftCheckBox2.setCheckState(2)
-            if self.startTable.item(item.row(), 13).text() == 'True':
-                self.startLeftCheckBox3.setCheckState(2)
-            if self.startTable.item(item.row(), 14).text() == 'True':
-                self.startLeftCheckBox4.setCheckState(2)
-            if self.startTable.item(item.row(), 15).text() == 'True':
-                self.startLeftCheckBox5.setCheckState(2)
-            if self.startTable.item(item.row(), 16).text() == 'True':
-                self.startLeftCheckBox6.setCheckState(2)
-            if self.startTable.item(item.row(), 17).text() == 'True':
-                self.startLeftCheckBox7.setCheckState(2)
-            if self.startTable.item(item.row(), 18).text() == 'True':
-                self.startLeftCheckBox8.setCheckState(2)
-            if self.startTable.item(item.row(), 19).text() == 'True':
-                self.startLeftCheckBox9.setCheckState(2)
-            if self.startTable.item(item.row(), 20).text() == 'True':
-                self.startLeftCheckBox10.setCheckState(2)
-            if self.startTable.item(item.row(), 21).text() == 'True':
-                self.startLeftCheckBox11.setCheckState(2)
+            for row in range(0, self.rows):
+                if self.startTable.item(row, 0) != item:
+                    self.startTable.item(row, 0).setCheckState(0)
+                self.startLeftLineEdit1.setText(self.startTable.item(item.row(), 7).text())
+                self.startLeftLineEdit2.setText(self.startTable.item(item.row(), 8).text())
+                self.startLeftLineEdit3.setText(self.startTable.item(item.row(), 9).text())
+                self.startLeftLineEdit4.setText(self.startTable.item(item.row(), 10).text())
+                if self.startTable.item(item.row(), 11).text() == 'True':
+                    self.startLeftCheckBox1.setCheckState(2)
+                else:
+                    self.startLeftCheckBox1.setCheckState(0)
+                if self.startTable.item(item.row(), 12).text() == 'True':
+                    self.startLeftCheckBox2.setCheckState(2)
+                else:
+                    self.startLeftCheckBox2.setCheckState(0)
+                if self.startTable.item(item.row(), 13).text() == 'True':
+                    self.startLeftCheckBox3.setCheckState(2)
+                else:
+                    self.startLeftCheckBox3.setCheckState(0)
+                if self.startTable.item(item.row(), 14).text() == 'True':
+                    self.startLeftCheckBox4.setCheckState(2)
+                else:
+                    self.startLeftCheckBox4.setCheckState(0)
+                if self.startTable.item(item.row(), 15).text() == 'True':
+                    self.startLeftCheckBox5.setCheckState(2)
+                else:
+                    self.startLeftCheckBox5.setCheckState(0)
+                if self.startTable.item(item.row(), 16).text() == 'True':
+                    self.startLeftCheckBox6.setCheckState(2)
+                else: 
+                    self.startLeftCheckBox6.setCheckState(0)
+                if self.startTable.item(item.row(), 17).text() == 'True':
+                    self.startLeftCheckBox7.setCheckState(2)
+                else:
+                    self.startLeftCheckBox7.setCheckState(0)
+                if self.startTable.item(item.row(), 18).text() == 'True':
+                    self.startLeftCheckBox8.setCheckState(2)
+                else:
+                    self.startLeftCheckBox8.setCheckState(0)
+                if self.startTable.item(item.row(), 19).text() == 'True':
+                    self.startLeftCheckBox9.setCheckState(2)
+                else:
+                    self.startLeftCheckBox9.setCheckState(0)
+                if self.startTable.item(item.row(), 20).text() == 'True':
+                    self.startLeftCheckBox10.setCheckState(2)
+                else:
+                    self.startLeftCheckBox10.setCheckState(0)
+                if self.startTable.item(item.row(), 21).text() == 'True':
+                    self.startLeftCheckBox11.setCheckState(2)
+                else:
+                    self.startLeftCheckBox11.setCheckState(0)
 
     def openGuideDialog(self):
         self.guideDialog = Guide()
@@ -338,7 +362,7 @@ class StartPage(QWidget):
     def loadDataset(self):
         fileDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName, _ = QFileDialog.getOpenFileName(
-            self, "Scegliere il dataset", "", "Text Files (*.txt);;CSV Files (*.csv)")
+            self, "Select the dataset", "", "Text Files (*.txt);;CSV Files (*.csv)")
         if fileName:
             self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
 
@@ -474,12 +498,12 @@ class StatisticPage(QWidget):
         self.returnWidget = QWidget()
 
         self.statisticReturnButton = QPushButton()
-        self.statisticReturnButton.setText('Torna alla pagina iniziale')
+        self.statisticReturnButton.setText('Homepage')
         self.statisticReturnButton.setFixedSize(200, 30)
         self.statisticReturnButton.clicked.connect(self.statisticRequest1)
 
         self.statisticResultButton = QPushButton()
-        self.statisticResultButton.setText('Torna alla pagina dei risultati')
+        self.statisticResultButton.setText('Results')
         self.statisticResultButton.setFixedSize(200, 30)
         self.statisticResultButton.clicked.connect(self.statisticRequest2)
 
@@ -527,7 +551,7 @@ class ResultPage(QWidget):
     def createResultLeftWidget(self):
         self.resultLeftWidget = QWidget()
         
-        self.resultLeftLabel1 = Label('Risultato del calcolo sul modello configurato:')
+        self.resultLeftLabel1 = Label('Results of the loaded configuration:')
         self.resultLeftLabel2 = Label('Accuracy: ')
         self.resultLeftLabel3 = Label('Precision: ')
         self.resultLeftLabel4 = Label('Fscore: ')
@@ -545,15 +569,15 @@ class ResultPage(QWidget):
         self.resultShowWidget = QWidget()
 
         self.resultShowButton1 = QPushButton()
-        self.resultShowButton1.setText('Mostra risultati')
+        self.resultShowButton1.setText('Show the results')
         self.resultShowButton1.setFixedSize(200, 30)
 
         self.resultShowButton2 = QPushButton()
-        self.resultShowButton2.setText('Salva risultati(txt)')
+        self.resultShowButton2.setText('Save the results (txt)')
         self.resultShowButton2.setFixedSize(200, 30)
         
         self.resultShowButton3 = QPushButton()
-        self.resultShowButton3.setText('Salva risultati(csv)')
+        self.resultShowButton3.setText('Save the results (csv)')
         self.resultShowButton3.setFixedSize(200, 30)
 
         self.resultShowHSpacer = QSpacerItem(500, 0, QSizePolicy.Maximum, QSizePolicy.Maximum)
@@ -572,9 +596,9 @@ class ResultPage(QWidget):
     def createResultSaveWidget(self):
         self.saveWidget = QWidget()
 
-        self.saveLabel1 = Label('Vuoi salvare la configurazione?')
+        self.saveLabel1 = Label('Do you want to save the configuration?')
         
-        self.saveLabel2 = Label('Nome:')
+        self.saveLabel2 = Label('Name:')
 
         self.saveLineEdit = QLineEdit()    
         self.saveLineEdit.setFixedSize(100, 20)
@@ -593,6 +617,7 @@ class ResultPage(QWidget):
 
         self.saveYesButton.clicked.connect(self.saveConfiguration)
         self.saveYesButton.clicked.connect(self.updateTable)
+        self.saveYesButton.clicked.connect(self.updateGraph)
         self.saveNoButton.clicked.connect(self.disableSaveConfiguration)
 
         saveLayout = QGridLayout()
@@ -609,12 +634,12 @@ class ResultPage(QWidget):
         self.returnWidget = QWidget()
 
         self.statisticReturnButton = QPushButton()
-        self.statisticReturnButton.setText('Torna alla pagina iniziale')
+        self.statisticReturnButton.setText('Homepage')
         self.statisticReturnButton.setFixedSize(200, 30)
         self.returnVSpacer = QSpacerItem(0, 100, QSizePolicy.Ignored, QSizePolicy.Ignored)
         
         self.resultStatisticButton = QPushButton()
-        self.resultStatisticButton.setText('Statistiche delle configurazioni')
+        self.resultStatisticButton.setText('Statistics')
         self.resultStatisticButton.setFixedSize(200, 30)        
 
         self.statisticReturnButton.clicked.connect(self.resultRequest1)
@@ -635,7 +660,7 @@ class ResultPage(QWidget):
     def showResult(self):
         self.showDialog = QDialog()
         self.showDialog.resize(400, 400)
-        self.showDialog.setWindowTitle('Risultati')
+        self.showDialog.setWindowTitle('Results')
 
         self.showWidget = QWidget()
         self.showText = QTextEdit()
@@ -657,7 +682,7 @@ class ResultPage(QWidget):
     def saveResultTxt(self):
         resultDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName = QFileDialog.getSaveFileName(
-            self, "Salva i risultati", "", "Text Files (*.txt)")
+            self, "Save the results", "", "Text Files (*.txt)")
         if not fileName[0] == "":
             file = open(fileName[0], 'w')
             for domain in self.parent.modelResult['result'].values():
@@ -668,7 +693,7 @@ class ResultPage(QWidget):
     def saveResultCsv(self):
         resultDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName = QFileDialog.getSaveFileName(
-            self, "Salva i risultati", "", "CSV Files (*.csv)")
+            self, "Save the results", "", "CSV Files (*.csv)")
         if not fileName[0] == "":
             file = open(fileName[0], 'w')
             for domain in self.parent.modelResult['result'].values():
@@ -753,7 +778,7 @@ class ResultPage(QWidget):
             file.write('False')
         file.write(')\n')
         file.close()
-        self.saveLabel3.setText('Configurazione salvata')
+        self.saveLabel3.setText('Saved configuration')
 
     def disableSaveConfiguration(self):
         self.saveWidget.setDisabled(True)
@@ -819,18 +844,18 @@ class MainBackgroundThread(QThread):
     def run(self):
         previousTableState = self.startPage.startTable.isEnabled()
         self.startPage.startTable.setDisabled(True)
-        # self.startPage.startLeftWidget.setDisabled(True)
+        self.startPage.startLeftWidget.setDisabled(True)
         self.startPage.modelResult = self.engine.process(self.startPage.startLeftButton1)
         self.startPage.startTable.setDisabled(not previousTableState)
         if Settings.useCache:
             self.parser.cache()
         self.startPage.startLeftButton2.setDisabled(False)
+        self.startPage.startLeftWidget.setDisabled(False)
 
 def main():
     app = QApplication(sys.argv)
     win = Window()
-    #win.showFullScreen()
-    # win.showMaximized()  # to have screen window
+    win.showMaximized()  # to have screen window
     win.show()
     def runApp():
         exitCode = app.exec_()

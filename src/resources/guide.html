@@ -1,59 +1,70 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-</head>
-<body>
-    <div>
-        <h2>Guida per l'uso</h2>
-    </div>
-    <div>
-        <h4>Pagina iniziale</h4>
-        <p>Nella pagina iniziale sono presenti gli elementi per configurare nuovi parametri
-           o per caricarne gi&#224; usati e salvati allo scopo di eseguire il calcolo del modello
-           con i parametri impostati.
-        </p>
-        <p>Per eseguire il calcolo del modello con nuovi parametri si deve: </p>
-        <ol>
-            <li>Premere sul bottone "Premi per caricare il dataset" e selzionare il file da
-                usare come dataset.
-            </li>
-            <li>Inserire il valore per ogni parametro.</li>
-            <li>Premere sul bottone "Calcolo modello" per lanciare l'esecuzione.</li>
-        </ol>
-        <p>Per eseguire il calcolo del modello con parametri salvati precedentemente:</p>
-        <ol>
-            <li>Premere sulla checkbox per attivare la tabella.</li>
-            <li>Premere sulla tabella la checkbox corrispondente alla configurazione da usare.</li>
-            <li>Premere sul bottone "Calcolo modello" per lanciare l'esecuzione.</li>
-        </ol>
-        <p>Per vedere le statistiche delle configurazioni salvate premere il pulsante
-           "Statistiche delle configurazioni".
-        </p>
-    </div>
-    <div>
-        <h4>Pagina dei risultati</h4>
-        <p>Nella pagina dei risultati vengono mostrate le statistiche dovute al calcolo del modello
-           e del dataset ed &#232; presente l'opzione per salvare la configurazione usata.
-        </p>
-        <p>A sinistra sono presenti le quattro statistiche dovute al calcolo del modello e
-           l'opzione per salvare la configurazione usata.
-        </p>
-        <p>A destra sono presenti le statistiche che riguardano il dataset.</p>
-        <p>I due bottoni sotto le statistiche permettono di mostrare i risultati ottenuti dal modello sul 
-           dataset inserito e di salvarli su un file di testo.</p>
-        <p>I due bottoni in fondo alla pagina permettono di tornare alla pagina iniziale o di andare alla pagina
-           delle statistiche.</p>
-    </div>
-    <div>
-        <h4>Pagina delle statistiche</h4>
-        <p>Nella pagina delle statistiche vengono mostrati i grafici delle prestazioni
-           delle configurazioni salvate. 
-        </p>
-        <p>Per ognuna delle quattro caratteristiche dell'output, che sono accuracy,
-           precision, f-score e recall, viene stampato il grafico che confronta
-           le prestazioni di tutte le configurazioni salvate.
-        </p>
-    </div>
-</body>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div>
+            <h2>Guide</h2>
+        </div>
+        <div>
+            <p>The interface is composed of three modules:</p> 
+            <ol>
+                <li>Setup module</li>
+                <li>Results module</li>
+                <li>Statistics module</li>
+            </ol>    
+        </div>
+        <div>
+            <h4>Setup module</h4>
+            <p>The setup module, loaded at the start of the program, allows to define:</p>
+            <ul>
+                <li>The input dataset.</li>
+                <li>The paramaters to setup the neural network.</li>
+                <li>The features for training the model.</li>
+            </ul>
+            <p>The available features to select to customize the configuration are:</p>
+            <ul>
+                <li>titleInText: given a pair (A, B), it checks if the title of page A/B is mentioned in the page of the 
+                    other concept.
+                </li>
+                <li>Jaccard similarity: a concept-based metric that measures the similarity between two pages by the
+                    number of words shared between them.</li>
+                <li>LDA: the Shannon Entropy of the LDA(Deerwester et al., 1990) of nouns and verbs in A and B.
+                    Nouns and verbs are identified thanks to a morpho-syntactic analysis of the page content performed
+                    by UDPipe pipeline (Strakaand Strakova, 2017).
+                </li>
+                <li>LDA Cross Entropy: the cross entropy of the LDA vectors A\B.</li>
+                <li>extractCategories: the Wikipedia category(s) to which each page of the pair(A, B) belongs.</li>
+                <li>extractLinkConnections: for each pair of concepts (A, B) checks if the Wikipedia page of B contains
+                    a link to A.
+                </li>
+                <li>totalIncoming/OutgoingLinks: it computes how much a concept is linked to/from other concepts.</li>
+                <li>Reference distance: a link-based metric that measures the relation between two pages by the
+                    links contained in each of them using the EQUAL weight(Liang et al., 2015).</li>
+            </ul>
+            <p>The module includes also a table where previously saved Configurations can be selected in order to run
+                them again.
+            </p>
+            <p>After running the model, the user can reach the Results module.</p>
+        </div>
+        <div>
+            <h4>Results module</h4>
+            <p>In the Results module are printed the performance statistics (accuracy, precision, recall, F-score)
+                achieved by the performed configuration.
+            </p>
+            <p>The module is composed of different buttons that allows to:</p>
+            <ul>
+                <li>Save the performed configuration.</li>
+                <li>See the results of the classifier on concept pairs labelling.</li>
+                <li>Save and download the the results as csv file or txt file.</li>
+            </ul>
+        </div>
+        <div>
+            <h4>Statistics module</h4>
+            <p>The statistics module plots in four bar charts thevalues of accuracy, precision, F-score and recall of
+                all configurations saved in the interface.
+            </p>
+        </div>
+    </body>
 </html>
