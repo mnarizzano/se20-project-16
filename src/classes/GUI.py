@@ -57,6 +57,31 @@ class Guide(QDialog):
         guideLayout.addWidget(self.guideText)
         self.guideWidget.setLayout(guideLayout)
 
+class Progress(QDialog):
+    # progressPage = Settings.progressPage
+
+    def __init__(self):
+        super().__init__()
+
+        self.resize(400, 400)
+        self.setWindowTitle('Progress')
+
+        self.createProgressWidget()
+
+        progressDialogLayout = QVBoxLayout()
+        progressDialogLayout.addWidget(self.progressWidget)
+        self.setLayout(progressDialogLayout)
+
+    def createProgressWidget(self):
+        self.progressWidget = QWidget()
+
+        self.progressText = QTextBrowser()
+        # self.progressHtml = open(self.progressPage).read()
+        self.progressText.setText("")
+
+        progressLayout = QVBoxLayout()
+        progressLayout.addWidget(self.progressText)
+        self.progressWidget.setLayout(progressLayout)
 
 class Page(QStackedWidget):
     def __init__(self):
