@@ -258,7 +258,10 @@ class Engine(Model):
             m = Recall()
             m.update_state(y_test, evaluationResults)
             self.recall.append(float(m.result()))
-            self.fscore.append(2 * (self.precision[-1] * self.recall[-1]) / (self.precision[-1] + self.recall[-1]))
+            if ((self.precision[-1] + self.recall[-1]) != 0):
+                self.fscore.append(2 * (self.precision[-1] * self.recall[-1]) / (self.precision[-1] + self.recall[-1]))
+            else:
+                self.fscore.append(0)
             i += 1
             self.network = None
             self.classifier = None
@@ -344,26 +347,23 @@ class Engine(Model):
             def temp(stepName, stepProgress = None):
                 pass
             widget = temp
-        widget.setText('Calculating features')
-        widget.update()
+        widget.emit('Calculating features...')
+        Settings.logger.debug('after Calculating Features')
         self.calculateFeatures()
-        widget.setText('Encoding dataset')
-        widget.update()
+        widget.emit('Encoding dataset...')
+        Settings.logger.debug('after Encoding dataset')
         self.encodeInputOutputs()
         if Settings.crossValidateCV:
-            widget.setText('Cross Validating')
-            widget.update()
+            widget.emit('Cross Validating...')
             self.autoCV()
         if Settings.manualCV:
-            widget.setText('Cross Validating')
-            widget.update()
+            widget.emit('Cross Validating...')
             self.manualCV()
+        Settings.logger.debug('after Cross Validating')
         if Settings.testsetPath is not None:
-            widget.setText('Evaluating Requested pairs')
-            widget.update()
+            widget.emit('Evaluating Requested pairs...')
+            Settings.logger.debug('after Evaluating Requested pairs')
             self.predict()
-        widget.setText('Run again')
-        widget.update()
         if Settings.manualCV or Settings.crossValidateCV:
             return {'accuracy': self.accuracy['mean'], 'recall': self.recall['mean'],
                      'precision': self.precision['mean'], 'f1': self.fscore['mean'], 'result': self.output,

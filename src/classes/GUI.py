@@ -109,7 +109,7 @@ class StartPage(QWidget):
         self.guideButton.clicked.connect(self.openGuideDialog)
 
         self.startLeftFileButton = QPushButton()
-        self.startLeftFileButton.setText('Push to load the dataset')
+        self.startLeftFileButton.setText('Load custom dataset')
         self.startLeftFileButton.setCheckable(True)
         self.startLeftFileButton.setFixedSize(200, 30)
         self.startLeftFileButton.clicked.connect(self.loadDataset)
@@ -359,6 +359,17 @@ class StartPage(QWidget):
         self.guideDialog = Guide()
         self.guideDialog.show()
 
+    def closeProgressDialog(self, text):
+        self.progressDialog.hide()
+        self.progressDialog.progressText.setText(text)
+
+    def openProgressDialog(self):
+        self.progressDialog = Progress()
+        self.progressDialog.show()
+
+    def setProgressText(self, text):
+        self.progressDialog.setText(text)
+
     def loadDataset(self):
         fileDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName, _ = QFileDialog.getOpenFileName(
@@ -367,11 +378,6 @@ class StartPage(QWidget):
             self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
 
     def runModel(self):
-        # Parse files in Specified folder, optionally we can add input to modify Settings.resourcePath
-        p = Parser()
-        p.parse()
-        p.parseTest()
-        Settings.logger.info('Finished Parsing')
         # Calculate Engine performances
         engine = Engine.Engine()
         if self.startLeftLineEdit1.text():
@@ -427,7 +433,10 @@ class StartPage(QWidget):
         else:
             Settings.contains = False
         global processingThread
-        processingThread = MainBackgroundThread(engine, self, p)
+        self.openProgressDialog()
+        processingThread = MainBackgroundThread(engine, self)
+        processingThread.signalProgress.connect(self.progressDialog.progressText.append)
+        processingThread.signalEnd.connect(self.closeProgressDialog)
         processingThread.start()
         #self.modelResult = engine.process(self.startLeftButton1) # might be cv results or testSet predictions, depending on Settings.generateOutput
 
@@ -837,21 +846,32 @@ class LineEdit(QLineEdit):
         self.setFixedSize(100, 20)
 
 class MainBackgroundThread(QThread):
-    def __init__(self, engine, startPage, parser):
+    signalProgress = pyqtSignal(str)
+    signalEnd = pyqtSignal(str)
+
+    def __init__(self, engine, startPage):
         QThread.__init__(self)
         self.engine = engine
         self.startPage = startPage
-        self.parser = parser
+
     def run(self):
         previousTableState = self.startPage.startTable.isEnabled()
         self.startPage.startTable.setDisabled(True)
         self.startPage.startLeftWidget.setDisabled(True)
-        self.startPage.modelResult = self.engine.process(self.startPage.startLeftButton1)
+        # Parse files in Specified folder, optionally we can add input to modify Settings.resourcePath
+        self.signalProgress.emit("Parsing dataset...")
+        self.parser = Parser()
+        self.parser.parse()
+        self.parser.parseTest()
+        Settings.logger.info('Finished Parsing')
+        self.startPage.modelResult = self.engine.process(self.signalProgress)
         self.startPage.startTable.setDisabled(not previousTableState)
         if Settings.useCache:
+            self.signalProgress.emit("Caching dataset...")
             self.parser.cache()
         self.startPage.startLeftButton2.setDisabled(False)
         self.startPage.startLeftWidget.setDisabled(False)
+        self.signalEnd.emit("Finished")
 
 def main():
     app = QApplication(sys.argv)
