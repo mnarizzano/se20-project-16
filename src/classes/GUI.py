@@ -17,6 +17,9 @@ from Model import Model
 from Settings import Settings
 
 processingThread = None
+guidePage = None
+progressPage = None
+
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -25,6 +28,15 @@ class Window(QMainWindow):
         self.resize(1000, 600)
 
         self.buildPages()
+
+    def closeEvent(self, QCloseEvent):
+        # close pages that might be open
+        global guidePage
+        global progressPage
+        if guidePage != None:
+            guidePage.reject()
+        if progressPage != None:
+            progressPage.reject()
 
     def buildPages(self):
         self.pages = Page()
@@ -381,8 +393,9 @@ class StartPage(QWidget):
                     self.startLeftCheckBox11.setCheckState(0)
 
     def openGuideDialog(self):
-        self.guideDialog = Guide()
-        self.guideDialog.show()
+        global guidePage
+        guidePage = Guide()
+        guidePage.show()
 
     def closeProgressDialog(self, text):
         self.progressDialog.hide()
@@ -536,14 +549,8 @@ class StatisticPage(QWidget):
         self.statisticReturnButton.setFixedSize(200, 30)
         self.statisticReturnButton.clicked.connect(self.statisticRequest1)
 
-        self.statisticResultButton = QPushButton()
-        self.statisticResultButton.setText('Results')
-        self.statisticResultButton.setFixedSize(200, 30)
-        self.statisticResultButton.clicked.connect(self.statisticRequest2)
-
         returnLayout = QHBoxLayout()
         returnLayout.addWidget(self.statisticReturnButton)
-        returnLayout.addWidget(self.statisticResultButton)
         self.returnWidget.setLayout(returnLayout)
 
 
