@@ -890,10 +890,10 @@ class MainBackgroundThread(QThread):
         self.parser.parseTest()
         Settings.logger.info('Finished Parsing')
         self.startPage.modelResult = self.engine.process(self.signalProgress)
-        self.startPage.startTable.setDisabled(not previousTableState)
         if Settings.useCache:
             self.signalProgress.emit("Caching dataset...")
             self.parser.cache()
+        self.startPage.startTable.setDisabled(not previousTableState)
         self.startPage.startLeftButton2.setDisabled(False)
         self.startPage.startLeftWidget.setDisabled(False)
         self.signalEnd.emit("Finished")
@@ -906,7 +906,8 @@ def main():
     def runApp():
         exitCode = app.exec_()
         global processingThread
-        processingThread.exit()
+        if processingThread != None:
+            processingThread.exit()
         return exitCode
     sys.exit(runApp())
 
