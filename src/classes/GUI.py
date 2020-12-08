@@ -32,11 +32,10 @@ class Window(QMainWindow):
     def closeEvent(self, QCloseEvent):
         # close pages that might be open
         global guidePage
-        global progressPage
         if guidePage != None:
             guidePage.reject()
-        if progressPage != None:
-            progressPage.reject()
+        if self.pages.startPage.progressDialog != None:
+            self.pages.startPage.progressDialog.reject()
 
     def buildPages(self):
         self.pages = Page()
