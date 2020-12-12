@@ -114,6 +114,7 @@ class Page(QStackedWidget):
         self.resultPage.resultRequest2.connect(lambda: self.setCurrentIndex(1))  # resultPage -> statisticPage
 
         self.startPage.updateResult.connect(lambda: self.resultPage.updateResult())
+        self.resultPage.updateGraph.connect(lambda: self.statisticPage.updateGraph())
 
 class StartPage(QWidget):
     modelResult = {}
@@ -481,6 +482,10 @@ class StartPage(QWidget):
 class StatisticPage(QWidget):
     statisticRequest1 = pyqtSignal()
     statisticRequest2 = pyqtSignal()
+    accuracy = {}
+    precision = {}
+    fscore = {}
+    recall = {}
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -496,38 +501,33 @@ class StatisticPage(QWidget):
         self.setLayout(statisticLayout)
 
     def createGraphWidget(self):
-        accuracy = {}
-        precision = {}
-        fscore = {}
-        recall = {}
-
         if os.path.exists(self.parent.savedConfigurations):
             file = open(self.parent.savedConfigurations, 'r')
             for line in file:
                 fields = (line.split('\t'))
                 values = fields[2].split(')')
-                accuracy[fields[1]] = float(values[0].split(',')[-1])
-                precision[fields[1]] = float(values[1].split(',')[-1])
-                fscore[fields[1]] = float(values[2].split(',')[-1])
-                recall[fields[1]] = float(values[3].split(',')[-1])
+                self.accuracy[fields[1]] = float(values[0].split(',')[-1])
+                self.precision[fields[1]] = float(values[1].split(',')[-1])
+                self.fscore[fields[1]] = float(values[2].split(',')[-1])
+                self.recall[fields[1]] = float(values[3].split(',')[-1])
             file.close()
         self.graphWidget = QWidget()
 
         self.accuracyLabel = Label('Accuracy:')
         self.accuracyGraph = Graph()
-        self.accuracyGraph.plot(accuracy.keys(), accuracy.values(), 'value of Accuracy')
+        self.accuracyGraph.plot(self.accuracy.keys(), self.accuracy.values(), 'value of Accuracy')
 
         self.precisionLabel = Label('Precision:')
         self.precisionGraph = Graph()
-        self.precisionGraph.plot(precision.keys(), precision.values(), 'value of Precision')
+        self.precisionGraph.plot(self.precision.keys(), self.precision.values(), 'value of Precision')
 
         self.fscoreLabel = Label('FScore:')
         self.fscoreGraph = Graph()
-        self.fscoreGraph.plot(fscore.keys(), fscore.values(), 'value of Fscore')
+        self.fscoreGraph.plot(self.fscore.keys(), self.fscore.values(), 'value of Fscore')
 
         self.recallLabel = Label('Recall:')
         self.recallGraph = Graph()
-        self.recallGraph.plot(recall.keys(), recall.values(), 'value of Recall')
+        self.recallGraph.plot(self.recall.keys(), self.recall.values(), 'value of Recall')
 
         graphWidgetLayout = QGridLayout()
         graphWidgetLayout.addWidget(self.accuracyLabel, 0, 0)
@@ -551,7 +551,23 @@ class StatisticPage(QWidget):
         returnLayout = QHBoxLayout()
         returnLayout.addWidget(self.statisticReturnButton)
         self.returnWidget.setLayout(returnLayout)
-
+    
+    def updateGraph(self):
+        if os.path.exists(self.parent.savedConfigurations):
+            file = open(self.parent.savedConfigurations, 'r')
+            for line in file:
+                fields = (line.split('\t'))
+                values = fields[2].split(')')
+                self.accuracy[fields[1]] = float(values[0].split(',')[-1])
+                self.precision[fields[1]] = float(values[1].split(',')[-1])
+                self.fscore[fields[1]] = float(values[2].split(',')[-1])
+                self.recall[fields[1]] = float(values[3].split(',')[-1])
+            file.close()
+        
+        self.accuracyGraph.plot(self.accuracy.keys(), self.accuracy.values(), 'value of Accuracy')
+        self.precisionGraph.plot(self.precision.keys(), self.precision.values(), 'value of Precision')
+        self.fscoreGraph.plot(self.fscore.keys(), self.fscore.values(), 'value of Fscore')
+        self.recallGraph.plot(self.recall.keys(), self.recall.values(), 'value of Recall')
 
 class Graph(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=75):
@@ -572,6 +588,7 @@ class Graph(FigureCanvas):
 class ResultPage(QWidget):
     resultRequest1 = pyqtSignal()
     resultRequest2 = pyqtSignal()
+    updateGraph = pyqtSignal()
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -659,6 +676,7 @@ class ResultPage(QWidget):
 
         self.saveYesButton.clicked.connect(self.saveConfiguration)
         self.saveYesButton.clicked.connect(self.updateTable)
+        self.saveYesButton.clicked.connect(self.updateGraph)
         self.saveNoButton.clicked.connect(self.disableSaveConfiguration)
 
         saveLayout = QGridLayout()
