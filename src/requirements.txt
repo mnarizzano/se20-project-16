@@ -1,8 +1,12 @@
 conllu
 sklearn
 ufal.udpipe
+numpy<1.19.0
 gensim
 pandas
 tensorflow
 keras
+matplotlib
+PyQt5
+wikipedia-api
 git+git://github.com/facebookresearch/fastText.git
