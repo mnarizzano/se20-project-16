@@ -409,11 +409,12 @@ class StartPage(QWidget):
         self.progressDialog.setText(text)
 
     def loadDataset(self):
-        fileDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
-        fileName, _ = QFileDialog.getOpenFileName(
-            self, "Select the dataset", "", "Text Files (*.txt);;CSV Files (*.csv)")
+        fileName = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if fileName:
-            self.startLeftDatasetLabel.setText('Dataset caricato: \n' + os.path.basename(fileName))
+            self.startLeftDatasetLabel.setText('Loaded dataset: \n' + os.path.basename(fileName))
+            Settings.baseFolder = fileName
+            Settings.datasetPath = Settings.baseFolder + 'PRELEARN_training_data'
+            Settings.testsetPath = Settings.baseFolder + 'PRELEARN_test_data'
 
     def runModel(self):
         # Calculate Engine performances

@@ -4,8 +4,9 @@ class Settings:
     # Paths
     resourcePath = '../resources/'
     resultFolder = resourcePath + 'results/'
-    datasetPath = resourcePath + 'dataset/single_file/PRELEARN_training_data'
-    testsetPath = resourcePath + 'dataset/single_file/PRELEARN_test_data'   # set this to None to skip prediction
+    baseFolder = resourcePath + 'dataset/single_file/'
+    datasetPath = baseFolder + 'PRELEARN_training_data'
+    testsetPath = baseFolder + 'PRELEARN_test_data'   # set this to None to skip prediction
     #datasetPath = resourcePath + 'dataset/split_files/sample'
     conceptsPickle = resourcePath + 'cached/concepts.pickle'
     pairFeaturesPickle = resourcePath + 'cached/pairsFeatures.pickle'
