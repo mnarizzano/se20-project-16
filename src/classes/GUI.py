@@ -412,9 +412,8 @@ class StartPage(QWidget):
         fileName = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if fileName:
             self.startLeftDatasetLabel.setText('Loaded dataset: \n' + os.path.basename(fileName))
-            Settings.baseFolder = fileName
-            Settings.datasetPath = Settings.baseFolder + 'PRELEARN_training_data'
-            Settings.testsetPath = Settings.baseFolder + 'PRELEARN_test_data'
+            Settings.datasetPath = fileName + '/PRELEARN_training_data'
+            Settings.testsetPath = fileName + '/PRELEARN_test_data'
 
     def runModel(self):
         # Calculate Engine performances
