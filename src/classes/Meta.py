@@ -1,9 +1,20 @@
-
 class Meta:
+    """ Engine
 
-    def __init__(self):
-        self.categories = []
-        self.links = []
+    Container for all single Concept Meta Features
+
+    ...
+
+    Attributes
+    ----------
+    categories : [string]
+        List of Wikipedia categories the Concept belongs to
+    links : [string]
+        List of Wikipedia pages the Concept points to
+
+    """
+    scategories = []
+    links = []
 
     def get_categories(self):
         return self.categories
