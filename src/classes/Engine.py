@@ -8,7 +8,6 @@ from MetaExtractor import MetaExtractor
 from Settings import Settings
 from PairFeatures import PairFeatures
 import pickle
-
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from keras.models import Sequential
@@ -26,40 +25,108 @@ from sklearn.metrics import accuracy_score
 from Parser import Parser
 
 class Engine(Model):
+    """ Engine
+
+    Focus point of the execution, this class instantiates all the requested
+    features, format them and feeds it to the Neural Network. returns the four
+    performance indicators along with the labels for the evaluated pairs
+
+    ...
+
+    Attributes
+    ----------
+    pairFeatures : PairFeatures
+        container for pair features
+    parser : Parser
+        Parser object used to load input files
+    inputSize : int
+        tracks the dimension of the first layer of the network
+    outputSize : int
+        tracks the dimension of the output layer of the network (default: 2)
+    groups : [string]
+        one string for each sample submitted to the NN indicating teh sample's domain
+    labels : [bool]
+        one bool for each sample submitted to the NN indicating if it's prereq or not
+    inputs : np.array
+        contains the samples used to train the NN
+    classifier : KerasClassifier
+        Keras Classifier: a wrapper around the actual NN which allows for training and evaluation of samples
+    network : function()
+        contains the function to build the layers of the NN, used to initialize the classifier
+    weights : {0: int, 1: int}
+        Dictionary with a weight for not-prereq samples (key 0) and prereq ones (key 1)
+        Allows for resampling of unbalanced dataset, helps avoid unbalanced datasets bias
+    accuracy : int
+        contains the accuracy performance metric
+    recall : int
+        contains the recall performance metric
+    precision : int
+        contains the precision performance metric
+    fscore : int
+        contains the fscore performance metric
+    totalPrediction : int
+        counter that traces how many classification were evaluated
+    correctProbabilities : {}
+        Keys: probability (range [0, 1]). Value: a counter that tracks how
+        many correct labels were given with said confidence
+    wrongProbabilities : {}
+        Keys: probability (range [0, 1]). Value: a counter that tracks how
+        many incorrect labels were given with said confidence
+
+    Methods
+    -------
+    says(sound=None)
+        Prints the animals name and what sound it makes
+    """
 
     pairFeatures = None
     parser = Parser()
+
     inputSize = None
     outputSize = None
     groups = None
     labels = None
     inputs = None
     classifier = None
+    network = None
     weights = None
+
     accuracy = None
     recall = None
     precision = None
     fscore = None
-    network = None
+
     totalPredictions = 0
     correctProbabilities = {}
     wrongProbabilities = {}
 
     def __init__(self):
+        """Instantiates the PairFeatures and correct/wrong Probabilities
+
+        If a PairFeatures dump is found in a folder specified by the Settings module
+        it loads it. Otherwise an empty PairFeatrues object is created
+        """
         if os.path.exists(Settings.pairFeaturesPickle):
             with open(Settings.pairFeaturesPickle, 'rb') as file:
                 self.pairFeatures = pickle.load(file)
         else:
             self.pairFeatures = PairFeatures()
-        for i in range(50, 101):    # initialize probabilities
+        for i in range(50, 101):    # initialize probabilities from 0 to 100% to zero as they are incremental
             self.correctProbabilities[str(0+i/100)] = 0
             self.wrongProbabilities[str(0+i/100)] = 0
 
 
     def calculateFeatures(self):
-        ## processing of raw features
-        # begin processing of single Features
+        """instantiates the *Extractor classes and uses them to calculate required features
+
+        Uses FeatureExtractor to calculate text features and MetaExtractor to calculate
+        structured features.
+        Signle Concept features are saved directly in Concept.features while PairFeatures
+        are saved in this object pairFeatures attribute
+        """
+        # text features
         feature = FeatureExtractor(self.pairFeatures)
+        ## single concept
         Settings.logger.debug('Starting sencence extraction (might take a lot)...')
         start_time = time.time()
         feature.extractSentences()
@@ -67,42 +134,33 @@ class Engine(Model):
         Settings.logger.debug('Using Cache: ' + str(Settings.useCache and os.path.exists(Settings.conceptsPickle)) +
                               ", Annotation Elapsed time: " + str(elapsed_time))
         feature.extractNounsVerbs()
-        feature.LDA()  # let LDA call extractNounsVerbs?
+        feature.LDA()
         feature.containsTitle()
 
-        # begin processing of pair Features
+        ## pair concepts
         feature.jaccardSimilarity()
         feature.LDACrossEntropy()
 
-        ## processing of meta features
+        # meta features
         Settings.logger.info("Fetching Meta Info...")
         meta = MetaExtractor(self.pairFeatures)
+        ## single concept
         meta.annotateConcepts()
+        ## pair concepts
         meta.extractLinkConnections()
         meta.referenceDistance()
 
     def encodeInputOutputs(self):
-        # get and encode features and labels from train set for CV and for obtaining results
+        """Creates the numpy arrays for input samples and their labels (required by Keras)
+
+        """
         encoder = LabelEncoder()
-        # obtain input and output from desiredGraphMatrix, PairFeatures and Model.dataset (for single ones)
         result_set = self.classifierFormatter()
         x = np.array(result_set['features'])
         encoder.fit(result_set['desired'])
-        encoded_y = encoder.transform(
-            result_set['desired'])  # from generic label to integer: ['a', 'a', 'b', 1, 1, 1, 1]->[1, 1, 2, 0, 0, 0, 0]
 
-        '''
-        # next line goes from integer to oneshot array encoded: [1, 1, 2, 0, 0, 0, 0] ->
-          [[0., 1., 0.],
-           [0., 1., 0.],
-           [0., 0., 1.],
-           [1., 0., 0.],
-           [1., 0., 0.],
-           [1., 0., 0.],
-           [1., 0., 0.]]
-        dummy_y = np_utils.to_categorical(encoded_y)
-        '''
-
+        # from generic label to integer: ['a', 'a', 'b', 1, 1, 1, 1]->[1, 1, 2, 0, 0, 0, 0]
+        encoded_y = encoder.transform(result_set['desired'])
         self.labels = encoded_y
         self.inputs = x
 
@@ -371,11 +429,26 @@ class Engine(Model):
         else:
             return {'result': self.output}
 
-    # serializes Model.dataset, desired GraphMatrix and pairFeatures to build an array of inputs/labels pairs for neural net
-    def classifierFormatter(self):    # resample = True changes results: why? shouldn't wheights account for unbalanced classes?!?
-        Settings.logger.debug('Beginning dataset formatting')
-        # init to dictionary of empty arrays wiyh domains as keys
+    def classifierFormatter(self):
+        """ Serializes the inputs (aka "features") and the output labels (aka "desired") needed by the NN
 
+        It cycles through all concept pairs saved in Model.desiredGraphMatrix.
+            Since a pair can be present for multiple domains it cycles on domains.
+                Gets all features for the given Concepts
+                Depending on the direction of the prerequisite it appends them to the "prereqData"
+                or "notPrereqData" dictionary (under the corresponding domain),
+                Appends the Model.desiredGraphMatrix of the current Concept pair to the "desired" array.
+        Saves locally some info on the formatted dataset such as size of features vectors
+        It looks how unbalanced the dataset is and calculates weights and saves them
+        Finally merges both "prereq*" and "notPrereq*" arrays and returns them.
+
+        Returns:
+            A dict containing two arrays:
+            {'features': [], 'desired': []}
+        """
+        Settings.logger.debug('Beginning dataset formatting')
+
+        # init to dictionary of empty arrays wiyh domains as keys
         prereqData = {domain: [] for domain in Model.desiredGraph.domains}
         notPrereqData = {domain: [] for domain in Model.desiredGraph.domains}
         prereqLabel = {domain: [] for domain in Model.desiredGraph.domains}
@@ -386,7 +459,6 @@ class Engine(Model):
             for postreq in Model.desiredGraph.getPostreqs(prereq):
                 for domain in Model.desiredGraph.getDomains(prereq, postreq):
                     label = Model.desiredGraph.getPrereq(prereq, postreq, domain)
-                    # Only consider known relations since % of unknown is > 90% and biases the system to always output "UNKNOWN"
                     if label != Model.desiredGraph.unknown:
                         total = total+1
                         # counts every class occurrencies, creates new class if it hasn't yet encountered it
@@ -396,8 +468,6 @@ class Engine(Model):
                         prereqConcept = Model.dataset[Model.dataset.index(prereq)]
                         postreqConcept = Model.dataset[Model.dataset.index(postreq)]
                         feat = self.getFeatures(prereqConcept, postreqConcept, domain)
-                        # feat = [random.choice([0, 1])]  # only one, random features: should return performance = 50%
-                        # feat = [int(Model.desiredGraph.getPrereq(conceptA, conceptB))]   # truth oracle, should return performance = 100%
 
                         if label == Model.desiredGraph.isPrereq:
                             prereqData[domain].append(feat)
@@ -447,17 +517,10 @@ class Engine(Model):
             raise Exception("Something wrong rebalancing: rebalanced " + str(
                 len(pickedIndex)) + ", original difference " + str(abs(classRatio[0] - classRatio[1])))
 
-        number_of_classes = 2 # 2 if classes are isPrereq/notPrereq, 3 if Unknown is allowed
-
-        # different examples for class balancing through weights
-        # if notPrereq is 1/10 of prereq samples: notPrereq errors should account ten times those of prereq
-        #weights = {0: 1, 1: classRatio[0] / classRatio[1]}  # ratio between classes
-        #weights = {0: classRatio[1], 1: classRatio[0]}      # opposite ratio: in the end ratios are the same as above
-        # inverse ratio: in the end ratios are the same as above
+        number_of_classes = 2
+        # inverse ratio: if notPrereq is 1/10 of prereq samples: notPrereq errors should account ten times those of prereq
         weights = {Model.desiredGraph.notPrereq: sum([len(prereqLabel[key]) for key in prereqLabel]),
                    Model.desiredGraph.isPrereq: sum([len(notPrereqLabel[key]) for key in notPrereqLabel])}
-        #weights = {0: 1, 1: 1}  # should behave as if no weights were specified
-
         features = []
         labels = []
         groups = []
@@ -479,6 +542,17 @@ class Engine(Model):
         return {'features': features, "desired": labels}
 
     def getFeatures(self, conceptA, conceptB, domain):
+        """Serializes all features of a given pair of concepts
+
+        Builds a single array by merging:
+            - all single Concept features of Concept A (from Model.dataset)
+            - all single Concept features of Concept B (from Model.dataset)
+            - all pair Features of the pair A, B (from self.pairFeatures)
+            - the domain of the pair
+
+        Returns:
+             A single array of integers, each being a feature
+        """
         features = []
         if Settings.useRefD:
             features.append(self.pairFeatures.getRefDistance(conceptA, conceptB))
