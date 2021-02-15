@@ -3,31 +3,39 @@ import pickle
 import xml.etree.ElementTree as ET
 import urllib.parse
 import re
-
 from Settings import Settings
 from Concept import Concept
 from GraphMatrix import GraphMatrix
 from Model import Model
 
 class Parser(object):
+    """ Parser to read inputFiles, write calculated labels to outputFiles and cache datasets
+    """
     resourcePath = Settings.resourcePath
     conceptsPickle = Settings.conceptsPickle
     pairsPickle = Settings.pairsPickle
     test = {}
 
     def listDirectory(self, path):
+        """List items in a directory
+
+        Args:
+            path: string containing the query path
+        Returns: [string] list of items in the folder
+        """
         if os.path.exists(path):
             return os.scandir(path)
 
-    def getTestStatistics(self):
-        pass
-
-    def cache(self):    # TODO: maybe add caching of desiredMatrix (it's not really needed)
-        # TODO: add check if cached directory exist and eventually create it
+    def cache(self):
+        """Caches the Dataset, including parsed Concepts and all calculated single features
+        """
         Settings.logger.debug('Caching dataset...')
         pickle.dump(Model.dataset, open(self.conceptsPickle, "wb+"))
 
     def parseTest(self):
+        """For each file named *pairs in the path specified by the Settings module
+           parses it and assigns it to a Dictionary indexed by the name of the file
+        """
         numberOfEntries = 0
         for entry in self.listDirectory(Settings.testsetPath):
             if entry.is_file() and entry.name.__contains__('pairs'):
@@ -36,6 +44,12 @@ class Parser(object):
                 self.test[entry.name.split('-')[0]] = parsed
 
     def parseTestFile(self, entry):
+        """Parse a single *pairs file, formatted as Documentation
+
+        Args:
+            entry: path to the pairs file
+        Returns: [[string, string], [], ...] list of pairs of Concepts titles
+        """
         parsed = []
         file = open(entry, 'r', encoding='utf8')
         for line in file.readlines():
@@ -49,6 +63,13 @@ class Parser(object):
         return parsed
 
     def parse(self, cache=Settings.useCache):
+        """Parses the Concept Dataset and the groundtruth labels
+
+        Checks if cached Dataset and GraphMatrix exist. If they dont cycles
+        through all files and if their name correspond to the Documentation name for
+        the Dataset file or the GraphMatrix file parses them.
+        Assigns Model.dataset and Model.desiredGrph in the process
+        """
         if not cache:
             if os.path.exists(self.conceptsPickle):
                 os.remove(self.conceptsPickle)
@@ -67,7 +88,7 @@ class Parser(object):
                     else:
                         self.parseSinglePage(entry)
 
-        # Load Pairs from pickle or parse them from "*-pairs.txt" files
+        # Load desired Pairs from pickle or parse them from "*-pairs.txt" files
         if os.path.exists(self.pairsPickle):
             with open(self.pairsPickle, 'rb') as file:
                 Model.desiredGraph = pickle.load(file)
@@ -82,11 +103,11 @@ class Parser(object):
                 if entry.is_file() and entry.name.__contains__('pairs'):
                     numberOfEntries = numberOfEntries + self.parsePairs(entry)
             Settings.logger.debug("Loaded " + str(numberOfEntries) + " entries of prerequisite relationship")
-        # TODO: here return statistics to Alessio to plot in the GUI
         Model.desiredGraph.plotPrereqs()
 
     def parseSinglePage(self, file):
-        # given dataset PR has 419 concepts, 1164 prereqs and 4744 non prereqs
+        """XML parsing of dataset when contained in a single file (rev 2 of the datset input file format)
+        """
         domain = 'single_file_pages_has_no_domain'
         fileString = open(file, 'r', encoding='utf8').read()
 
@@ -101,9 +122,6 @@ class Parser(object):
                     title = bodyChild.text
                 elif bodyChild.tag == 'text':
                     content = bodyChild.text
-            # to avoid having duplicated concepts from different domains
-            # which in turn lead to considering a single prereq relationship multiple times and biases the model
-            # TODO if input is free from duplicates this is just overhead
             if not title in Model.dataset:
                 c = Concept(id=id, url=url, title=title, content=content, domain=domain)
                 Model.dataset.append(c)
@@ -111,6 +129,8 @@ class Parser(object):
                 Settings.logger.info("Skipping concept " + title + " because it is already present")
 
     def parsePages(self, file):
+        """XML parsing of the part of dataset related to a given domain (first version of the dataset file)
+        """
         domain = file.name.split('-')[0]
         fileString = open(file, 'r', encoding='utf8').read()
 
@@ -144,6 +164,8 @@ class Parser(object):
                 Model.dataset.append(c)
 
     def parsePairs(self, entry):
+        """Parser for the desired labels file, builds the Model.desiredGraph
+        """
         numberOfEntries = 0
         file = open(entry, 'r', encoding='utf8')
         for line in file.readlines():

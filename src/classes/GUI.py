@@ -476,8 +476,6 @@ class StartPage(QWidget):
         processingThread.signalProgress.connect(self.progressDialog.progressText.append)
         processingThread.signalEnd.connect(self.closeProgressDialog)
         processingThread.start()
-        #self.modelResult = engine.process(self.startLeftButton1) # might be cv results or testSet predictions, depending on Settings.generateOutput
-
 
 class StatisticPage(QWidget):
     statisticRequest1 = pyqtSignal()

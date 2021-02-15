@@ -4,25 +4,28 @@ from Model import Model
 from Settings import Settings
 
 if __name__ == '__main__':
-    # Parse files in Specified folder, optionally we can add input to modify Settings.resourcePath
+    """Launcher for the program
+    
+    This module launches the parsing of files, instantiates the Engine and 
+    Configure the run type:
+        - chooses wich configurations need to be run
+        - if required launches classification of new, unknown labels and writes to to file
+    Finally caches the Dataset   
+    
+    """
     p = Parser()
     p.parse()
     p.parseTest()
     Settings.logger.info('Finished Parsing')
-
-    # Calculate Baseline Performance
-    '''
-    base = Baseline()
-    basePerformance = base.process()
-    '''
     if Settings.fullRun:
+        # fullRun: means all 4 scenarios: crossDomain/inDomain x Raw/Meta
         for mode in [True, False]:
             for featTypes in [True, False]:
                 Settings.CrossDomain = mode
                 Settings.useRefD = featTypes
                 # Calculate Engine Performance
                 engine = Engine()
-                result = engine.process() # might be cv results or testSet predictions, depending on Settings.generateOutput'
+                result = engine.process()
                 if Settings.getPredictions:
                     if Settings.CrossDomain:
                         fileName = Settings.resultFolder + 'cross/'
@@ -54,7 +57,7 @@ if __name__ == '__main__':
                     file.close()
     else:
         engine = Engine()
-        result = engine.process()  # might be cv results or testSet predictions, depending on Settings.generateOutput'
+        result = engine.process()
     k = 'debug breakpoint'
 
     if Settings.useCache:
