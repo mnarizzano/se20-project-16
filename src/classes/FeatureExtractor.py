@@ -15,18 +15,34 @@ from gensim.models import Word2Vec
 import pickle
 
 class FeatureExtractor:
+    """Utility class used to extract Text features.
 
+
+    Each feature method first checks if this isn't already calculated, in which case skips
+    and before returning caches the pairFeatures to disk if they got modified
+    """
     pairFeatures = None
     parser = Parser()
 
     def __init__(self, pairFeatures):
+        """Constructor
+
+        Args:
+            pairFeatures: reference to the singleton instance of PairFeatures holding
+                all features related to couples of concepts
+
+        """
         self.pairFeatures = pairFeatures
 
     def cache(self):
+        """Saves the current pairFeatures object to disk
+        """
         Settings.logger.debug('Caching pairFeatures...')
         pickle.dump(self.pairFeatures, open(Settings.pairFeaturesPickle, "wb+"))
 
     def extractSentences(self):
+        """For each Concept in the dataset uses a udpipeModel to extract sentences from their text
+        """
         loaded = (MyModel.dataset[len(MyModel.dataset)-1].features.annotatedSentences is not None) and \
                  MyModel.dataset[len(MyModel.dataset) - 1].features.annotatedSentences != []
         if not loaded: # if already present it has been loaded from pickle
@@ -42,42 +58,34 @@ class FeatureExtractor:
                 concept.features.annotatedSentences = parse(concept.features.conllu)  # This are annotated sentences
                 for sentence in concept.features.annotatedSentences:
                     concept.features.sentences.append(sentence.metadata['text'])
-                '''
-                if concept.title == 'Distribuzione di probabilità a priori':		# wiki page for test
-                    Settings.logger.debug("Concept CONLLU: '" + concept.features.conllu + "'")
-                    Settings.logger.debug("Parsed CONLLU: '" + str(concept.features.get_numberOfSentences()) + "'")
-                    for sentence in concept.features.annotatedSentences:
-                        self.sentenceOfFocus(MyModel.dataset[MyModel.dataset.index('Probabilità condizionata')], sentence)
-                '''
             self.parser.cache()
 
     def LDA(self):
-        if (not hasattr(MyModel.dataset[-1].features, 'ldaVector')) or (MyModel.dataset[-1].features.ldaVector == []):
+        """Calculates LDA for each Concept using a GenSim model
+        """
+        if (not hasattr(MyModel.dataset[-1].features, 'ldaVector')) or\
+                (MyModel.dataset[-1].features.ldaVector == []):
             Settings.logger.debug('Starting LDA Calculation with ' + str(Settings.numberOfTopics) + ' topics')
             start_time = time.time()
             vectorizer = CountVectorizer()
-            corpus = [[noun['lemma']for noun in concept.features.nounsList]for concept in MyModel.dataset] # TODO already calculated in nounsPlain
-            data = vectorizer.fit_transform([' '.join(concept) for concept in corpus]) # TODO: play with stop-words: Ita e/o TF-ID (parole comuni a tutti i concetti non portano informazione per quel singolo concetto)
-            # move dtm to another location?
+            corpus = [[noun['lemma']for noun in concept.features.nounsList]for concept in MyModel.dataset]
+            data = vectorizer.fit_transform([' '.join(concept) for concept in corpus])
             self.dtm = pd.DataFrame(data.toarray(), columns=vectorizer.get_feature_names())
-            # print(dtm.shape) # is #of concepts x #of different words in corpus
             self.dtm.index = [concept.title for concept in MyModel.dataset]
-            # print(self.dtm)
             tdm = self.dtm.transpose()
             sparse_count = scipy.sparse.csr_matrix(tdm)
             corpus = matutils.Sparse2Corpus(sparse_count)
             id2word = dict((v, k) for k, v in vectorizer.vocabulary_.items())
-            lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=Settings.numberOfTopics, passes=15)  # TODO: play with these numbers
+            lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=Settings.numberOfTopics, passes=15)
             corpus_transformed = lda[corpus]
             ldaVectors = dict(list(zip(self.dtm.index, [a for a in corpus_transformed])))
-            # ldaVectors = {'concept.title':[topicNumber, probability of concept belonging to topicNumber]}
-            # topicNumber is an int in range [0, Settings.numberofTopics)
-            # probability is a float in range [0, 1]
-            for concept in MyModel.dataset: # Note: dataset and ldaVectors have same order, might speed up going by index instead of dictionary(dictionary is safer)
+            for concept in MyModel.dataset:
                 if sum([p[1] for p in ldaVectors[concept.title]]) < 0.1:
-                    Settings.logger.error("Error something wrong in topic modeling: Concept '" +  concept.title + "' is not assigned to any topic")
-                leftOutProbability = (1-sum([p[1] for p in ldaVectors[concept.title]]))/(Settings.numberOfTopics-len(ldaVectors[concept.title]))
-                concept.features.ldaVector = [leftOutProbability]*Settings.numberOfTopics    # TODO: WARNING pseudo-randomly assigned LDA confidence for concepts not explicitly in LDA output
+                    Settings.logger.error("Error something wrong in topic modeling: Concept '" +
+                                          concept.title + "' is not assigned to any topic")
+                leftOutProbability = (1-sum([p[1] for p in ldaVectors[concept.title]]))/\
+                                     (Settings.numberOfTopics-len(ldaVectors[concept.title]))
+                concept.features.ldaVector = [leftOutProbability]*Settings.numberOfTopics
                 for ldaComponent in ldaVectors[concept.title]:
                     concept.features.ldaVector[ldaComponent[0]] = ldaComponent[1]
             elapsed_time = time.time() - start_time
@@ -86,19 +94,24 @@ class FeatureExtractor:
         else:
             Settings.logger.debug('Skipped LDA calculation')
 
-    # calculate the kl divergence KL(P || Q)
     def kl_divergence(self, p, q):
+        """Calculate the kl divergence KL(P || Q)
+        """
         return sum(p[i] * log2(p[i] / q[i]) for i in range(len(p)))
 
-    # calculate entropy H(P)
     def entropy(self, p):
+        """Calculate entropy H(P)
+        """
         return -sum([p[i] * log2(p[i]) for i in range(len(p))])
 
-    # calculate cross entropy H(P, Q)
     def cross_entropy(self, p, q):
+        """Calculate cross entropy H(P, Q)
+        """
         return self.entropy(p) + self.kl_divergence(p, q)
 
     def LDACrossEntropy(self):
+        """Calculate cross entropy of the LDA vectors between 2 Concepts
+        """
         Settings.logger.debug('Calculating LDA cross-entropy...')
         if not self.pairFeatures.LDACrossEntropyLoaded():
             for conceptA in MyModel.dataset:
@@ -112,8 +125,9 @@ class FeatureExtractor:
         else:
             Settings.logger.debug('Skipping LDA since it was already present')
 
-
     def sentenceOfFocus(self, concept, annotatedSentence):
+        """Checks if any sentence of a Concept Text includes the title of another Concept
+        """
         # check if in sentence appears title of concept
         contains = concept.title.lower() in annotatedSentence.metadata['text'].lower()
 
@@ -125,13 +139,11 @@ class FeatureExtractor:
         if (contains or lemmatized):
             Settings.logger.debug("Found concept '" + concept.title + "' in sentence '" + annotatedSentence.metadata['text'] + "'")
 
-        # TODO: full match may be too strict, maybe use partial match and return double instead of boolean
-        # TODO: also check for synonims of concept as it might not be always written in the same way
         return (contains or lemmatized)
 
-
     def extractNounsVerbs(self):
-        # TODO check all nouns/verbs/corpus * list/set combinations
+        """Filter the annotation of a Concept Text separating Nouns from Verbs, returns a set for each.
+        """
         loaded = (MyModel.dataset[len(MyModel.dataset) - 1].features.nounsList is not None) and \
                  (MyModel.dataset[len(MyModel.dataset) - 1].features.nounsList != []) and \
                  (MyModel.dataset[len(MyModel.dataset) - 1].features.verbsSet is not None) and \
@@ -158,19 +170,21 @@ class FeatureExtractor:
                             concept.features.verbsPlain.append(token['lemma'])
                             concept.features.verbsSet.add(token['lemma'])
 
-
-    def nounsVerbs2Set(self):   # This is batch List2Set
+    def nounsVerbs2Set(self):
+        """Transforms and array into a Set
+        """
         for concept in MyModel.dataset:
             concept.features.nounsSet = set(f['lemma'] for f in concept.features.nouns)
 
-    # TODO: only calculate pairFeatures for same domain (to speed up execution) -> no more separation by domain
-    def jaccardSimilarity(self):    # calculated over Nouns
+    def jaccardSimilarity(self):
+        """Calculates the jaccardSimilarity between text from a pair of Concepts
+        """
         if not self.pairFeatures.jaccardLoaded():
             Settings.logger.debug('Calculating Jaccard Similarity')
             self.extractNounsVerbs()
             for conceptA in MyModel.dataset:
                 for conceptB in MyModel.dataset:
-                    if conceptB.domain == conceptA.domain:  # To speed up, not possible if don't have domains
+                    if conceptB.domain == conceptA.domain:
                         if len(conceptA.features.nounsSet.union(conceptB.features.nounsSet))==0:
                             js = 0
                         else:
@@ -182,7 +196,8 @@ class FeatureExtractor:
             Settings.logger.debug('Skipping jaccard cause it was cached')
 
     def trainLSTMNet(self, inputs, outputs):
-        # using Glove model from isti.cnr
+        """PoC: private method, testing LSMT Networks using Glove model from isti.cnr.
+        """
         model = self.loadWordEmbeddings()
         def build_lstm():
             model = Sequential()
@@ -191,9 +206,11 @@ class FeatureExtractor:
             model.compile(optimizer='adam', loss='binary_crossentropy')
 
         # return trained lstm for this round
-        return lstm
+        return build_lstm
 
     def containsTitle(self):
+        """Checks if any sentence of a Concept Text includes the title of another Concept
+        """
         if not self.pairFeatures.containsTitleLoaded():
             Settings.logger.debug('Calculating Contains Title')
             for conceptA in MyModel.dataset:
@@ -204,16 +221,11 @@ class FeatureExtractor:
             Settings.logger.debug('Skipping contains title cause it was cached')
 
     def loadWordEmbeddings(self):
+        """Loads Glove model from isti.cnr.
+        """
         model = Word2Vec.load(Settings.glove_WIKI)  # glove model
         Settings.logger.info('Loaded Glove model')
         return model
-        # model.wv['ciao']  # Reads the n-dimension vector for 'ciao', uguale a model.wv.get_vector('ciaomos')
-        # model.wv.cosine_similarities(model.wv['azzurro'], [model.wv['verde'], model.wv['blu']])   # cos.similarity tra azzurro-viola e azzurro-verde
-        # model.wv.distance('azzurro', 'blu')   # distanza euclidea? tra due parole, .distances() lo tra una e più parole (come cos_sim[)
-        # model.wv.doesnt_match(['azzurro', 'blu','gatto'])
-        # model.wv.most_similar(['gatto'], topn=5)  # torna le topn similitudini per gatto
-        # model.wv.most_similar_cosmul(['gatto'], topn=5)   # differente algoritmo, risultato diverso da sopra
-        # model.wv.n_similarity(['gatto', 'giallo'], ['cane', 'verde']) # cosine_simil tra 2 liste di parole(l'ordine non importa, se inverto giallo e gatto ottengo sempre stesso valore)
 
 if __name__ == '__main__':
     from PairFeatures import PairFeatures

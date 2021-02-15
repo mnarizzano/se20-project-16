@@ -73,10 +73,6 @@ class Engine(Model):
         Keys: probability (range [0, 1]). Value: a counter that tracks how
         many incorrect labels were given with said confidence
 
-    Methods
-    -------
-    says(sound=None)
-        Prints the animals name and what sound it makes
     """
 
     pairFeatures = None
