@@ -115,7 +115,6 @@ class Engine(Model):
             self.correctProbabilities[str(0+i/100)] = 0
             self.wrongProbabilities[str(0+i/100)] = 0
 
-
     def calculateFeatures(self):
         """instantiates the *Extractor classes and uses them to calculate required features
 
@@ -165,6 +164,14 @@ class Engine(Model):
         self.inputs = x
 
     def buildNetwork(self):
+        """Utility method that creates the NN and instantiates the Classifier
+
+        The network is created using the sequential model From Keras.
+        This method gets called after the formatting of inputs and outputs has been done
+        and relies on the inputSize and outputSize value to correctly build the first
+        and last layers of the net. The NN and Classifier are then stored in this class
+        corresponding attributes
+        """
         activationFunction = 'softmax'
         lossFunction = 'categorical_crossentropy'
         if self.outputSize == 2 or self.outputSize == 1:
@@ -200,32 +207,30 @@ class Engine(Model):
         self.network = neural_network
 
     def autoCV(self):
+        """Uses the cross-validate method from SciKit to calculate Cross-Validation performance of the model
+
+        It creates the classifier, creates the Folds for applying KFold distinguishing between
+        cross-domain or in-domain scenario, logs distribution of the dataset and perform the CV.
+        Calculates the average of each metrics and stores it in the associated attribute
+        """
         self.buildNetwork()
-        # TODO: understand differences between these scoring variants
-        # macro: calculates independently for each class and then average
-        # micro: will calculates metrics sample by sample (not clustering by class) -> this is the 1 we want
-        # accuracy is global: total % of correctly predicted labels
-        # balanced_accuracy is % of correct per class, then averaged together
-        # Precision refers to precision at a particular decision threshold. For example, if you count any model output less than 0.5 as negative, and greater than 0.5 as positive. But sometimes (especially if your classes are not balanced, or if you want to favor precision over recall or vice versa), you may want to vary this threshold. Average precision gives you average precision at all such possible thresholds, which is also similar to the area under the precision-recall curve. It is a useful metric to compare how well models are ordering the predictions, without considering any specific decision threshold.
-        scoring = ['accuracy', 'balanced_accuracy', 'f1_macro', 'f1_micro', 'average_precision', 'precision_micro',
-                   'recall_micro']  # difference between macro and not macro? f1 === f-score?
-        if not Settings.CrossDomain:    # train on all domains->use stratifiedKFold
+        scoring = ['accuracy', 'balanced_accuracy', 'f1_macro', 'f1_micro',
+                   'average_precision', 'precision_micro', 'recall_micro']
+        # train on all domains->use stratifiedKFold
+        if not Settings.CrossDomain:
             Settings.logger.debug('In-domain cross-validation')
-            # kfold = KFold(n_splits=10, shuffle=True)
-            # StratifiedKFold tries to balance set classes between Folds, 7 is a random number not set to random just for reproducibility
-            # kfold = StratifiedKFold(n_splits=2, shuffle=True, random_state=7)
             kfold = StratifiedShuffleSplit(n_splits=int(Settings.kfoldSplits), test_size=1/int(Settings.kfoldSplits))
-            # Show distribution of cross split for debug
+            # Show to console the distribution of cross split for debug
             for train, test in kfold.split(self.inputs, self.labels):
                 Settings.logger.debug('train -  {}   |   test -  {}'.format(
                 np.bincount(self.labels[train]), np.bincount(self.labels[test])))
             # Actually perform CV
             scores = cross_validate(self.classifier, self.inputs, self.labels, n_jobs=-1, scoring=scoring, cv=kfold,
                                     fit_params={'class_weight': self.weights})
-        else: # Use LeaveOneGroupOut KFold:
+        # Use LeaveOneGroupOut KFold
+        else:
             Settings.logger.debug('Cross-domain cross-validation')
             kfold = LeaveOneGroupOut()
-            # StratifiedShuffleSplit(n_splits=int(Settings.kfoldSplits), test_size=1/int(Settings.kfoldSplits))
             # Show distribution of cross split
             for train, test in kfold.split(self.inputs, self.labels, groups=self.groups):
                 Settings.logger.debug('train -  {}   |   test -  {}'.format(
@@ -233,14 +238,6 @@ class Engine(Model):
             # Actually perform CV
             scores = cross_validate(self.classifier, self.inputs, self.labels, n_jobs=-1, scoring=scoring, cv=kfold,
                                     groups=self.groups, fit_params={'class_weight': self.weights})
-
-        # cross_val_score is very limited on which performances it calculates
-        # results = cross_val_score(estimator, X, dummy_y, n_jobs=-1, cv=kfold,  fit_params={'class_weight': result_set['class_weights']})
-        # print("Accuracy: %0.2f (+/- %0.2f)" % (results.mean(), results.std() * 2))
-
-        # this is the call to make if, instead of wrapping NN in Keras classifier, we use neural_network() directly
-        #scores = cross_validate(neural_network(), X, encoded_Y, n_jobs=-1, scoring=scoring, cv=kfold,
-        #                        fit_params={'class_weight': result_set['class_weights'], 'epochs':int(Settings.epoch), 'batch_size':5, 'verbose':0})
 
         Settings.logger.debug('cross_validate CV performances: ' + str(scores))
         Settings.logger.debug("Accuracy: %0.2f (+/- %0.2f)" % (scores['test_accuracy'].mean(), scores['test_accuracy'].std() * 2))
@@ -257,7 +254,15 @@ class Engine(Model):
         self.classifier = None
 
     def manualCV(self):
-        # Manual CV to enter in the loop and extract some insight
+        """Manually calculates Cross-Validation performance of the model
+
+        It creates the classifier, creates the Folds for applying KFold distinguishing between
+        cross-domain or in-domain scenario, logs distribution of the dataset.
+        CV is done cycling through each KFold (i.e. set of indexes over the dataset) manually
+        to gain insight on the performance and extract confidence of the labels extracted.
+        At the end of each Fold cycle the model is reset to avoid carrying any information from previous Fold.
+        Finally calculates the average of each metrics and stores it in the associated attribute.
+        """
         if not Settings.CrossDomain:  # train on all domains->use stratifiedKFold
             Settings.logger.debug('In-domain manual CV')
             kfold = StratifiedShuffleSplit(n_splits=int(Settings.kfoldSplits), test_size=1 / int(Settings.kfoldSplits))
@@ -285,24 +290,17 @@ class Engine(Model):
             y_train = self.labels[train_index]
             y_test = self.labels[test_index]
             test_domains = np.array(self.groups)[test_index]
-            #model = self.network()
-
             # Train the model
-            # model.fit(X_train, y_train, epochs=int(Settings.epoch), batch_size=5)  # if simple sequential model
             self.buildNetwork()
             fitResults = self.classifier.fit(X_train, y_train, class_weight=self.weights)
             evaluationResults = self.classifier.predict(X_test)
             evaluationProbabilities = self.classifier.predict_proba(X_test)
-            #print(f"Accuracy for the fold no. {i} on the test set: {accuracy_score(y_test,(self.classifier.predict(X_test) > 0.5).astype('int32'))}")
-            #print("accuracy as seen from model.evaluate: " + str(model.evaluate(X_test, y_test)[1]))  # if plain simple keras sequential model
-            #print("accuracy as seen from model.evaluate: " + str(self.classifier.score(X_test, y_test)))          # if KerasClassifier wrapper
             for i in range(len(evaluationResults)-1):
-                if y_test[i] == evaluationResults[i][0]: # prediction is correct
-                    prob = round(evaluationProbabilities[i][y_test[i]], 2)    # take the i-th probability of the predicted class (i.e the bigger one between the 2 probs for i-th prediction)
+                if y_test[i] == evaluationResults[i][0]: # i.e. prediction is correct
+                    prob = round(evaluationProbabilities[i][y_test[i]], 2)
                     self.correctProbabilities[str(prob)] = self.correctProbabilities[str(prob)] + 1
                 else:
-                    prob = round(evaluationProbabilities[i][int(not y_test[i])],
-                                 2)  # take the i-th probability of the predicted class (i.e the bigger one between the 2 probs for i-th prediction)
+                    prob = round(evaluationProbabilities[i][int(not y_test[i])], 2)
                     self.wrongProbabilities[str(prob)] = self.wrongProbabilities[str(prob)] + 1
             self.totalPredictions = self.totalPredictions + len(evaluationResults)
 
@@ -324,10 +322,6 @@ class Engine(Model):
             self.network = None
             self.classifier = None
 
-            # Calculate per domain performances:
-
-        # destroy trained model to avoid interfering with other CV or prediction
-        # sum([self.correctProbabilities[k] for k in self.correctProbabilities.keys()])/self.totalPredictions should trace precision
         self.network = None
         self.classifier = None
         self.precision = {'mean': np.array(self.precision).mean(), 'std': np.array(self.precision).std()}
@@ -344,12 +338,25 @@ class Engine(Model):
         Settings.logger.debug(
             "F1: %0.2f (+/- %0.2f)" % (self.fscore['mean'], self.fscore['std'] * 2))
 
-
     def predict(self):
+        """Labels new, unseen Concept pairs with a Classifier trained on the whole Dataset
+
+        CrossDomain Scenario:
+        Creates a Classifier and trains it on the whole dataset (already formatted, stored in
+        self.inputs and self.labels). Then uses it to labels all Concept pairs in self.parser.test
+
+        InDomain Scenario:
+        for each domain in self.parser.test creates a Classifier and trains it on all dataset domains
+        but its own.
+        It then uses the classifier to label all pairs in self.parser.test of the subject domain
+
+        In both Scenarios result are grouped by domain in the output dictionary.
+        Thus self.output will have the following structure:
+        {domain_1: [bool], domain_2: [bool], domain_3: [bool], ...}
+        """
         self.output = {}
         Settings.logger.debug('Started prediction...')
         if not Settings.CrossDomain:  # use stratifiedKFold
-            # get a new classifier since other one has been used for
             Settings.logger.debug('Started In-Domain training...')
             self.buildNetwork()
             self.classifier.fit(self.inputs, self.labels, class_weight=self.weights)
@@ -400,7 +407,19 @@ class Engine(Model):
         self.classifier = None
 
     def process(self, widget=None):
-        # def notifyProgress(stepName, stepProgress = None)
+        """Entrypoint: this public method manages the calculation and formatting of features,
+           runs the CV and finds labels for new pairs
+
+        Args:
+            widget: Callback to notify progress of execution, defaults to None.
+                can be used e.g. to notify the UI of current execution point
+
+        Returns:
+            A dictionary containing:
+                - the performance of the model, each metric addressed by its name (only if CV was performed)
+                - Confidence arrays for correct and wrong labels during CV (only if CV was performed)
+                - the labels for new pairs, under the key "results"
+        """
         if widget == None:
             def temp(stepName, stepProgress = None):
                 pass
