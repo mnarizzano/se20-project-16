@@ -21,6 +21,11 @@ guidePage = None
 progressPage = None
 
 class Window(QMainWindow):
+    """ Interface
+    
+    Set title and dimensions of the window for the interface pages of the program.
+
+    """
     def __init__(self):
         super().__init__()
 
@@ -30,7 +35,8 @@ class Window(QMainWindow):
         self.buildPages()
 
     def closeEvent(self, QCloseEvent):
-        # close pages that might be open
+        """Close pages that might be open.
+        """
         global guidePage
         if guidePage != None:
             guidePage.reject()
@@ -38,14 +44,30 @@ class Window(QMainWindow):
             self.pages.startPage.progressDialog.reject()
 
     def buildPages(self):
+        """Build the page to show in the window
+        """
         self.pages = Page()
         self.setCentralWidget(self.pages)
 
 
 class Guide(QDialog):
-    guidePage = Settings.guidePage
+    """ Dialog
 
+    Open an additional window with the tutorial to use the program.
+
+    ...
+
+    Attributes:
+        guidePage : String
+            Link of the guide text.
+
+    """
+
+    guidePage = Settings.guidePage
+    
     def __init__(self):
+        """Instantiate the dimension of the guide dialog and the widget inside it with its layout.
+        """
         super().__init__()
 
         self.resize(400, 400)
@@ -58,6 +80,8 @@ class Guide(QDialog):
         self.setLayout(guideDialogLayout)
 
     def createGuideWidget(self):
+        """Create the widget of the guide text and its layout.
+        """
         self.guideWidget = QWidget()
 
         self.guideText = QTextBrowser()
@@ -69,9 +93,15 @@ class Guide(QDialog):
         self.guideWidget.setLayout(guideLayout)
 
 class Progress(QDialog):
-    # progressPage = Settings.progressPage
+    """ Dialog
+
+    Show the progress of the computation of the model by the Engine printing the statuses.
+
+    """
 
     def __init__(self):
+        """Instantiate the dimensions of the dialog and the widget inside it whit its layout.
+        """
         super().__init__()
 
         self.resize(400, 400)
@@ -84,6 +114,8 @@ class Progress(QDialog):
         self.setLayout(progressDialogLayout)
 
     def createProgressWidget(self):
+        """Create the widget of the progress statuses and its layout.
+        """
         self.progressWidget = QWidget()
 
         self.progressText = QTextBrowser()
@@ -95,7 +127,16 @@ class Progress(QDialog):
         self.progressWidget.setLayout(progressLayout)
 
 class Page(QStackedWidget):
+    """ Stack
+    
+    Create all the pages of the program and put them in the stack to manage the navigation between
+    the created pages.
+
+    """
+
     def __init__(self):
+        """Instantiate all the pages of the program and the signals connections to navigate between them.
+        """
         super().__init__()
 
         self.startPage = StartPage()
@@ -117,6 +158,28 @@ class Page(QStackedWidget):
         self.resultPage.updateGraph.connect(lambda: self.statisticPage.updateGraph())
 
 class StartPage(QWidget):
+    """ Widget
+    
+    Create the starting page of the program in which the user can load the dataset, set the parameters
+    of the neural network and define the features for training the model. The user can create a new
+    configuration to compute the model or load a saved one from the table.
+
+    ...
+
+    Attributes:
+        modelResult : {metrics: str, value: int}
+            Contains the results values of the four metrics for the computed models.
+        startRequest1 : pyqtSignal
+            Signal to connect the startPage with the resultPage.
+        startRequest2 : pyqtSignal
+            Signal to connect the startPage with the statisticPage.
+        updateResult : pyqtSignal
+            Signal to update the results value in the resultPage after the computation of the model
+            in the startPage.
+        savedConfigurations : string
+            Link to the file of the saved configurations.
+
+    """
     modelResult = {}
     startRequest1 = pyqtSignal()
     startRequest2 = pyqtSignal()
@@ -124,6 +187,8 @@ class StartPage(QWidget):
     savedConfigurations = Settings.savedConfigurations
 
     def __init__(self):
+        """Instantiate the position of the widgets inside the page and the page layout.
+        """
         super().__init__()
 
         self.createStartLeftWidget()
@@ -137,6 +202,9 @@ class StartPage(QWidget):
         self.setLayout(startPageLayout)
 
     def createStartLeftWidget(self):
+        """Create the widget of startPage to load the dataset, set the parameters of the neural network
+        and the features to train the model and its layout.
+        """
         self.startLeftWidget = QWidget()
 
         self.guideButton = QPushButton()
@@ -252,9 +320,9 @@ class StartPage(QWidget):
         scrollArea.setWidget(vBoxContainer)
         self.startLeftWidget = scrollArea
 
-
-
     def createStartRightWidget(self):
+        """Create the widget of startPage that let the user select a saved configuration to run it again.
+        """
         self.startRightWidget = QWidget()
 
         self.startRightLabel1 = Label('Load a previous configuration?')
@@ -279,6 +347,8 @@ class StartPage(QWidget):
         self.startRightWidget.setLayout(startRightLayout)
 
     def createTableWidget(self):
+        """Create the widget for the table of the saved configurations and build the table.
+        """
         if os.path.exists(self.savedConfigurations):
             file = open(self.savedConfigurations, 'r')
             fileLength = len(file.readlines())
@@ -333,12 +403,16 @@ class StartPage(QWidget):
         self.startTable.itemClicked.connect(self.selectConfiguration)
 
     def enableTable(self):
+        """Enable the table if the user select to load a saved configuration.
+        """
         if self.startRightCheckBox.isChecked():
             self.startTable.setDisabled(False)
         else:
             self.startTable.setDisabled(True)
 
     def selectConfiguration(self, item):
+        """Load the selected configuration by the user in the form to run it.
+        """
         if item.checkState() == Qt.Checked:
             for row in range(0, self.rows):
                 if self.startTable.item(row, 0) != item:
@@ -393,6 +467,8 @@ class StartPage(QWidget):
                     self.startLeftCheckBox11.setCheckState(0)
 
     def openGuideDialog(self):
+        """Open the dialog to show the guide.
+        """
         global guidePage
         guidePage = Guide()
         guidePage.show()
@@ -409,6 +485,8 @@ class StartPage(QWidget):
         self.progressDialog.setText(text)
 
     def loadDataset(self):
+        """Load the dataset for the computation.
+        """
         fileName = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if fileName:
             self.startLeftDatasetLabel.setText('Loaded dataset: \n' + os.path.basename(fileName))
@@ -416,7 +494,8 @@ class StartPage(QWidget):
             Settings.testsetPath = fileName + '/PRELEARN_test_data'
 
     def runModel(self):
-        # Calculate Engine performances
+        """Run the model with the features written and selected in the form.
+        """
         engine = Engine.Engine()
         if self.startLeftLineEdit1.text():
             Settings.neurons = float(self.startLeftLineEdit1.text())
@@ -478,6 +557,28 @@ class StartPage(QWidget):
         processingThread.start()
 
 class StatisticPage(QWidget):
+    """ Widget
+
+    Create the statistic page of the program in which the results of the saved configurations are
+    plotted in four bar charts, one for each statistic (accuracy, precision, f-score, recall).
+
+    ...
+
+    Attributes:
+        statisticRequest : pyqtSignal
+            Signal to connect the statisticPage with the startPage.
+        statisticRequest : pyqtSignal
+            Signal to connect the statisticPage with the resultPage.
+        accuracy : {"configuration name": str, value: int}
+            Contains the accuracy values for all the saved configurations to plot them in the chart.
+        precision : {"configuration name": str, value: int}
+            Contains the precision values for all the saved configurations to plot them in the chart.
+        fscore : {"configuration name": str, value: int}
+            Contains the f-score values for all the saved configurations to plot them in the chart.
+        recall : {"configuration name": str, value: int}
+            Contains the recall values for all the saved configurations to plot them in the chart.
+
+    """
     statisticRequest1 = pyqtSignal()
     statisticRequest2 = pyqtSignal()
     accuracy = {}
@@ -486,6 +587,8 @@ class StatisticPage(QWidget):
     recall = {}
 
     def __init__(self, parent):
+        """Instantiate the position of the widgets inside the page and the page layout.
+        """
         super().__init__(parent)
 
         self.parent = parent
@@ -499,6 +602,8 @@ class StatisticPage(QWidget):
         self.setLayout(statisticLayout)
 
     def createGraphWidget(self):
+        """Create the widget where the four bar charts are printed.
+        """
         if os.path.exists(self.parent.savedConfigurations):
             file = open(self.parent.savedConfigurations, 'r')
             for line in file:
@@ -539,6 +644,8 @@ class StatisticPage(QWidget):
         self.graphWidget.setLayout(graphWidgetLayout)
         
     def createStatisticButtonWidget(self):
+        """Create the button to move back to the startPage.
+        """
         self.returnWidget = QWidget()
 
         self.statisticReturnButton = QPushButton()
@@ -551,6 +658,8 @@ class StatisticPage(QWidget):
         self.returnWidget.setLayout(returnLayout)
     
     def updateGraph(self):
+        """Update the graphs after the saving of a performed configuration.
+        """
         if os.path.exists(self.parent.savedConfigurations):
             file = open(self.parent.savedConfigurations, 'r')
             for line in file:
@@ -568,13 +677,22 @@ class StatisticPage(QWidget):
         self.recallGraph.plot(self.recall.keys(), self.recall.values(), 'value of Recall')
 
 class Graph(FigureCanvas):
+    """ Figure
+    
+    Create the four charts and their layout.
+
+    """
     def __init__(self, parent=None, width=5, height=4, dpi=75):
+        """Instantiate the canvas to plot the charts.
+        """
         fig = Figure(figsize=(width, height), dpi=dpi)
 
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
 
     def plot(self, x, y, ylabel):
+        """Plot the charts in the canvas.
+        """
         ax = self.figure.add_subplot(111)
         ax.bar(x, y, color='blue', width=0.2)
         ax.set_ylim(0, 1)
@@ -584,11 +702,32 @@ class Graph(FigureCanvas):
 
 
 class ResultPage(QWidget):
+    """ Widget
+
+    Create the result page of the program in which are printed the performance statistics
+    (accuracy, precision, recall, F-score) achieved by the performed configuration. The page 
+    contains different buttons that allows the user to save the performed configuration,
+    see the results of the classifier on concept pairs labelling and save and download the results
+    as csv file or txt file.
+
+    ...
+
+    Attributes:
+        resultRequest1 : pyqtSignal
+            Signal to connect the resultPage with the startPage.
+        resultRequest2 : pyqtSignal
+            Signal to connect the resultPage with the statisticPage.
+        updateGraph : pyqtSignal
+            Signal to update the charts in statisticPage after the saving of the performed model.
+
+    """
     resultRequest1 = pyqtSignal()
     resultRequest2 = pyqtSignal()
     updateGraph = pyqtSignal()
 
     def __init__(self, parent):
+        """Instantiate the position of the widget inside the page and the page layout.
+        """
         super().__init__(parent)
 
         self.parent = parent
@@ -606,6 +745,8 @@ class ResultPage(QWidget):
         self.setLayout(resultPageLayout)
 
     def createResultLeftWidget(self):
+        """Create the widget in which are printed the results of a performed configuration.
+        """
         self.resultLeftWidget = QWidget()
         
         self.resultLeftLabel1 = Label('Results of the loaded configuration:')
@@ -623,6 +764,9 @@ class ResultPage(QWidget):
         self.resultLeftWidget.setLayout(resultLeftLayout)
 
     def createResultShowWidget(self):
+        """Create the widget in which are present the buttons to see the results of the classifier
+        on concept pairs labelling and to download them in txt or csv file.
+        """
         self.resultShowWidget = QWidget()
 
         self.resultShowButton1 = QPushButton()
@@ -651,6 +795,8 @@ class ResultPage(QWidget):
         self.resultShowWidget.setLayout(resultShowLayout)
 
     def createResultSaveWidget(self):
+        """Create the widget to save a performed configuration.
+        """
         self.saveWidget = QWidget()
 
         self.saveLabel1 = Label('Do you want to save the configuration?')
@@ -688,6 +834,8 @@ class ResultPage(QWidget):
         self.saveWidget.setLayout(saveLayout)
 
     def createResultButtonWidget(self):
+        """Create the buttons to navigate to other pages of the program.
+        """
         self.returnWidget = QWidget()
 
         self.statisticReturnButton = QPushButton()
@@ -709,12 +857,16 @@ class ResultPage(QWidget):
         self.returnWidget.setLayout(returnLayout)
 
     def updateResult(self):
+        """Update the results computed by the model on the performed configuration.
+        """
         self.resultLeftLabel2.setText('Accuracy: ' + str(round(self.parent.modelResult['accuracy'],3)))
         self.resultLeftLabel3.setText('Precision: ' + str(round(self.parent.modelResult['precision'],3)))
         self.resultLeftLabel4.setText('Fscore: ' + str(round(self.parent.modelResult['f1'],3)))
         self.resultLeftLabel5.setText('Recall: ' + str(round(self.parent.modelResult['recall'],3)))
 
     def showResult(self):
+        """Print the results of a performed configuration in the page.
+        """
         self.showDialog = QDialog()
         self.showDialog.resize(400, 400)
         self.showDialog.setWindowTitle('Results')
@@ -737,6 +889,8 @@ class ResultPage(QWidget):
         self.showDialog.show()
 
     def saveResultTxt(self):
+        """Create a dialog to download the results as txt file.
+        """
         resultDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName = QFileDialog.getSaveFileName(
             self, "Save the results", "", "Text Files (*.txt)")
@@ -748,6 +902,8 @@ class ResultPage(QWidget):
             file.close()
     
     def saveResultCsv(self):
+        """Create a dialog to download the results as csv file.
+        """
         resultDialog = QFileDialog(None, Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         fileName = QFileDialog.getSaveFileName(
             self, "Save the results", "", "CSV Files (*.csv)")
@@ -759,6 +915,9 @@ class ResultPage(QWidget):
             file.close()
 
     def saveConfiguration(self):
+        """Save the performed configuration and update the table in startPage and the charts in
+        statisticPage.
+        """
         saveDate = datetime.datetime.now()
         file = open(self.parent.savedConfigurations, 'a')
         file.write(str(saveDate.year) + '-' + str(saveDate.month) +
@@ -841,6 +1000,8 @@ class ResultPage(QWidget):
         self.saveWidget.setDisabled(True)
 
     def updateTable(self):
+        """Update the table after the saving of a performed configuration.
+        """
         self.parent.startTable.setRowCount(self.parent.startTable.rowCount()+1)
         file = open(self.parent.savedConfigurations, 'r')
         newCheckBoxItem = QTableWidgetItem(self.parent.startTable.rowCount())
@@ -876,6 +1037,11 @@ class ResultPage(QWidget):
 
 
 class Label(QLabel):
+    """ Label
+    
+    It handles all the Label widgets present in the interface.
+
+    """
     def __init__(self, text):
         super().__init__()
 
@@ -884,6 +1050,11 @@ class Label(QLabel):
         self.adjustSize()
 
 class LineEdit(QLineEdit):
+    """ LineEdit
+    
+    It handles all the LineEdit widgets present in the interface.
+    
+    """
     def __init__(self):
         super().__init__()
         # QDoubleValidator(bottom,top,decimal)
@@ -893,6 +1064,20 @@ class LineEdit(QLineEdit):
         self.setFixedSize(100, 20)
 
 class MainBackgroundThread(QThread):
+    """ Thread
+    
+    This class allows the interface not to lock during the computation of the model with
+    the inserted configuration by the user.
+
+    ...
+
+    Attributes:
+        signalProgress : pyqtSignal
+            Signal to keep track of the progress of the model computation.
+        signalEnd : pyqtSignal
+            Signal to notify the end of the model computation.
+
+    """
     signalProgress = pyqtSignal(str)
     signalEnd = pyqtSignal(str)
 
@@ -902,6 +1087,8 @@ class MainBackgroundThread(QThread):
         self.startPage = startPage
 
     def run(self):
+        """Run the thread to monitor the model computation.
+        """
         previousTableState = self.startPage.startTable.isEnabled()
         self.startPage.startTable.setDisabled(True)
         self.startPage.startLeftWidget.setDisabled(True)
@@ -921,6 +1108,8 @@ class MainBackgroundThread(QThread):
         self.signalEnd.emit("Finished")
 
 def main():
+    """Load the interface at the launch of the program.
+    """
     app = QApplication(sys.argv)
     win = Window()
     win.showMaximized()  # to have screen window
@@ -935,4 +1124,9 @@ def main():
 
 
 if __name__ == '__main__':
+    """ Launcher for the interface
+    
+    Load the starting page of the program.
+
+    """
     main()
