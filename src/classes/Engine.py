@@ -1,3 +1,7 @@
+__author__ = "Moggio Alessio, Parizzi Andrea"
+__license__ = "Public Domain"
+__version__ = "1.0"
+
 import random
 from FeatureExtractor import FeatureExtractor
 from Model import Model

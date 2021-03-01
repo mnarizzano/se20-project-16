@@ -1,3 +1,7 @@
+__author__ = "Moggio Alessio, Parizzi Andrea"
+__license__ = "Public Domain"
+__version__ = "1.0"
+
 from Parser import Parser
 from Engine import Engine
 from Model import Model

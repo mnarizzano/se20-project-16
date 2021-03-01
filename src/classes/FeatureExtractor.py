@@ -1,3 +1,7 @@
+__author__ = "Moggio Alessio, Parizzi Andrea"
+__license__ = "Public Domain"
+__version__ = "1.0"
+
 from tensorflow.python.keras.layers import Dense, LSTM
 from tensorflow.python.keras.models import Sequential
 from ufal.udpipe import Model, Pipeline, ProcessingError

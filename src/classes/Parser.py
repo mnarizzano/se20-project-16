@@ -1,3 +1,7 @@
+__author__ = "Parizzi Andrea"
+__license__ = "Public Domain"
+__version__ = "1.0"
+
 import os
 import pickle
 import xml.etree.ElementTree as ET

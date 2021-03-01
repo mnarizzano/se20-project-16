@@ -1,3 +1,7 @@
+__author__ = "Moggio Alessio"
+__license__ = "Public Domain"
+__version__ = "1.0"
+
 import sys
 import datetime
 import os.path
